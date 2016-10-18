@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import org.springframework.web.servlet.ModelAndView;
-import Controller.TestController;
+import API.TestController;
 
 
 /**
