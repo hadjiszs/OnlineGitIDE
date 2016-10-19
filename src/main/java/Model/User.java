@@ -21,7 +21,6 @@ public class User {
     public User(String pseudo, String mail){
         this.pseudo = pseudo;
         this.mail = mail;
-
     }
 
     @Override
