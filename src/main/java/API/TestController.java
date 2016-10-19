@@ -24,6 +24,7 @@ public class TestController {
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logger.info("Nouveau test");
+        System.out.println("sqkjdkjdkjqdsl");
         return new ModelAndView("/view/Test/createTest.jsp");
     }
 
