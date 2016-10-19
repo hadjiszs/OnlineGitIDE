@@ -10,7 +10,7 @@ import Model.User;
  */
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class APIController {
 
     @RequestMapping("/add")
@@ -19,4 +19,8 @@ public class APIController {
         return new User(pseudo, mail);
     }
 
+    @RequestMapping("/new")
+    public void index(){
+        System.out.println("default");
+    }
 }
