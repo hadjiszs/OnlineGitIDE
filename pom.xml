@@ -3,8 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>MultiMif</groupId>
   <artifactId>MultiMif</artifactId>
-  <packaging>war</packaging>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>API</module>
+    <module>Application</module>
+  </modules>
   <name>MultiMif app</name>
   <url>http://maven.apache.org</url>
 

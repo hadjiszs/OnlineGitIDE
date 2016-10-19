@@ -1,10 +1,8 @@
-package main.java.Controller;
+package Controller;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.springframework.web.servlet.ModelAndView;
-import API.TestController;
 
 
 /**

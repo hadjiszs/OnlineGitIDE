@@ -1,4 +1,4 @@
-package main.java.API.Service;
+package Service;
 
 import API.Service.FolderTraverse;
 import org.junit.Assert;
