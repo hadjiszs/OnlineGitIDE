@@ -21,7 +21,18 @@ public class User {
     public User(String pseudo, String mail){
         this.pseudo = pseudo;
         this.mail = mail;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public String getMail() {
+        return mail;
     }
 
     @Override
