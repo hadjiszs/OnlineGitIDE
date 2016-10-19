@@ -9,6 +9,7 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+    <!-- Javax -->
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-web-api</artifactId>
@@ -19,21 +20,53 @@
       <artifactId>jstl</artifactId>
       <version>1.2</version>
     </dependency>
+    <!-- Spring -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
       <version>4.0.2.RELEASE</version>
     </dependency>
+    <!-- Tests : Junit -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <!-- Json Library -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20160810</version>
+    </dependency>
+    <!-- Jgit Core Library -->
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>4.5.0.201609210915-r</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit.archive</artifactId>
+      <version>4.5.0.201609210915-r</version>
+    </dependency>
+    <!-- Gitective -->
+    <dependency>
+      <groupId>org.gitective</groupId>
+      <artifactId>gitective-core</artifactId>
+      <version>0.9.9</version>
+    </dependency>
+    <!-- Hibernate : persistence -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>5.2.2.Final</version>
+    </dependency>
+    <!-- Connecteur à Mysql -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>6.0.4</version>
     </dependency>
   </dependencies>
   <build>
