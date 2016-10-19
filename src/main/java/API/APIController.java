@@ -15,8 +15,6 @@ public class APIController {
     @RequestMapping("/add")
     public User user(@RequestParam(value="pseudo") String pseudo,
                      @RequestParam(value="mail") String mail){
-        System.out.println("Pseudo " + pseudo);
-
         return new User(pseudo, mail);
     }
 
