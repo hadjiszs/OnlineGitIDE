@@ -1,4 +1,4 @@
-package API.Service;
+package Service;
 
 import org.json.*;
 import java.io.File;

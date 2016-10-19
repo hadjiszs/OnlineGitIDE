@@ -1,6 +1,5 @@
 package Service;
 
-import API.Service.FolderTraverse;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,6 +29,7 @@ public class FolderTraverseTests {
 
     @Test
     public void testToJsonFileTree() throws Exception{
+        System.out.printf(System.getProperty("user.dir"));
         FolderTraverse ft = new FolderTraverse(new File("src"));
         Assert.assertNotNull(ft.toJsonFileTree());
     }
