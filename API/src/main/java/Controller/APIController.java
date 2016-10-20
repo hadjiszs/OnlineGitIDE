@@ -10,7 +10,6 @@ import Model.User;
  */
 
 @RestController
-@RequestMapping("/")
 public class APIController {
 
     @RequestMapping("/add")
