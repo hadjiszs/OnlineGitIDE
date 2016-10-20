@@ -21,17 +21,19 @@ public class FichierUtilise implements Serializable {
 
     @Column(name="idFichier")
     @Id
-    private ObjectId idFichier;
+    private String idFichier;
 
-    @Column(name = "user")
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "mail")
     private User user;
 
     public FichierUtilise(ObjectId idFichier, User user, String contenu) {
         this.contenu = contenu;
-        this.idFichier = idFichier;
+        this.idFichier = idFichier.toString();
         this.user = user;
+    }
+
+    public FichierUtilise() {
     }
 
     public String getContenu() {
@@ -43,11 +45,11 @@ public class FichierUtilise implements Serializable {
     }
 
     public ObjectId getIdFichier() {
-        return idFichier;
+        return ObjectId.fromString(idFichier);
     }
 
     public void setId(ObjectId id) {
-        this.idFichier = id;
+        this.idFichier = id.toString();
     }
 
     public User getUser() {

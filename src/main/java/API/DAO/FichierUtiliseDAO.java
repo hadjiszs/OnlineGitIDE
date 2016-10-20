@@ -23,7 +23,7 @@ public class FichierUtiliseDAO extends DAO {
         String contenu;
         Query query = em.createNamedQuery("FichierUtilise.findByIdAndUser", FichierUtilise.class);
         query.setParameter("user", user.getMail());
-        query.setParameter("idFichier", idFichier.getName());
+        query.setParameter("idFichier", idFichier.toString());
         try {
             contenu = (String) query.getSingleResult();
         } catch(NoResultException e) {
