@@ -9,20 +9,25 @@ import java.io.Serializable;
 @Entity
 public class User implements Serializable {
 
-    @Column(name = "pseudo")
-    private String pseudo;
-
     @Id
     @Column(name = "mail")
     private String mail;
 
+    @Column(name = "pseudo")
+    private String pseudo;
+
     @Column(name = "hashkey")
     private String hashkey;
 
-    public User(String mail, String pseudo, String haskkey) {
+    public User(String mail, String pseudo) {
         this.pseudo = pseudo;
         this.mail = mail;
-        this.hashkey = haskkey;
+    }
+
+    public User(String mail, String pseudo, String hashkey) {
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.hashkey = hashkey;
     }
 
     public String getHashkey() {

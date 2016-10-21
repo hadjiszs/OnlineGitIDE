@@ -1,0 +1,60 @@
+/* Feuille de style index.jsp */
+
+.bodyIndex{
+    background: url('../img/background2.jpg');
+    color: #222;
+}
+
+#titreIndex{
+    color:blue;
+    text-align:center;
+    margin-top:20px;
+    font-family : 'Lato', sans-serif;
+}
+
+main{
+    width:90%;
+    background:#FEFEFE;
+    border-radius:15px;
+    padding:20px;
+    margin:auto;
+    margin-top:20px;
+    box-shadow: 0px 0px 10px 12px #555;
+}
+
+#divConnexion, #divInscription{
+    text-align:center;
+    margin-top:20px;
+    height:400px;
+}
+
+#divConnexion{
+    border-right: solid 1px black;
+}
+
+.formIndex {
+    margin-top: 60px;
+}
+
+#btnConnexion #btnInscription{
+    border-radius: 0px;
+}
+.btn {
+    transition: all ease-in-out 0.2s;
+}
+small {
+    color: #999;
+    font-size: 12px;
+}
+
+.form-group{
+    margin:auto;
+}
+
+#aOubliePassword{
+    cursor:pointer;
+}
+
+#mailPassword{
+    width:60%;
+}
