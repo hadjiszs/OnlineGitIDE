@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = "user_grant")
 @IdClass(UserGrantID.class)
 public class UserGrant implements Serializable {
-    //private enum Permis {ADMIN, DEV};
+    private enum Permis {ADMIN, DEV};
     @MapsId("id")
     @Id
     private Long projetId;
@@ -19,8 +19,9 @@ public class UserGrant implements Serializable {
     @Id
     private String mail;
 
-
-    private String grant;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('Admin', 'Dev')")
+    private Permis gran; //On ne peut pas utiliser grant parce que c'est une mot clé de Mysql
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "mail", insertable = false, updatable = false)
@@ -50,11 +51,11 @@ public class UserGrant implements Serializable {
         this.mail = mail;
     }
 
-    public String getGrant() {
-        return grant;
+    public Permis getGrant() {
+        return gran;
     }
 
-    public void setGrant(String grant) {
-        this.grant = grant;
+    public void setGrant(Permis gran) {
+        this.gran = gran;
     }
 }

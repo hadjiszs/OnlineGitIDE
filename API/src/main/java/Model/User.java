@@ -13,7 +13,7 @@ public class User implements Serializable {
     @Column(name = "mail")
     private String mail;
 
-    @Column(name = "pseudoo")
+    @Column(name = "pseudo")
     private String pseudo;
 
     @Column(name = "hashkey")
