@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by amaia.nazabal on 10/20/16.
  */
-public class UserDAOImp extends DAO implements UserDAOInt {
+public class UserDAOImp extends DAO implements UserDAO {
 
     public UserDAOImp(EntityManager em) {
 
@@ -19,10 +19,13 @@ public class UserDAOImp extends DAO implements UserDAOInt {
     public boolean addEntity(User user) throws Exception {
 
         if (getEntityByMail(user.getMail()) == null) {
-            user.setHashkey("");
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
         }
 
-        em.persist(user);
+
+
         return true;
 
     }
@@ -42,7 +45,7 @@ public class UserDAOImp extends DAO implements UserDAOInt {
 
     public List getEntityList() throws Exception {
 
-        String query = "SELECT * FROM User";
+        String query = "SELECT u FROM User u";
         return em.createQuery(query).getResultList();
 
     }

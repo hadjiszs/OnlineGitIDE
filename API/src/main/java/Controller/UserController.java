@@ -29,9 +29,9 @@ public class UserController {
 
     @RequestMapping(value = "/add", produces = "application/json; charset=utf-8")
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value="pseudo") String pseudo,
-                                @RequestParam(value="mail") String mail){
+                                @RequestParam(value="mail") String mail, @RequestParam(value="pass") String pass){
         try{
-            userService.addEntity(mail, pseudo);
+            userService.addEntity(mail, pseudo, pass);
         }catch(Exception ex){
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -40,7 +40,7 @@ public class UserController {
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/get", produces = "application/json; charset=utf-8")
+        @RequestMapping(value = "/get", produces = "application/json; charset=utf-8")
     public @ResponseBody ResponseEntity<String> get(@RequestParam(value="mail") String mail){
         User user;
 
