@@ -17,14 +17,23 @@ public class UserDAOImp extends DAO implements UserDAO {
     }
 
     public boolean addEntity(User user) throws Exception {
+        User usr;
+        try{
+            usr = getEntityByMail(user.getMail());
+        }catch(Exception ex){
+            usr = null;
+        }
 
-        if (getEntityByMail(user.getMail()) == null) {
+        if (usr == null){
+
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
+
+        } else {
+
+            throw new Exception("User already exists");
         }
-
-
 
         return true;
 
@@ -38,6 +47,10 @@ public class UserDAOImp extends DAO implements UserDAO {
             user = em.find(User.class, mail);
         } catch(java.lang.IllegalArgumentException exception) {
             user = null;
+        }
+
+        if (user == null){
+            throw new Exception("User doesn't exist");
         }
 
         return user;
