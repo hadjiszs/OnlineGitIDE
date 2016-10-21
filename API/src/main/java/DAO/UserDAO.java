@@ -1,4 +1,4 @@
-package Controller.DAO;
+package DAO;
 
 /**
  * Created by p1317074 on 19/10/16.
@@ -40,7 +40,8 @@ public class UserDAO extends DAO {
     public User createOrUpdate(String email, String pseudo, String hashkey) {
         User user = em.find(User.class, email);
         if (user == null) {
-            user = new User(email, pseudo, hashkey);
+            user = new User(email, pseudo);
+            user.setHashkey(hashkey);
         }
         em.persist(user);
         return user;
