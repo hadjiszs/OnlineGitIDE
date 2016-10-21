@@ -27,7 +27,7 @@ public class FichierUtilise implements Serializable {
     @JoinColumn(name = "mail")
     private User user;
 
-    public FichierUtilise(ObjectId idFichier, User user, String contenu) {
+    public FichierUtilise(User user, String idFichier, String contenu) {
         this.contenu = contenu;
         this.idFichier = idFichier.toString();
         this.user = user;

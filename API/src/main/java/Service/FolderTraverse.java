@@ -92,7 +92,7 @@ public class FolderTraverse {
     private JSONObject toJsonFileTreeImpl(LinkedList ll){
         JSONObject jo = new JSONObject();
         if(ll.size() == 1){
-            jo.put("file",ll.getFirst().toString());
+            jo.put("fileService",ll.getFirst().toString());
         }else{
             JSONArray dir = new JSONArray();
             ListIterator iterator = ll.listIterator(1);

@@ -23,32 +23,38 @@ public class FichierUtiliseDAO extends DAO {
         Query query = em.createNamedQuery("FichierUtilise.findByIdAndUser", FichierUtilise.class);
         query.setParameter("user", user.getMail());
         query.setParameter("idFichier", idFichier.toString());
+
         try {
             contenu = (String) query.getSingleResult();
         } catch(NoResultException e) {
             contenu = null;
         }
 
-        fichier = new FichierUtilise(idFichier, user, contenu);
+        fichier = new FichierUtilise(user, idFichier.toString(), contenu);
 
         return fichier;
-
     }
 
-    public FichierUtilise createOrUpdate(User user, ObjectId id, String contenu) {
+    public boolean exist(String id) {
+        return em.find(FichierUtilise.class, id) != null;
+    }
+
+    //public FichierUtilise createOrUpdate(String user, ObjectId id, String contenu) {
+    public FichierUtilise createOrUpdate(User user, String id, String contenu) {
         FichierUtilise fichier = em.find(FichierUtilise.class, id);
         if (fichier == null) {
-            if (id != ObjectId.zeroId()) {
-                fichier = new FichierUtilise(id, user, contenu);
+            if (id != ObjectId.zeroId().toString()) {
+                fichier = new FichierUtilise(user, id, contenu);
             }
             else {
                 throw new IllegalArgumentException("Id = zeroId");
             }
+        } else {
+            if( ! fichier.getContenu().equals(contenu))
+                fichier.setContenu(contenu);
         }
+
         em.persist(fichier);
         return fichier;
     }
-
-
-
 }
