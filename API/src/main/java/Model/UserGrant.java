@@ -10,19 +10,20 @@ import java.io.Serializable;
 @Table(name = "user_grant")
 @IdClass(UserGrantID.class)
 public class UserGrant implements Serializable {
-    private enum Permis {ADMIN, DEV};
+    //private enum Permis {ADMIN, DEV};
+    @MapsId("id")
     @Id
     private Long projetId;
 
+    @MapsId("mail")
     @Id
     private String mail;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM('Admin', 'Dev')")
-    private Permis grant;
+
+    private String grant;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mail")
+    @JoinColumn(name = "mail", insertable = false, updatable = false)
     private User user;
 
     public User getUser() {
@@ -49,11 +50,11 @@ public class UserGrant implements Serializable {
         this.mail = mail;
     }
 
-    public Permis getGrant() {
+    public String getGrant() {
         return grant;
     }
 
-    public void setGrant(Permis grant) {
+    public void setGrant(String grant) {
         this.grant = grant;
     }
 }

@@ -10,7 +10,7 @@ public class UserGrantID implements Serializable {
     private Long projetId;
 
     @Id
-    private String userHash;
+    private String mail;
 
     public UserGrantID(){
 
