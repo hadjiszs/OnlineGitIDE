@@ -9,12 +9,12 @@ import java.io.Serializable;
 @Entity
 public class User implements Serializable {
 
-    @Column(name = "pseudo")
-    private String pseudo;
-
     @Id
     @Column(name = "mail")
     private String mail;
+
+    @Column(name = "pseudoo")
+    private String pseudo;
 
     @Column(name = "hashkey")
     private String hashkey;
