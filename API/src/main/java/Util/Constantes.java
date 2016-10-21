@@ -5,6 +5,10 @@ package Util;
  */
 public class Constantes {
 
+    private Constantes() {
+
+    }
+
     public static final int OPERATION_CODE_REUSSI = 0;
 
     public static final String OPERATION_MSG_REUSSI = "Transaction réussie";

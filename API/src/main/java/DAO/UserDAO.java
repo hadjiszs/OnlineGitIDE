@@ -8,8 +8,8 @@ import java.util.List;
  * Created by amaia.nazabal on 10/20/16.
  */
 public interface UserDAO {
-        boolean addEntity(User user) throws Exception;
-        User getEntityByMail(String mail) throws Exception;
-        List getEntityList() throws Exception;
-        boolean deleteEntity(String mail) throws Exception;
+        boolean addEntity(User user) throws RuntimeException;
+        User getEntityByMail(String mail) throws RuntimeException;
+        List getEntityList() throws RuntimeException;
+        boolean deleteEntity(String mail) throws RuntimeException;
 }

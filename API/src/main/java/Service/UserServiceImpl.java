@@ -17,20 +17,20 @@ public class UserServiceImpl implements UserService {
         userDAO = new UserDAOImp(entityManager);
     }
 
-    public boolean addEntity(String pseudo, String mail, String hashkey) throws Exception {
+    public boolean addEntity(String pseudo, String mail, String hashkey) throws RuntimeException {
         User user = new User(pseudo, mail, hashkey);
         return userDAO.addEntity(user);
     }
 
-    public User getEntityByMail(String mail) throws Exception {
+    public User getEntityByMail(String mail) throws RuntimeException {
         return userDAO.getEntityByMail(mail);
     }
 
-    public List getEntityList() throws Exception {
+    public List getEntityList() throws RuntimeException {
         return userDAO.getEntityList();
     }
 
-    public boolean deleteEntity(String mail) throws Exception {
+    public boolean deleteEntity(String mail) throws RuntimeException {
         return userDAO.deleteEntity(mail);
     }
 
