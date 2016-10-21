@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.User;
+import Util.DataException;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -16,7 +17,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
-    public boolean addEntity(User user) throws Exception {
+    public boolean addEntity(User user) throws DataException {
         User usr;
         try{
             usr = getEntityByMail(user.getMail());
@@ -32,14 +33,14 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         } else {
 
-            throw new Exception("User already exists");
+            throw new DataException("User already exists");
         }
 
         return true;
 
     }
 
-    public User getEntityByMail(String mail) throws Exception {
+    public User getEntityByMail(String mail) throws DataException {
 
         User user;
 
@@ -50,7 +51,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         }
 
         if (user == null){
-            throw new Exception("User doesn't exist");
+            throw new DataException("User doesn't exist");
         }
 
         return user;

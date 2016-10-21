@@ -10,6 +10,10 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
+    @Column(columnDefinition = "INTEGER")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @Column(name = "mail")
     private String mail;
 
@@ -28,6 +32,14 @@ public class User implements Serializable {
         this.pseudo = pseudo;
         this.mail = mail;
         this.hashkey = hashkey;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHashkey() {

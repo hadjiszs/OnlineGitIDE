@@ -26,6 +26,15 @@ public class Project implements Serializable {
 
     private String version;
 
+
+    public Project(String name, String version) {
+        this.name = name;
+        this.version = version;
+
+        this.creationDate = new Date();
+        this.lastModification = new Date();
+    }
+
     public long getId() {
         return id;
     }
