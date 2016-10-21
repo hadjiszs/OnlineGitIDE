@@ -1,0 +1,46 @@
+/* Feuille de style home.jsp */
+
+BODY{
+    margin-top:65px;
+}
+
+.h2DivProjet{
+    display:inline;
+    vertical-align:top;
+    margin-right:10px;
+}
+
+.titreSection{
+    margin-bottom:10px;
+}
+
+#panelDeroulant{
+    position:fixed;
+    background-color:#449d44;
+    color:#fff;
+    border: #4cae4c;
+    min-height:100%;
+    padding:10px;
+    top:51px;
+    width:400px;
+    right:-400px;
+}
+
+#ancrePanel{
+    position:fixed;
+    padding:25px;
+    border-radius: 200px 10px 10px 200px;
+    margin-right:-10px;
+    font-size:x-large;
+    background-color:#449d44;
+    color:#fff;
+    border: #4cae4c;
+    margin-top: 40vh;
+    transform: translateY(-50%);
+    right:0;
+    cursor:pointer;
+}
+
+#chevronAncre{
+    line-height:80px;
+}
