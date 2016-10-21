@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/user")  // /api/user/
+@RequestMapping("/user")
 public class UserController {
 
     protected final Log logger = LogFactory.getLog(getClass());
