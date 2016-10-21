@@ -16,7 +16,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
-    public boolean addEntity(User user) throws RuntimeException {
+    public boolean addEntity(User user){
 
         if (getEntityByMail(user.getMail()) == null) {
             em.getTransaction().begin();
@@ -28,7 +28,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
-    public User getEntityByMail(String mail) throws RuntimeException {
+    public User getEntityByMail(String mail) {
 
         User user;
 
@@ -41,14 +41,14 @@ public class UserDAOImp extends DAO implements UserDAO {
         return user;
     }
 
-    public List getEntityList() throws RuntimeException {
+    public List getEntityList() {
 
         String query = "SELECT u FROM User u";
         return em.createQuery(query).getResultList();
 
     }
 
-    public boolean deleteEntity(String mail) throws RuntimeException {
+    public boolean deleteEntity(String mail) {
 
         User user = getEntityByMail(mail);
         em.getTransaction().begin();
