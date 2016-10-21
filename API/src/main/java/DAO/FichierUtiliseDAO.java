@@ -1,4 +1,4 @@
-package Controller.DAO;
+package DAO;
 
 import Model.FichierUtilise;
 import Model.User;

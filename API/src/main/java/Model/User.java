@@ -19,10 +19,9 @@ public class User implements Serializable {
     @Column(name = "hashkey")
     private String hashkey;
 
-    public User(String mail, String pseudo, String haskkey) {
+    public User(String mail, String pseudo) {
         this.pseudo = pseudo;
         this.mail = mail;
-        this.hashkey = haskkey;
     }
 
     public String getHashkey() {
