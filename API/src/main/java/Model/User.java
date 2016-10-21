@@ -24,6 +24,12 @@ public class User implements Serializable {
         this.mail = mail;
     }
 
+    public User(String mail, String pseudo, String hashkey) {
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.hashkey = hashkey;
+    }
+
     public String getHashkey() {
         return hashkey;
     }
