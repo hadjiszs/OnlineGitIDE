@@ -22,7 +22,9 @@
 
         <script src="../../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
         <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
+        <link rel="stylesheet" href="../../codeMirror/theme/rubyblue.css">
         <script src="../../codeMirror/mode/clike/clike.js"></script>
     </head>
     <body>
@@ -53,11 +55,13 @@
                 </div>
             </nav>
         </header>
-        <main class="container">
+        <main class="container-fluid">
             <aside class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <select id="changerTheme">
+                    <select name="theme" id="changerTheme">
                         <option value="dracula">Dracula</option>
+                        <option value="night">Night</option>
+                        <option value="rubyblue">RubyBlue</option>
                     </select>
                 </div>
             </aside>
@@ -85,15 +89,16 @@ public class Class<T, V> implements MyInterface {
   public MyType method() {
     return member;
   }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
 }
                         </textarea>
                     </div>
+            </section>
+
+            <!-- Sortie de compilation -->
+            <section class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                        <p> Rien pour le moment</p>
+                </div>
             </section>
 
             <a id="ancrePanelDroite" aria-label="Panel deroulant">

@@ -5,9 +5,11 @@
 /* Vaut true si le panel est visible à l'écran */
 var deroulerDroite = false;
 var deroulerGauche = false;
+var input = document.getElementById("changerTheme");
 
 $("#ancrePanelDroite").click(deroulerPanelDroite);
 $("#ancrePanelGauche").click(deroulerPanelGauche);
+$("#changerTheme").change(changerTheme);
 
 function deroulerPanelDroite(){
     if(!deroulerDroite){
@@ -59,14 +61,27 @@ function deroulerPanelGauche(){
 }
 
 var txt =  document.getElementById("java-code");
-var javaEditor = CodeMirror.fromTextArea(txt, {
+var editeur = CodeMirror.fromTextArea(txt, {
     lineNumbers: true,
     matchBrackets: true,
     mode: "text/x-java",
-    theme: "dracula"
+    theme: input.options[input.selectedIndex].value,
+    viewportMargin: Infinity,
+
 });
 
-var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+var mac = CodeMirror.keyMap.default === CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+
+function changerTheme(){
+    editeur.setOption("theme", input.options[input.selectedIndex].value);
+}
+
+/* Enregistrement automatique de l'éditeur toutes les 30 secondes */
+window.setInterval(function(){
+    //TODO
+}, 30000);
+
+editeur.getDoc().getValue(); //Permet d'avoir le contenu de l'éditeur
 
 
