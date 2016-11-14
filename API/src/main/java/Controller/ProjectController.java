@@ -1,8 +1,11 @@
 package Controller;
 
 import Model.Project;
+import Model.User;
 import Service.ProjectService;
 import Service.ProjectServiceImpl;
+import Service.UserService;
+import Service.UserServiceImpl;
 import Util.Constantes;
 import Util.Util;
 import Util.Status;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ProjectController {
     private EntityManager entityManager;
     ProjectService projectService ;
+    UserService userService;
 
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "name") String name,
@@ -58,11 +62,12 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(){
+    public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "mail") String mail){
         List<Project> projects;
 
         try {
-            projects = projectService.getEntityList();
+            User user = userService.getEntityByMail(mail);
+            projects = projectService.getEntityList(user);
         }catch (Exception ex) {
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
@@ -90,6 +95,7 @@ public class ProjectController {
         entityManager = Persistence.createEntityManagerFactory(Constantes.ENTITY_FACTORY)
                 .createEntityManager();
         projectService = new ProjectServiceImpl(entityManager);
+        userService = new UserServiceImpl(entityManager);
     }
 
 

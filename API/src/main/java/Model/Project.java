@@ -26,6 +26,8 @@ public class Project implements Serializable {
 
     private String version;
 
+    private String root;
+
 
     public Project(String name, String version) {
         this.name = name;
@@ -66,6 +68,10 @@ public class Project implements Serializable {
     public void setLastModification(Date lastModification) {
         this.lastModification = lastModification;
     }
+
+    public String getRoot() { return root; }
+
+    private void setRoot(String root) {this.root = root; }
 
     public String getVersion() {
         return version;

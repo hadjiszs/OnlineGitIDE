@@ -15,7 +15,7 @@ public class APIController {
     @RequestMapping("/add")
     public User user(@RequestParam(value="pseudo") String pseudo,
                      @RequestParam(value="mail") String mail){
-        return new User(mail, pseudo);
+        return new User(mail, pseudo, "bla bla bla");
     }
 
     @RequestMapping("/new")

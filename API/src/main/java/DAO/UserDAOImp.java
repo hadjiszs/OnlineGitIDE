@@ -22,14 +22,21 @@ public class UserDAOImp extends DAO implements UserDAO {
         try{
             usr = getEntityByMail(user.getMail());
         }catch(Exception ex){
+            ex.printStackTrace();
             usr = null;
         }
 
         if (usr == null){
-
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
+            try{
+                em.getTransaction().begin();
+                em.persist(user);
+                em.getTransaction().commit();
+            }catch (Exception ex){
+                ex.printStackTrace();
+                throw new DataException("Data base error");
+            }finally {
+                em.getTransaction().rollback();
+            }
 
         } else {
 

@@ -34,6 +34,7 @@ public class UserController {
         try{
             userService.addEntity(mail, pseudo, pass);
         }catch(Exception ex){
+            ex.printStackTrace();
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 

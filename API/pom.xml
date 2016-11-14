@@ -9,42 +9,52 @@
         <version>1.0-SNAPSHOT</version>
         <name>MultiMif API</name>
         <url>http://maven.apache.org</url>
+        <properties>
+            <javax.version>7.0</javax.version>
+            <javax-servlet.version>1.2</javax-servlet.version>
+            <spring.version>4.0.2.RELEASE</spring.version>
+            <hibernate.version>5.2.2.Final</hibernate.version>
+            <mysql.version>6.0.4</mysql.version>
+            <junit.version>4.12</junit.version>
+            <json-jackson.version>2.8.4</json-jackson.version>
+            <json-jackson-mapper.version>1.9.13</json-jackson-mapper.version>
+        </properties>
 
     <artifactId>API</artifactId>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
+            <version>${javax.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <version>${javax-servlet.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.0.2.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.4</version>
+            <version>${json-jackson.version}</version>
         </dependency>
 
         <!-- Json Objects-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
+            <version>${json-jackson-mapper.version}</version>
         </dependency>
 
         <!-- Json Library -->
@@ -67,17 +77,15 @@
             <artifactId>gitective-core</artifactId>
             <version>0.9.9</version>
         </dependency>
-        <!-- Hibernate : persistence -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.2.2.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
-        <!-- Connecteur à Mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.4</version>
+            <version>${mysql.version}</version>
         </dependency>
     </dependencies>
     <build>

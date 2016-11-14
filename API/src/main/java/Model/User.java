@@ -1,5 +1,7 @@
 package Model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,22 +13,17 @@ public class User implements Serializable {
 
     @Id
     @Column(columnDefinition = "INTEGER")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "mail")
     private String mail;
 
-    @Column(name = "pseudo")
+    @Column(name = "pseudo", unique = true)
     private String pseudo;
 
     @Column(name = "hashkey")
     private String hashkey;
-
-    public User(String mail, String pseudo) {
-        this.pseudo = pseudo;
-        this.mail = mail;
-    }
 
     public User(String mail, String pseudo, String hashkey) {
         this.pseudo = pseudo;

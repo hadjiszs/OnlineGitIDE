@@ -1,6 +1,7 @@
 package Service;
 
 import Model.Project;
+import Model.User;
 
 import java.util.List;
 
@@ -10,6 +11,6 @@ import java.util.List;
 public interface ProjectService {
     boolean addEntity(Project project) throws Exception;
     Project getEntityById(Long id) throws Exception;
-    List getEntityList() throws Exception;
+    List getEntityList(User user) throws Exception;
     boolean deleteEntity(Long id) throws Exception;
 }

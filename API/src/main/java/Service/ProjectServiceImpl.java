@@ -3,6 +3,7 @@ package Service;
 import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
 import Model.Project;
+import Model.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -24,8 +25,8 @@ public class ProjectServiceImpl implements ProjectService{
         return projectDAO.getEntityById(id);
 
     }
-    public List getEntityList() throws Exception{
-        return projectDAO.getEntityList();
+    public List getEntityList(User user) throws Exception{
+        return projectDAO.getEntityList(user);
     }
     public boolean deleteEntity(Long id) throws Exception{
         return projectDAO.deleteEntity(id);

@@ -6,6 +6,7 @@ import DAO.UserDAOImp;
 import Util.DataException;
 
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 import java.util.List;
 
 /**
