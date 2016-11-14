@@ -20,6 +20,7 @@
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <script async src="../JS/home.js"></script>
+        <link href="../img/favicon.ico" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <header>
