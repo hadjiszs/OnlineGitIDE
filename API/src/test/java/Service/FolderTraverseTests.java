@@ -10,8 +10,9 @@ import java.io.FileNotFoundException;
 /**
  * Created by Alexis on 12/10/2016.
  */
-public class FolderTraverseTests {
 
+public class FolderTraverseTests {
+/*
     @Test
     public void testGetFileTree() throws Exception{
         // Un dossier vide
@@ -43,5 +44,5 @@ public class FolderTraverseTests {
     public void testToStringFileTree() throws Exception{
         FolderTraverse ft = new FolderTraverse(new File("src"));
         Assert.assertNotNull(ft.toString());
-    }
+    }*/
 }

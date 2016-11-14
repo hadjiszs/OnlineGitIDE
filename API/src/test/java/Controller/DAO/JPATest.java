@@ -1,7 +1,8 @@
-package Controller.DAO;
+package test.java.Controller.DAO;
 
 import javax.persistence.Persistence;
 import org.junit.Test;
+
 import javax.persistence.EntityManager;
 
 /**
