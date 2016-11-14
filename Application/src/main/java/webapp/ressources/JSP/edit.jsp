@@ -20,22 +20,10 @@
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-<<<<<<< local
-<<<<<<< local
-        <script src="../../codeMirror/lib/codemirror.js"></script>
-        <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
-        <script src="../../codeMirror/mode/clike/clike.js"></script>
-=======
-        <script src="../../ace-builds-master/src-min-noconflict/ace.js" type="text/javascript"></script>
->>>>>>> other
-=======
         <script src="../../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
         <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
         <script src="../../codeMirror/mode/clike/clike.js"></script>
->>>>>>> other
     </head>
     <body>
         <header>
@@ -69,9 +57,7 @@
             <aside class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <select id="changerTheme">
-                        <option value="1">Dracula</option>
-                        <option value="2" selected="selected">Night</option>
-                        <option value="3">solarized_light</option>
+                        <option value="dracula">Dracula</option>
                     </select>
                 </div>
             </aside>

@@ -53,19 +53,8 @@ BODY{
     line-height:80px;
 }
 
-<<<<<<< local
-<<<<<<< local
-#editeurJava {
-    height: 100%;
+#editeurJava{
+    margin-top:10px;
 }
-=======
-#editor{
-    resize: both;
-    overflow: auto;
-    height:300px;
-}
->>>>>>> other
-=======
->>>>>>> other
 
 
