@@ -18,12 +18,12 @@ BODY{
     position:fixed;
     background-color:#449d44;
     color:#fff;
-    border: #4cae4c;
     min-height:100%;
     padding:10px;
     top:51px;
-    width:400px;
-    right:-400px;
+    width:20%;
+    right:-20%;
+    z-index:10;
 }
 
 #ancrePanel{
@@ -34,11 +34,10 @@ BODY{
     font-size:x-large;
     background-color:#449d44;
     color:#fff;
-    border: #4cae4c;
-    margin-top: 40vh;
-    transform: translateY(-50%);
+    top: 43vh;
     right:0;
     cursor:pointer;
+    z-index:10;
 }
 
 #chevronAncre{

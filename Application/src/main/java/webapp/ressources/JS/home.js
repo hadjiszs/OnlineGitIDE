@@ -13,14 +13,14 @@ function deroulerPanel(){
             right: "0px",
         },1000);
         $("#ancrePanel").animate({
-            right: "400px",
+            right: "20%",
         },1000);
         derouler = true;
         $("#chevronAncre").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
     }
     else{
         $("#panelDeroulant").animate({
-            right: "-400px",
+            right: "-20%",
         },1000);
         $("#ancrePanel").animate({
             right: "0px",
