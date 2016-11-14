@@ -24,7 +24,6 @@ public class FichierUtilise implements Serializable {
     private String idFichier;
 
     @ManyToOne
-    @JoinColumn(name = "mail")
     private User user;
 
     public FichierUtilise(User user, String idFichier, String contenu) {
@@ -48,7 +47,7 @@ public class FichierUtilise implements Serializable {
         return ObjectId.fromString(idFichier);
     }
 
-    public void setId(ObjectId id) {
+    public void setIdFichier(ObjectId id) {
         this.idFichier = id.toString();
     }
 

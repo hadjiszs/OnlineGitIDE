@@ -22,7 +22,7 @@ public class TestController {
 
    protected final Log logger = LogFactory.getLog(getClass());
 
-    @RequestMapping(value="/create", method = RequestMethod.GET) // /api/test/create
+    @RequestMapping(value="/create", method = RequestMethod.GET)
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logger.info("Nouveau test");

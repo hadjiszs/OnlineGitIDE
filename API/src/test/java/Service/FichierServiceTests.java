@@ -37,12 +37,12 @@ public class FichierServiceTests {
     @Test
     public void testEditFile() throws Exception {
         // @FIXME : remplacer par une vrai adresse mail
-        String mail = "testmail";
+        String mail = "amaia.nazabal@univ.edu";
         // @FIXME : remplacer par un vrai hexaId d'un ObjectID (jgit)
         String id = "fic1";
         String contenue = "nouveau contenue modifie du fichier";
 
-        UserService userService = new UserServiceImpl(APIService.em);
+        UserService userService = new UserServiceImpl();
         User u = null;
 
         try {

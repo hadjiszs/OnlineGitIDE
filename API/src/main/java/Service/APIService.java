@@ -14,8 +14,13 @@ import java.util.List;
 public abstract class APIService {
     public static EntityManager em;
 
+    private APIService(){
+        /* On cache le constructeur */
+    }
+
     public static void persistance() {
-        em = Persistence.createEntityManagerFactory(Constantes.ENTITY_FACTORY).createEntityManager();
+        em = Persistence.createEntityManagerFactory(Constantes.ENTITY_FACTORY)
+                .createEntityManager();
     }
 
     public static void close() {

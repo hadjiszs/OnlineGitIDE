@@ -44,7 +44,7 @@ public class FileEditController {
     ResponseEntity<String> edit(@RequestParam(value="mail") String mail,
                                  @RequestParam(value="id") String id, // ID hexa corresponodant à l'ObjectID
                                  @RequestParam(value="contenue") String contenue) {
-        UserService userService = new UserServiceImpl(APIService.em);
+        UserService userService = new UserServiceImpl();
         User u = null;
 
         try {

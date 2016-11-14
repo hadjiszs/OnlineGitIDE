@@ -3,8 +3,10 @@ package Service;
 import Model.User;
 import DAO.UserDAO;
 import DAO.UserDAOImp;
+import Util.DataException;
 
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,16 +15,16 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
-    public UserServiceImpl(EntityManager entityManager){
-        userDAO = new UserDAOImp(entityManager);
+    public UserServiceImpl(){
+        userDAO = new UserDAOImp(APIService.em);
     }
 
-    public boolean addEntity(String pseudo, String mail, String hashkey) throws Exception {
+    public boolean addEntity(String pseudo, String mail, String hashkey) throws DataException {
         User user = new User(pseudo, mail, hashkey);
         return userDAO.addEntity(user);
     }
 
-    public User getEntityByMail(String mail) throws Exception {
+    public User getEntityByMail(String mail) throws DataException {
         return userDAO.getEntityByMail(mail);
     }
 

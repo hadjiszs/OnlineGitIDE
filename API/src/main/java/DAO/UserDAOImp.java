@@ -1,8 +1,13 @@
 package DAO;
 
 import Model.User;
+import Util.DataException;
+import com.mysql.cj.core.exceptions.DataReadException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -16,28 +21,60 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
-    public boolean addEntity(User user) throws Exception {
-
-        if (getEntityByMail(user.getMail()) == null) {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
+    public boolean addEntity(User user) throws DataException {
+        User usr;
+        try{
+            usr = getEntityByMail(user.getMail());
+        }catch(Exception ex){
+            usr = null;
         }
 
+        if (usr == null){
+            em.getTransaction().begin();
 
+            em.persist(user);
+            em.getTransaction().commit();
+
+        } else {
+
+            throw new DataException("User already exists");
+        }
 
         return true;
 
     }
 
-    public User getEntityByMail(String mail) throws Exception {
-
+    public User getEntityById(Long id) throws DataException{
         User user;
+        try {
+            user = em.find(User.class, id);
+        }catch (Exception ex){
+            throw new DataException("User doesn't exist");
+        }
+
+        return user;
+    }
+
+    public User getEntityByMail(String mail) throws DataException {
+
+        User user = null;
 
         try {
-            user = em.find(User.class, mail);
-        } catch(java.lang.IllegalArgumentException exception) {
+            TypedQuery<User> query = em.createNamedQuery("User.findByMail", User.class);
+            query.setParameter("mail", mail);
+
+            List<User> list = query.getResultList();
+            if (!list.isEmpty()) {
+                user = list.get(0);
+            }
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
             user = null;
+        }
+
+        if (user == null){
+            throw new DataException("User doesn't exist");
         }
 
         return user;
