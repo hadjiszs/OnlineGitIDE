@@ -21,6 +21,7 @@
         <![endif]-->
 
 <<<<<<< local
+<<<<<<< local
         <script src="../../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
         <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
@@ -28,6 +29,12 @@
         <script src="../../codeMirror/mode/clike/clike.js"></script>
 =======
         <script src="../../ace-builds-master/src-min-noconflict/ace.js" type="text/javascript"></script>
+>>>>>>> other
+=======
+        <script src="../../codeMirror/lib/codemirror.js"></script>
+        <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
+        <script src="../../codeMirror/mode/clike/clike.js"></script>
 >>>>>>> other
     </head>
     <body>
@@ -71,9 +78,38 @@
 
             <section class="row">
                     <div class="col-lg-8 col-lg-offset-2" id="editeurJava">
-                        <pre id="editor"></pre>
+                        <textarea id="java-code">
+import com.demo.util.MyType;
+import com.demo.util.MyInterface;
+
+public enum Enum {
+  VAL1, VAL2, VAL3
+}
+
+public class Class<T, V> implements MyInterface {
+  public static final MyType<T, V> member;
+
+  private class InnerClass {
+    public int zero() {
+      return 0;
+    }
+  }
+
+  @Override
+  public MyType method() {
+    return member;
+  }
+
+  public void method2(MyType<T, V> value) {
+    method();
+    value.method3();
+    member = value;
+  }
+}
+                        </textarea>
                     </div>
             </section>
+
             <a id="ancrePanelDroite" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-left" id="chevronAncreDroite" aria-hidden="true"></span>
             </a>

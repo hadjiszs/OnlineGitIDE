@@ -10,20 +10,19 @@ BODY{
     position:fixed;
     background-color:#449d44;
     color:#fff;
-    border: #4cae4c;
     min-height:100%;
     padding:10px;
     top:51px;
-    width:300px;
+    width:20%;
     z-index:10;
 }
 
 #panelGauche{
-    left:-300px;
+    left:-20%;
 }
 
 #panelDroite{
-    right:-300px;
+    right:-20%;
 }
 
 
@@ -33,9 +32,8 @@ BODY{
     font-size:x-large;
     background-color:#449d44;
     color:#fff;
-    border: #4cae4c;
     cursor:pointer;
-    margin-top: -40vh;
+    top: 43vh;
     z-index:10;
 }
 
@@ -56,6 +54,7 @@ BODY{
 }
 
 <<<<<<< local
+<<<<<<< local
 #editeurJava {
     height: 100%;
 }
@@ -65,6 +64,8 @@ BODY{
     overflow: auto;
     height:300px;
 }
+>>>>>>> other
+=======
 >>>>>>> other
 
 

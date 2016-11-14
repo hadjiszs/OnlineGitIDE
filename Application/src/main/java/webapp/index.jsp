@@ -23,7 +23,7 @@
             <div class="row">
                 <section class="col-lg-6 col-xs-6" id="divConnexion">
                     <header>
-                        <h2>Vous souhaitez accéder à vos Projets ? Connectez-vous !</h2>
+                        <h2 class="titreForm">Vous souhaitez accéder à vos Projets ? Connectez-vous !</h2>
                     </header>
                     <form action="connexion.jsp" name="formConnexion" class="form-horizontal formIndex" method="post">
                         <div class="form-group">
@@ -78,7 +78,7 @@
 
                 <section class="col-lg-6 col-xs-6" id="divInscription">
                     <header>
-                        <h2>Vous n'avez pas de compte ? Inscrivez-vous !</h2>
+                        <h2 class="titreForm">Vous n'avez pas de compte Multimif ? Inscrivez-vous !</h2>
                     </header>
 
                     <form action="inscription.jsp" name="formInscription" class="form-horizontal formIndex" method="post">
