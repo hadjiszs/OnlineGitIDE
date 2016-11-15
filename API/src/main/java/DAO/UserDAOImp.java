@@ -1,8 +1,10 @@
 package DAO;
 
 import Model.User;
+import Util.DataException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -10,45 +12,106 @@ import java.util.List;
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
+    /**
+     * @param em
+     */
     public UserDAOImp(EntityManager em) {
 
         super(em);
 
     }
 
-    public boolean addEntity(User user){
-
-        if (getEntityByMail(user.getMail()) == null) {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
+    /**
+     * @param user
+     * @return
+     * @throws DataException
+     */
+    public Long addEntity(User user) throws DataException {
+        User usr;
+        try{
+            usr = getEntityByMail(user.getMail());
+        }catch(Exception ex){
+            usr = null;
         }
 
-        return true;
+        if (usr == null){
+            em.getTransaction().begin();
+
+            em.persist(user);
+            em.getTransaction().commit();
+
+        } else {
+
+            throw new DataException("User already exists");
+        }
+
+        return user.getId();
 
     }
 
-    public User getEntityByMail(String mail) {
-
+    /**
+     * @param id
+     * @return
+     * @throws DataException
+     */
+    public User getEntityById(Long id) throws DataException {
         User user;
-
         try {
-            user = em.find(User.class, mail);
-        } catch(java.lang.IllegalArgumentException exception) {
-            user = null;
+            user = em.find(User.class, id);
+        }catch (Exception ex){
+            throw new DataException("User doesn't exist");
         }
 
         return user;
     }
 
-    public List getEntityList() {
+    /**
+     * @param mail
+     * @return
+     * @throws DataException
+     */
+    public User getEntityByMail(String mail) throws DataException {
+
+        User user = null;
+
+        try {
+            TypedQuery<User> query = em.createNamedQuery("User.findByMail", User.class);
+            query.setParameter("mail", mail);
+
+            List<User> list = query.getResultList();
+            if (!list.isEmpty()) {
+                user = list.get(0);
+            }
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            user = null;
+        }
+
+        if (user == null){
+            throw new DataException("User doesn't exist");
+        }
+
+        return user;
+    }
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    public List getEntityList() throws Exception {
 
         String query = "SELECT u FROM User u";
         return em.createQuery(query).getResultList();
 
     }
 
-    public boolean deleteEntity(String mail) {
+    /**
+     * @param mail
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteEntity(String mail) throws Exception {
 
         User user = getEntityByMail(mail);
         em.getTransaction().begin();
