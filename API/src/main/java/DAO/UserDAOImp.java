@@ -12,12 +12,20 @@ import java.util.List;
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
+    /**
+     * @param em
+     */
     public UserDAOImp(EntityManager em) {
 
         super(em);
 
     }
 
+    /**
+     * @param user
+     * @return
+     * @throws DataException
+     */
     public Long addEntity(User user) throws DataException {
         User usr;
         try{
@@ -41,6 +49,11 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws DataException
+     */
     public User getEntityById(Long id) throws DataException {
         User user;
         try {
@@ -52,6 +65,11 @@ public class UserDAOImp extends DAO implements UserDAO {
         return user;
     }
 
+    /**
+     * @param mail
+     * @return
+     * @throws DataException
+     */
     public User getEntityByMail(String mail) throws DataException {
 
         User user = null;
@@ -77,6 +95,10 @@ public class UserDAOImp extends DAO implements UserDAO {
         return user;
     }
 
+    /**
+     * @return
+     * @throws Exception
+     */
     public List getEntityList() throws Exception {
 
         String query = "SELECT u FROM User u";
@@ -84,6 +106,11 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     }
 
+    /**
+     * @param mail
+     * @return
+     * @throws Exception
+     */
     public boolean deleteEntity(String mail) throws Exception {
 
         User user = getEntityByMail(mail);
