@@ -15,16 +15,16 @@ public class UserGrant implements Serializable {
     @Id
     private Long projetId;
 
-    @MapsId("mail")
+    @MapsId("id")
     @Id
-    private String mail;
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('Admin', 'Dev')")
     private Permis gran; //On ne peut pas utiliser grant parce que c'est une mot clé de Mysql
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mail", insertable = false, updatable = false)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private User user;
 
     public User getUser() {
@@ -33,22 +33,6 @@ public class UserGrant implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Long getProjetId() {
-        return projetId;
-    }
-
-    public void setProjetId(Long projetId) {
-        this.projetId = projetId;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public Permis getGrant() {
