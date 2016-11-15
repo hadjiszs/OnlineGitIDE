@@ -20,11 +20,15 @@ public class CompileController {
 
     @RequestMapping(value = "/c", produces = "application/json; charset=utf-8")
     public @ResponseBody
-    ResponseEntity<String> compile(){
+    ResponseEntity<String> compile(@RequestParam("currentUser") String currentUser,
+                                   @RequestParam("projectName") String projectName  ){
 
+        // On récupère les params
+        //cp -rf repositories/nom_propri_project/projectName to compile/currentUser/
+        //compile compile/currentUser/projectName
+        // rm -rf compile/currentUser/projectName
 
         try{
-
             System.out.println("compile");
         }catch(Exception ex){
             return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,

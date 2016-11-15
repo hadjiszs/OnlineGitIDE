@@ -12,21 +12,25 @@ import static Util.Constantes.*;
 public class Compile {
 
 
-    public String executeCommpilation(String typeProjet) throws InterruptedException, IOException {
+    public String executeCommpilation(String projectName,String currentUser,String projectOwner,String projectType) throws InterruptedException, IOException {
         String result = new String();
         Process p1 = null;
-
-
         Runtime rt = Runtime.getRuntime();
 
+        // Phase 1 : Copie
+        p1 = rt.exec("./clone.sh "+projectOwner+" "+projectName);
+        p1.waitFor();
 
-        if (typeProjet.equals(PROJECT_JAVA)) p1 = rt.exec("./compileJava.sh appTest");
-        if (typeProjet.equals(PROJECT_MVN)) p1 = rt.exec("./compileMvn.sh appTest");
-        if (typeProjet.equals(PROJECT_C)) p1 = rt.exec("./compileC.sh appTest");
-        if (typeProjet.equals(PROJECT_CPP)) p1 = rt.exec("./compileCpp.sh appTest");
+        //Phase 2 : Compilation
 
+        // param :
+        if (projectType.equals(PROJECT_JAVA)) p1 = rt.exec("./compileJava.sh appTest");
+        if (projectType.equals(PROJECT_MVN)) p1 = rt.exec("./compileMvn.sh appTest");
+        if (projectType.equals(PROJECT_C)) p1 = rt.exec("./compileC.sh appTest");
+        if (projectType.equals(PROJECT_CPP)) p1 = rt.exec("./compileCpp.sh appTest");
 
         p1.waitFor();
+
 
         BufferedReader in;
 
@@ -37,6 +41,11 @@ public class Compile {
 
             result = in.readLine();
         }
+
+
+        //Phase 3 : Clean
+        p1 = rt.exec("./clean.sh "+currentUser);
+        p1.waitFor();
 
         return result;
     }
