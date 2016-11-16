@@ -29,7 +29,7 @@ public class FichierUtilise implements Serializable {
 
     public FichierUtilise(ObjectId idFichier, User user, String contenu) {
         this.contenu = contenu;
-        this.idFichier = idFichier.toString();
+        this.idFichier = idFichier;
         this.user = user;
     }
 
