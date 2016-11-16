@@ -94,7 +94,7 @@ public class FolderTraverse {
     private JSONObject toJsonFileTreeImpl(LinkedList ll){
         JSONObject jo = new JSONObject();
         if(ll.size() == 1){
-            jo.put("fileService",ll.getFirst().toString());
+            jo.put("fichierUtiliseServiceImpl",ll.getFirst().toString());
         }else{
             JSONArray dir = new JSONArray();
             ListIterator iterator = ll.listIterator(1);

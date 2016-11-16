@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.User;
-import Service.FileService;
+import Service.FichierUtiliseServiceImpl;
 import Service.UserService;
 import Service.UserServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -17,14 +17,14 @@ import javax.annotation.PostConstruct;
 @RestController
 @RequestMapping("/file")
 public class FileEditController {
-    public FileService fileService;
+    public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<String> get(@RequestParam(value="id") Long id,
                                @RequestParam(value="projet") String projet) {
 
-        //FileService.get(id, projet);
+        //FichierUtiliseServiceImpl.getEntityById(id, projet);
 
 //        try{
 //            user = userService.getEntityByMail(mail);
@@ -52,7 +52,7 @@ public class FileEditController {
             e.printStackTrace();
         }
 
-        fileService.edit(u, id, contenue);
+        fichierUtiliseServiceImpl.editEntity(u, id, contenue);
 
 //        try{
 //            user = userService.getEntityByMail(mail);
@@ -67,6 +67,6 @@ public class FileEditController {
 
     @PostConstruct
     public void init() {
-        fileService = new FileService();
+        fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
     }
 }

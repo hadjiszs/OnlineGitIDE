@@ -1,9 +1,12 @@
 package DAO;
 
+import Model.Project;
+import Model.User;
 import Model.UserGrant;
+import Model.UserGrantID;
+import Util.DataException;
 
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -11,27 +14,77 @@ import java.util.List;
  */
 public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
 
-    public UserGrantDAOImpl(EntityManager em) {
-        super(em);
+    public boolean addEntity(UserGrant grant) throws DataException {
+        getEntityManager().getTransaction().begin();
+        getEntityManager().persist(grant);
+        getEntityManager().getTransaction().commit();
+        closeEntityManager();
+        return true;
     }
 
-    public boolean addEntity(UserGrant user) throws Exception{
-        return false;
+    public List<UserGrant> getProjectsByEntity(User user) throws DataException {
+        List<UserGrant> permissions;
+
+        Query query = getEntityManager().createNamedQuery("findByUser", UserGrant.class);
+        query.setParameter("id", user.getId());
+
+        permissions = query.getResultList();
+        closeEntityManager();
+
+        return permissions;
     }
 
-    public UserGrant getEntityByMail(String mail) throws Exception{
-        UserGrant usr = null;
+    public List getDevelopersByEntity(Long idProject) throws DataException {
+        List<UserGrant> list;
+        Query query = getEntityManager().createNamedQuery("findProjectsByUserType", UserGrant.class);
+        query.setParameter("id", idProject);
+        query.setParameter("type", UserGrant.Permis.Dev);
 
-        return usr;
-    }
-
-    public List getEntityList() throws Exception{
-        List<UserGrant> list = new ArrayList<UserGrant>();
+        list = query.getResultList();
+        closeEntityManager();
 
         return list;
     }
 
-    public boolean deleteEntity(String mail) throws Exception{
-        return false;
+    public UserGrant getEntityById(Long idUser, Long idProject) throws DataException {
+        UserGrant grant;
+        UserGrantID id = new UserGrantID();
+
+        id.setProjectId(idProject);
+        id.setUserId(idUser);
+
+        try {
+            grant = getEntityManager().find(UserGrant.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            closeEntityManager();
+            throw new DataException("Permis doesn't exists");
+        }
+
+        closeEntityManager();
+        return grant;
+    }
+
+    public UserGrant getAdminByEntity(Long idProject) throws DataException {
+        UserGrant userGrant;
+
+        Query query = getEntityManager().createNamedQuery("findProjectsByUserType", UserGrant.class);
+        query.setParameter("id", idProject);
+        query.setParameter("type", UserGrant.Permis.Admin);
+
+        userGrant = (UserGrant) query.getSingleResult();
+        closeEntityManager();
+
+        return userGrant;
+    }
+
+    public boolean deleteEntity(UserGrant grant) throws DataException {
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(grant);
+        getEntityManager().getTransaction().commit();
+
+        closeEntityManager();
+
+        return true;
     }
 }

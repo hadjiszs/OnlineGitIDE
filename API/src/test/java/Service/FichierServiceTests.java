@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public class FichierServiceTests {
 
-    private static FileService fileService;
+    private static FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
 
     //private static final Logger LOG = LoggerFactory.getLogger(CategorieDAO.class);
 
@@ -21,7 +21,7 @@ public class FichierServiceTests {
     @BeforeClass
     public static void setUpClass() {
         APIService.persistance();
-        fileService = new FileService();
+        fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
     }
 
     @AfterClass
@@ -46,10 +46,10 @@ public class FichierServiceTests {
             e.printStackTrace();
         }
 
-        fileService.edit(u, id, contenue);
+        fichierUtiliseServiceImpl.editEntity(u, id, contenue);
 
         // @TODO: verification que le fichier a bien été modifié dans la bdd
-        // fileService.get(id, machin)
+        // fichierUtiliseServiceImpl.getEntityById(id, machin)
     }
 
 //    @Test

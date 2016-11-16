@@ -21,7 +21,7 @@ import java.io.File;
 public class FileTreeController {
 
 
-    // /api/tree/get?path=
+    // /api/tree/getEntityById?path=
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(@RequestParam(value="path") String pathDir){
         FolderTraverse ft;

@@ -13,14 +13,10 @@ import javax.persistence.Query;
  */
 public class FichierUtiliseDAO extends DAO {
 
-    public FichierUtiliseDAO(EntityManager em) {
-        super(em);
-    }
-
     public FichierUtilise getFichierUtiliseByIdAndUser(User user, ObjectId idFichier) {
         FichierUtilise fichier;
         String contenu;
-        Query query = em.createNamedQuery("FichierUtilise.findByIdAndUser", FichierUtilise.class);
+        Query query = getEntityManager().createNamedQuery("FichierUtilise.findByIdAndUser", FichierUtilise.class);
         query.setParameter("user", user.getMail());
         query.setParameter("idFichier", idFichier.toString());
 
@@ -28,6 +24,8 @@ public class FichierUtiliseDAO extends DAO {
             contenu = (String) query.getSingleResult();
         } catch(NoResultException e) {
             contenu = null;
+        }finally {
+            closeEntityManager();
         }
 
         fichier = new FichierUtilise(user, idFichier.toString(), contenu);
@@ -36,12 +34,16 @@ public class FichierUtiliseDAO extends DAO {
     }
 
     public boolean exist(String id) {
-        return em.find(FichierUtilise.class, id) != null;
+        boolean result= getEntityManager().find(FichierUtilise.class, id) != null;
+        closeEntityManager();
+
+        return result;
     }
 
     //public FichierUtilise createOrUpdate(String user, ObjectId id, String contenu) {
     public FichierUtilise createOrUpdate(User user, String id, String contenu) {
-        FichierUtilise fichier = em.find(FichierUtilise.class, id);
+        FichierUtilise fichier = getEntityManager().find(FichierUtilise.class, id);
+
         if (fichier == null) {
             if (id != ObjectId.zeroId().toString()) {
                 fichier = new FichierUtilise(user, id, contenu);
@@ -53,8 +55,12 @@ public class FichierUtiliseDAO extends DAO {
             if( ! fichier.getContenu().equals(contenu))
                 fichier.setContenu(contenu);
         }
+        getEntityManager().getTransaction().begin();
+        getEntityManager().persist(fichier);
+        getEntityManager().getTransaction().commit();
 
-        em.persist(fichier);
+        closeEntityManager();
+
         return fichier;
     }
 }

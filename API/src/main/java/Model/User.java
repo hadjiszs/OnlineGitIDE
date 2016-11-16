@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @Column(columnDefinition = "INTEGER")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -2,6 +2,7 @@ package DAO;
 
 import Model.Project;
 import Model.User;
+import Util.DataException;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -11,57 +12,66 @@ import java.util.List;
  */
 public class ProjectDAOImpl extends DAO implements ProjectDAO {
 
-    public ProjectDAOImpl(EntityManager em) {
-        super(em);
-    }
-
-    public boolean addEntity(Project project) throws Exception{
-        Project proj;
+    public boolean addEntity(Project project) throws DataException {
+        Project proj = null;
 
         try{
-            proj = getEntityById(project.getId());
+            if (project.getId() != null)
+                proj = getEntityById(project.getId());
         }catch (Exception ex){
             proj = null;
         }
 
-        if (null == proj){
-            em.getTransaction().begin();
-            em.persist(project);
-            em.getTransaction().commit();
+        if (proj == null){
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(project);
+            getEntityManager().getTransaction().commit();
         }else {
 
-            throw new Exception("Project already exists");
+            throw new DataException("Project already exists");
         }
 
+        return true;
+    }
+
+    /* TODO ajouter update */
+    public boolean updateEntity(){
         return false;
     }
 
-    public Project getEntityById(Long id) throws Exception{
+    public Project getEntityById(Long id) throws DataException{
         Project project = null;
 
         try {
-            project = em.find(Project.class, id);
+            project = getEntityManager().find(Project.class, id);
         } catch(IllegalArgumentException exception) {
             project = null;
+        }finally {
+            closeEntityManager();
         }
 
         if (null == project){
-            throw new Exception("Project doesn't exists");
+            throw new DataException("Project doesn't exists");
         }
 
         return project;
     }
 
-    public List getEntityList(User user) throws Exception {
+    public List getEntityList(User user) throws DataException {
         String query = "SELECT p FROM Project p ";
-        return em.createQuery(query).getResultList();
+        List list = getEntityManager().createQuery(query).getResultList();
+        closeEntityManager();
+
+        return list;
     }
 
-    public boolean deleteEntity(Long id) throws Exception{
+    public boolean deleteEntity(Long id) throws DataException{
         Project project = getEntityById(id);
-        em.getTransaction().begin();
-        em.remove(project);
-        em.getTransaction().commit();
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(project);
+        getEntityManager().getTransaction().commit();
+
+        closeEntityManager();
 
         return true;
     }

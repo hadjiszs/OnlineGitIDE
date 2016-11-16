@@ -2,6 +2,7 @@ package DAO;
 
 import Model.Project;
 import Model.User;
+import Util.DataException;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ import java.util.List;
  * Created by amaia.nazabal on 10/21/16.
  */
 public interface ProjectDAO {
-    boolean addEntity(Project project) throws Exception;
-    Project getEntityById(Long id) throws Exception;
-    List getEntityList(User user) throws Exception;
-    boolean deleteEntity(Long id) throws Exception;
+    boolean addEntity(Project project) throws DataException;
+    Project getEntityById(Long id) throws DataException;
+    List getEntityList(User user) throws DataException;
+    boolean deleteEntity(Long id) throws DataException;
 
 }
