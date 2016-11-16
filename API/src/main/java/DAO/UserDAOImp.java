@@ -1,6 +1,6 @@
-package DAO;
+package main.java.DAO;
 
-import Model.User;
+import main.java.Model.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -57,4 +57,22 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         return false;
     }
+
+    public boolean authEntity(String username, String password){
+        User user;
+
+        try {
+            user = em.find(User.class, username);
+        } catch(java.lang.IllegalArgumentException exception) {
+            return false;
+        }
+
+        if(!user.getHashkey().equals(password)){
+            return false;
+        }
+
+        return true;
+
+    }
+
 }

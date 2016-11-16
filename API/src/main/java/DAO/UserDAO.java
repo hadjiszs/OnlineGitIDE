@@ -1,6 +1,6 @@
-package DAO;
+package main.java.DAO;
 
-import Model.User;
+import main.java.Model.User;
 
 import java.util.List;
 
@@ -12,4 +12,5 @@ public interface UserDAO {
         User getEntityByMail(String mail);
         List getEntityList();
         boolean deleteEntity(String mail);
+        boolean authEntity(String username, String password);
 }

@@ -1,6 +1,6 @@
-package Controller;
+package main.java.Controller;
 
-import Service.FolderTraverse;
+import main.java.Service.FolderTraverse;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.HttpStatus;

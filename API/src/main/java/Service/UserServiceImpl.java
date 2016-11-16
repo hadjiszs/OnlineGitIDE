@@ -1,8 +1,8 @@
-package Service;
+package main.java.Service;
 
-import Model.User;
-import DAO.UserDAO;
-import DAO.UserDAOImp;
+import main.java.Model.User;
+import main.java.DAO.UserDAO;
+import main.java.DAO.UserDAOImp;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -33,5 +33,7 @@ public class UserServiceImpl implements UserService {
     public boolean deleteEntity(String mail) {
         return userDAO.deleteEntity(mail);
     }
+
+    public boolean authEntity(String username, String password){return  userDAO.authEntity(username,password);}
 
 }

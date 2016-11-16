@@ -1,10 +1,10 @@
-package Model;
+package main.java.Model;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
-import Model.User;
+import main.java.Model.User;
 
 /**
  * Created by amaia.nazabal on 10/20/16.

@@ -14,6 +14,7 @@
     <filter-name>ApiFilter</filter-name>
     <filter-class>main.java.Filter.ApiFilter</filter-class>
   </filter>
+
   <filter-mapping>
     <filter-name>ApiFilter</filter-name>
     <url-pattern>/App/*</url-pattern>

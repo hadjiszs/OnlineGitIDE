@@ -1,4 +1,4 @@
-package Util;
+package main.java.Util;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import java.util.List;

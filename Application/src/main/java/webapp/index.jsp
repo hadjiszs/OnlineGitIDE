@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="ressources/JS/api.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--[if lt IE 9]>
@@ -25,7 +26,7 @@
                     <header>
                         <h2>Vous souhaitez accéder à vos Projets ? Connectez-vous !</h2>
                     </header>
-                    <form action="connexion.jsp" name="formConnexion" class="form-horizontal formIndex" method="post">
+                    <form action="/api/auth/connect" name="formConnexion" class="form-horizontal formIndex" method="GET">
                         <div class="form-group">
                             <div class="col-xs-8 col-xs-offset-2">
                                 <input name="username" placeholder="Idenfiant" class="form-control" type="text" id="UserUsername" required />

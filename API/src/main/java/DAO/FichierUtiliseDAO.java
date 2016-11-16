@@ -1,7 +1,7 @@
-package DAO;
+package main.java.DAO;
 
-import Model.FichierUtilise;
-import Model.User;
+import main.java.Model.FichierUtilise;
+import main.java.Model.User;
 import org.eclipse.jgit.lib.ObjectId;
 
 import javax.persistence.EntityManager;
