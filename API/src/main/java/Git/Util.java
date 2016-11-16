@@ -1,10 +1,12 @@
 package Git;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
 import java.lang.String;
@@ -69,6 +71,12 @@ public class Util {
         }
 
     }
+
+    /**
+     * Fonction permettant la suppression d'un dossier. utile à la fonction suivante
+     * @param dir le dossier à supprimer
+     * @return true si la suppression a été effectuée correctement, false sinon
+     */
     private static boolean deleteDirectory(File dir) {
         if (!dir.exists() || !dir.isDirectory()) {
             return false;
@@ -118,5 +126,10 @@ public class Util {
                 .setURI(remoteURL)
                 .setDirectory(localPath)
                 .call();
+    }
+
+    public static String getContent(String creator, String repo, String revision, String path) throws Exception {
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo));
+        return BlobUtils.getContent(git.getRepository(), revision, path);
     }
 }
