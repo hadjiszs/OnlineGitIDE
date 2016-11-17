@@ -1,5 +1,8 @@
 package Util;
 
+import Model.Project;
+import Model.User;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,12 +14,16 @@ import java.io.IOException;
 public class Compile {
 
 
-    public String executeCompilation() throws InterruptedException, IOException {
+    public Compile() {
+    }
 
+    public  String executeCompilation(User propOfProject , User currentUser , Project currentProject) throws InterruptedException, IOException {
 
-        this.cloneStage("mahmoud", "appTest", "user"); // CLONE
-        this.compileStage("user", "appTest"); //COMPILATION
-        String result = this.resultStage("user"); //GET RESULT
+        // params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
+        this.cloneStage("mahmoud", "appTest", "user"); // 1 - CLONE
+        // 2 - update Project Files
+        this.compileStage("user", "appTest"); // 3 - COMPILATION
+        String result = this.resultStage("user"); // 4 - GET RESULT
         this.cleanStage("user"); //CLEAN
 
         return result;
@@ -34,9 +41,7 @@ public class Compile {
         while (true) {
 
             line = in.readLine();
-            if (line == null) {
-                break;
-            }
+            if (line == null) break;
             result += line;
             result += " \n";
 
