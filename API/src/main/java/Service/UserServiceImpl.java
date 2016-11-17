@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = Logger.getLogger( UserServiceImpl.class.getName() );
 
     public UserServiceImpl(){
-        userDAO = new UserDAOImp(APIService.em);
+        userDAO = new UserDAOImp(APIService.getEm());
     }
 
     public Long addEntity(String pseudo, String mail, String hashkey) throws DataException {

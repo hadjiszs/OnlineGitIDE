@@ -17,7 +17,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectDAO projectDAO;
     private static final Logger LOGGER = Logger.getLogger( ProjectServiceImpl.class.getName() );
     public ProjectServiceImpl(){
-        projectDAO = new ProjectDAOImpl(APIService.em);
+        projectDAO = new ProjectDAOImpl(APIService.getEm());
     }
 
     public boolean addEntity(Project project) throws DataException{

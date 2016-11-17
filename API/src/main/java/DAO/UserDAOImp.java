@@ -6,12 +6,14 @@ import Util.DataException;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/20/16.
  */
 public class UserDAOImp extends DAO implements UserDAO {
-
+    private static final Logger LOGGER = Logger.getLogger( UserDAOImp.class.getName() );
     /**
      * @param em
      */
@@ -30,8 +32,9 @@ public class UserDAOImp extends DAO implements UserDAO {
         User usr;
         try{
             usr = getEntityByMail(user.getMail());
-        }catch(Exception ex){
+        }catch(DataException ex){
             usr = null;
+            LOGGER.log( Level.FINE, ex.toString(), ex);
         }
 
         if (usr == null){
@@ -56,11 +59,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      */
     public User getEntityById(Long id) throws DataException {
         User user;
-        try {
-            user = em.find(User.class, id);
-        }catch (Exception ex){
-            throw new DataException("User doesn't exist");
-        }
+        user = em.find(User.class, id);
 
         return user;
     }
@@ -84,7 +83,7 @@ public class UserDAOImp extends DAO implements UserDAO {
             }
 
         } catch(Exception exception) {
-            exception.printStackTrace();
+            LOGGER.log( Level.FINE, exception.toString(), exception);
             user = null;
         }
 
@@ -99,7 +98,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @return
      * @throws Exception
      */
-    public List getEntityList() throws Exception {
+    public List getEntityList() throws NullPointerException {
 
         String query = "SELECT u FROM User u";
         return em.createQuery(query).getResultList();
@@ -111,7 +110,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @return
      * @throws Exception
      */
-    public boolean deleteEntity(String mail) throws Exception {
+    public boolean deleteEntity(String mail) throws DataException {
 
         User user = getEntityByMail(mail);
         em.getTransaction().begin();

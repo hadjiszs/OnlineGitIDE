@@ -10,7 +10,7 @@ public class FileService {
     FichierUtiliseDAO dao;
 
     public FileService() {
-        dao = new FichierUtiliseDAO(APIService.em);
+        dao = new FichierUtiliseDAO(APIService.getEm());
     }
 
     public String get(Long idProject, String idFichier) {
@@ -20,8 +20,8 @@ public class FileService {
 
     // id -> id hexa corresponodant à l'ObjectID
     public void edit(User u, String id, String contenue) {
-        APIService.em.getTransaction().begin();
+        APIService.getEm().getTransaction().begin();
         dao.createOrUpdate(u, id, contenue);
-        APIService.em.getTransaction().commit();
+        APIService.getEm().getTransaction().commit();
     }
 }

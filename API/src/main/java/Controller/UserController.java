@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -22,7 +24,7 @@ import java.util.List;
 public class UserController {
     private EntityManager entityManager;
     private UserService userService;
-
+    private static final Logger LOGGER = Logger.getLogger( UserController.class.getName() );
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value="pseudo") String pseudo,
                                 @RequestParam(value="mail") String mail, @RequestParam(value="pass") String pass){
@@ -31,7 +33,7 @@ public class UserController {
         try{
             id = userService.addEntity(mail, pseudo, pass);
         }catch(Exception ex){
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -46,6 +48,7 @@ public class UserController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -60,6 +63,7 @@ public class UserController {
         try{
             users = userService.getEntityList();
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -73,6 +77,7 @@ public class UserController {
         try{
             userService.deleteEntity(mail);
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }

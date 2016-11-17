@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
  * Created by hadjiszs on 21/10/16.
  */
 public abstract class APIService {
-    public static EntityManager em;
+    private static EntityManager em;
 
     private APIService(){
         /* On cache le constructeur */
@@ -22,5 +22,9 @@ public abstract class APIService {
 
     public static void close() {
         em.close();
+    }
+
+    public static EntityManager getEm() {
+        return em;
     }
 }

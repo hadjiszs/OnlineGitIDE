@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/file")
 public class FileEditController {
-    public FileService fileService;
+    private FileService fileService;
     private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

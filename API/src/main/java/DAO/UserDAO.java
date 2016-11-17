@@ -11,6 +11,6 @@ import java.util.List;
 public interface UserDAO {
         Long addEntity(User user) throws DataException;
         User getEntityByMail(String mail) throws DataException;
-        List getEntityList() throws Exception;
-        boolean deleteEntity(String mail) throws Exception;
+        List getEntityList() throws NullPointerException;
+        boolean deleteEntity(String mail) throws DataException;
 }

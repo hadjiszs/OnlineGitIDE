@@ -19,6 +19,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/21/16.
@@ -26,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/project") //api/project
 public class ProjectController {
+    private static final Logger LOGGER = Logger.getLogger( ProjectController.class.getName() );
     private EntityManager entityManager;
     ProjectService projectService ;
     UserService userService;
@@ -37,7 +40,8 @@ public class ProjectController {
         Project project = new Project(name, version, root);
         try {
             projectService.addEntity(project);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -51,7 +55,8 @@ public class ProjectController {
 
         try {
             project = projectService.getEntityById(id);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -65,7 +70,8 @@ public class ProjectController {
         try {
             User user = userService.getEntityByMail(mail);
             projects = projectService.getEntityList(user);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }
@@ -77,7 +83,8 @@ public class ProjectController {
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
         try {
             projectService.deleteEntity(id);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }

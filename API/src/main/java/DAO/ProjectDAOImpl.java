@@ -36,7 +36,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         }else {
 
             try {
-                throw new Exception("Project already exists");
+                throw new DataException("Project already exists");
             } catch (Exception e) {
                 LOGGER.log( Level.FINE, e.toString(), e);
             }
@@ -57,7 +57,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
 
         if (project == null){
             try {
-                throw new Exception("Project doesn't exists");
+                throw new DataException("Project doesn't exists");
             } catch (Exception e) {
                 LOGGER.log( Level.FINE, e.toString(), e);
             }
