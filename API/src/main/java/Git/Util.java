@@ -144,11 +144,27 @@ public class Util {
 //    Creation fichier
 //              /git/<creator>/<depot>/create/file/<branch>
 //    createFile(user, depot, branch)
+
+    /**
+     *
+     * @param creator utilisateur proprietaire du depot
+     * @param repo    nom du depot
+     * @param branch  nom de la branche à créer
+     * @return un code de réponse renvoyé un json
+     * @throws Exception
+     */
     public static JsonObject createBranch(String creator,
                                           String repo,
                                           String branch) throws Exception {
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+
+        // FIXME : gestion de code de retour dans une classe de constante
+        int codeRetour = 45;
+
+        // Ouverture du depot
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
 
+        // Verification que le nom de branche n'existe pas deja dans le depot
         boolean branchExiste = false;
         // Verifier que la branche n existe pas deja
         List<Ref> refs = git.branchList().call();
@@ -159,30 +175,21 @@ public class Util {
             }
         }
 
-        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        if(branchExiste == false) {
+            codeRetour = 55; // FIXME : mettre bon code retour -> branche bien crée
+            // On cree la branche
+            git.branchCreate()
+                    .setName(branch)
+                    .call();
+        } else
+            codeRetour = 57; // FIXME : mettre bon code retour -> nom de branche déjà existant
 
-        // @FIXME : ajouter code correspondant à une branche déjà créé
-        if(branchExiste) {
-            JsonObject ret = factory.createObjectBuilder()
-                    .add("code", "CODE CORRESPONDANT A UNE BRANCHE DÉJÀ EXISTANTE")
-                    .build();
-
-            return ret;
-        }
-
-        // sinon, on cree la branche
-        git.branchCreate()
-                .setName(branch)
-                .call();
-
-        // @FIXME : ajouter code correspondant à une branche qui a été crée
         JsonObject ret = factory.createObjectBuilder()
-                .add("code", "CODE CORRESPONDANT À CRÉATION D'UNE BRANCHE")
+                .add("code", String.valueOf(codeRetour))
                 .build();
 
         return ret;
     }
-
 
     public static  JsonObject getBranches(String creator, String repo) throws Exception {
 

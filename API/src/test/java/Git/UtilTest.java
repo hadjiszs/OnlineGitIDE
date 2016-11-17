@@ -24,7 +24,6 @@ public class UtilTest {
     @AfterClass
     public static void end() throws Exception {
         System.out.println("-- Suppression du dépôt ; fin tests");
-
         Util.deleteRepository(USER, DIR_NAME);
     }
 
@@ -43,33 +42,28 @@ public class UtilTest {
 
     @Test
     public void testGetContent() throws Exception {
-        Util.cloneRemoteRepo(USER, DIR_NAME, REMOTE_URL);
-
         //Recuperation du contenu d'un fichier pour une certaine révision
 
         String revision = "70ad3b45d04d53ad77f0444a3cc9e33e657e9779";
         String path = "src/CMakeLists.txt";
         JsonObject content = Util.getContent(USER, DIR_NAME, revision, path);
 
-        //assertNotNull(content);
         System.out.println(content);
         Boolean test = Util.deleteRepository(USER, DIR_NAME);
         assertTrue(test);
     }
 
-//    @Test
-//    public void testCreateBranch() throws Exception {
-//        Util.cloneRemoteRepo("userTest", "TestGitRepository.git", REMOTE_URL);
-//
-//        // Creation d'une branche
-//        JsonObject content =
-//                    Util.createBranch("userTest",
-//                                      "TestGitRepository.git",
-//                                      "f7ef6d9d3d5ad33656aaa2996272f686e7fd485c", "src/CMakeLists.txt");
-//        assertNotNull(content);
-//        System.out.println(content);
-//        Boolean test = Util.deleteRepository("userTest", "TestGitRepository.git");
-//        assertTrue(test);
-//    }
+    @Test
+    public void testCreateBranch() throws Exception {
+        Util.cloneRemoteRepo("userTest", "TestGitRepository.git", REMOTE_URL);
 
+        // Creation d'une branche
+        String nomBranche = "nouvelle_branche";
+        JsonObject content = Util.createBranch(USER, DIR_NAME, nomBranche);
+
+        assertNotNull(content);
+        System.out.println(content);
+        Boolean test = Util.deleteRepository("userTest", "TestGitRepository.git");
+        assertTrue(test);
+    }
 }
