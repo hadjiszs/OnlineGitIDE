@@ -3,7 +3,6 @@ package DAO;
 import Model.User;
 import Util.DataException;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -76,8 +75,7 @@ public class UserDAOImp extends DAO implements UserDAO {
                 user = list.get(0);
             }
 
-        } catch(Exception exception) {
-            exception.printStackTrace();
+        } catch(Exception ex) {
             user = null;
         }
 
@@ -102,15 +100,13 @@ public class UserDAOImp extends DAO implements UserDAO {
     }
 
     /**
-     * @param mail
+     * @param user
      * @return
      * @throws Exception
      */
-    public boolean deleteEntity(String mail) throws DataException {
-
-        User user = getEntityByMail(mail);
+    public boolean deleteEntity(User user) throws DataException {
         getEntityManager().getTransaction().begin();
-        getEntityManager().remove(user);
+        getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
         getEntityManager().getTransaction().commit();
 
         closeEntityManager();

@@ -1,4 +1,4 @@
-package Controller.DAO;
+package DAO;
 
 import javax.persistence.Persistence;
 import org.junit.Test;

@@ -5,7 +5,6 @@ import DAO.UserDAOImp;
 import Model.User;
 import Util.DataException;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -30,6 +29,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getEntityById(Long id) throws DataException {
+        User user = userDAO.getEntityById(id);
+        if (user == null){
+            throw new DataException("User doesn't exists");
+        }
         return userDAO.getEntityById(id);
     }
 
@@ -38,7 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean deleteEntity(String mail) throws Exception {
-        return userDAO.deleteEntity(mail);
+        User user = userDAO.getEntityByMail(mail);
+        return userDAO.deleteEntity(user);
     }
 
 }
