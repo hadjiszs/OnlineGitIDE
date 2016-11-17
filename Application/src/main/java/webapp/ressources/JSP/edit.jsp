@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
         <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
         <script src="../../codeMirror/mode/clike/clike.js"></script>
+        <link href="../img/favicon.ico" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <header>

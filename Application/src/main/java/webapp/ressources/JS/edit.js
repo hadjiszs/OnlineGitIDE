@@ -66,7 +66,7 @@ var javaEditor = CodeMirror.fromTextArea(txt, {
     theme: "dracula"
 });
 
-var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+var mac = CodeMirror.keyMap.default === CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
 
 
