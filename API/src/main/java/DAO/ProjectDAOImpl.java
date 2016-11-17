@@ -6,11 +6,15 @@ import Util.DataException;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/21/16.
  */
 public class ProjectDAOImpl extends DAO implements ProjectDAO {
+
+    private static final Logger LOGGER = Logger.getLogger( ProjectDAOImpl.class.getName() );
 
     public boolean addEntity(Project project) throws DataException {
         Project proj = null;
@@ -20,6 +24,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
                 proj = getEntityById(project.getId());
         }catch (Exception ex){
             proj = null;
+            LOGGER.log( Level.FINE, ex.toString(), ex);
         }
 
         if (proj == null){
@@ -46,6 +51,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             project = getEntityManager().find(Project.class, id);
         } catch(IllegalArgumentException exception) {
             project = null;
+            LOGGER.log( Level.FINE, exception.toString(), exception);
         }finally {
             closeEntityManager();
         }

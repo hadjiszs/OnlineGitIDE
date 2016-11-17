@@ -8,11 +8,15 @@ import Util.DataException;
 
 import javax.persistence.Query;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/21/16.
  */
 public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
+
+    private static final Logger LOGGER = Logger.getLogger( UserGrantDAOImpl.class.getName() );
 
     public boolean addEntity(UserGrant grant) throws DataException {
         getEntityManager().getTransaction().begin();
@@ -56,7 +60,7 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
         try {
             grant = getEntityManager().find(UserGrant.class, id);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
             closeEntityManager();
             throw new DataException("Permis doesn't exists");
         }

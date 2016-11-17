@@ -53,12 +53,12 @@ public class UserDAOImp extends DAO implements UserDAO {
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             throw new DataException("User doesn't exist");
         }finally {
             closeEntityManager();
-
-            return user;
         }
+        return user;
     }
 
     /**

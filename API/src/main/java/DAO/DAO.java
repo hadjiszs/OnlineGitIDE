@@ -16,7 +16,7 @@ public class DAO {
 
     public EntityManager getEntityManager(){
         if (em == null || !em.isOpen()){
-            em = APIService.entityManagerFactory.createEntityManager();
+            em = APIService.getEntityManagerFactory().createEntityManager();
         }
         return em;
     }

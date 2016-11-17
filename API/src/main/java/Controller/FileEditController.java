@@ -20,7 +20,8 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/file")
 public class FileEditController {
-    public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
+
+    private FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
     private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,5 +73,9 @@ public class FileEditController {
     @PostConstruct
     public void init() {
         fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
+    }
+
+    public FichierUtiliseServiceImpl getFichierUtiliseServiceImpl() {
+        return fichierUtiliseServiceImpl;
     }
 }
