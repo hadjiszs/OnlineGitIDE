@@ -1,7 +1,7 @@
 package Util;
 
-import Model.Project;
 import Model.User;
+import Model.UserGrant;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,14 +17,13 @@ public class Compile {
     public Compile() {
     }
 
-    public  String executeCompilation(User propOfProject , User currentUser , Project currentProject) throws InterruptedException, IOException {
-
+    public String executeCompilation(UserGrant userGrant, User currentUser) throws InterruptedException, IOException {
         // params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
-        this.cloneStage("mahmoud", "appTest", "user"); // 1 - CLONE
+        this.executeAction(Constantes.COMPILE_CLONE, "mahmoud", "appTest", "user");  // 1 - CLONE
         // 2 - update Project Files
-        this.compileStage("user", "appTest"); // 3 - COMPILATION
+        this.executeAction(Constantes.COMPILE_COMPILE, "mahmoud", "appTest", "user"); // 3 - COMPILATION
         String result = this.resultStage("user"); // 4 - GET RESULT
-        this.cleanStage("user"); //CLEAN
+        this.executeAction(Constantes.COMPILE_CLEAN, "mahmoud", "appTest", "user"); //CLEAN
 
         return result;
     }
@@ -52,25 +51,20 @@ public class Compile {
         return result;
     }
 
-    public void compileStage(String userName, String projectName) throws IOException, InterruptedException {
-        Process p1;
-        Runtime rt = Runtime.getRuntime();
-        p1 = rt.exec("./compileJava.sh " + userName + " " + projectName);
-        p1.waitFor();
-    }
 
-    public void cleanStage(String userName) throws IOException, InterruptedException {
+    public void executeAction(String action, String propProject, String projectName, String userName) throws IOException {
         Process p1;
         Runtime rt = Runtime.getRuntime();
-        p1 = rt.exec("./clean.sh " + userName);
-        p1.waitFor();
-    }
 
-    public void cloneStage(String propProject, String projectName, String userName) throws IOException, InterruptedException {
-        Process p1;
-        Runtime rt = Runtime.getRuntime();
-        p1 = rt.exec("./clone.sh " + propProject + " " + projectName + " " + userName);
-        p1.waitFor();
+        if (action.toString().equals(Constantes.COMPILE_COMPILE)) {
+            p1 = rt.exec("./compileJava.sh " + userName + " " + projectName);
+        }
+        if (action.toString().equals(Constantes.COMPILE_CLONE)) {
+            p1 = rt.exec("./clone.sh " + propProject + " " + projectName + " " + userName);
+        }
+        if (action.toString().equals(Constantes.COMPILE_CLEAN)) {
+            p1 = rt.exec("./clean.sh " + userName);
+        }
     }
 
 

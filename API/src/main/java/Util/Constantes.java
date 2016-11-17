@@ -27,4 +27,8 @@ public class Constantes {
 
     public static final String PROJECT_MVN = "Maven";
 
+    public static final String COMPILE_COMPILE = "compile";
+    public static final String COMPILE_CLEAN = "clean";
+    public static final String COMPILE_CLONE = "clone";
+
 }
