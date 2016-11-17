@@ -1,6 +1,8 @@
 package Service;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
@@ -92,7 +94,7 @@ public class FolderTraverse {
     private JSONObject toJsonFileTreeImpl(LinkedList ll){
         JSONObject jo = new JSONObject();
         if(ll.size() == 1){
-            jo.put("file",ll.getFirst().toString());
+            jo.put("fichierUtiliseServiceImpl",ll.getFirst().toString());
         }else{
             JSONArray dir = new JSONArray();
             ListIterator iterator = ll.listIterator(1);

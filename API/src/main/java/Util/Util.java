@@ -1,8 +1,10 @@
 package Util;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import java.util.List;
+
 import java.io.StringWriter;
+import java.util.List;
+
 /**
  * Created by amaia.nazabal on 10/20/16.
  */
@@ -34,5 +36,9 @@ public class Util {
         }
 
         return json;
+    }
+
+    public static String convertStringToJson(String str, String value){
+        return "{\""+ str + "\":\"" + value + "\"}";
     }
 }

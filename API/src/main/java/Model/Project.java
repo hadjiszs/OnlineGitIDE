@@ -26,11 +26,29 @@ public class Project implements Serializable {
 
     private String version;
 
-    public long getId() {
+    private String root;
+
+    private String type;
+
+    public Project(){
+
+    }
+
+
+    public Project(String name, String version, String type, String root) {
+        this.name = name;
+        this.version = version;
+        this.type = type;
+        this.root = root;
+        this.creationDate = new Date();
+        this.lastModification = new Date();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,11 +76,23 @@ public class Project implements Serializable {
         this.lastModification = lastModification;
     }
 
+    public String getRoot() { return root; }
+
+    private void setRoot(String root) {this.root = root; }
+
     public String getVersion() {
         return version;
     }
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

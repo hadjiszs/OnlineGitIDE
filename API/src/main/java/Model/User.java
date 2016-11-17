@@ -7,27 +7,43 @@ import java.io.Serializable;
  * Created by Alexis on 17/10/2016.
  */
 @Entity
+
+
+@NamedQueries({
+        @NamedQuery(name="User.findByMail", query="SELECT u from User u WHERE u.mail = :mail"),
+        @NamedQuery(name="User.findByPseudo", query="SELECT u from User u WHERE u.pseudo = :username")
+})
 public class User implements Serializable {
 
     @Id
-    @Column(name = "mail")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "mail", unique = true)
     private String mail;
 
-    @Column(name = "pseudo")
+    @Column(name = "pseudo", unique = true)
     private String pseudo;
 
     @Column(name = "hashkey")
     private String hashkey;
 
-    public User(String mail, String pseudo) {
-        this.pseudo = pseudo;
-        this.mail = mail;
+    public User(){
+
     }
 
     public User(String mail, String pseudo, String hashkey) {
         this.pseudo = pseudo;
         this.mail = mail;
         this.hashkey = hashkey;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHashkey() {

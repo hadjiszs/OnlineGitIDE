@@ -1,8 +1,10 @@
 package DAO;
 
 import Model.User;
+import Util.DataException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -10,51 +12,134 @@ import java.util.List;
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
-    public UserDAOImp(EntityManager em) {
-
-        super(em);
-
-    }
-
-    public boolean addEntity(User user){
-
-        if (getEntityByMail(user.getMail()) == null) {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
+    /**
+     * @param user
+     * @return
+     * @throws DataException
+     */
+    public User addEntity(User user) throws DataException {
+        User usr;
+        try{
+            usr = getEntityByMail(user.getMail());
+        }catch(Exception ex){
+            usr = null;
         }
 
-        return true;
+        if (usr == null){
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(user);
+            getEntityManager().getTransaction().commit();
+            //closeEntityManager();
+
+        } else {
+
+            throw new DataException("User already exists");
+        }
+
+        return user;
 
     }
 
-    public User getEntityByMail(String mail) {
-
+    /**
+     * @param id
+     * @return
+     * @throws DataException
+     */
+    public User getEntityById(Long id) throws DataException {
         User user;
-
         try {
-            user = em.find(User.class, mail);
-        } catch(java.lang.IllegalArgumentException exception) {
-            user = null;
+            user = getEntityManager().find(User.class, id);
+        }catch (Exception ex){
+            throw new DataException("User doesn't exist");
+        }finally {
+            //closeEntityManager();
         }
 
         return user;
     }
 
-    public List getEntityList() {
+    /**
+     * @param mail
+     * @return
+     * @throws DataException
+     */
+    public User getEntityByMail(String mail) throws DataException {
 
-        String query = "SELECT u FROM User u";
-        return em.createQuery(query).getResultList();
+        User user = null;
 
+        try {
+            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByMail", User.class);
+            query.setParameter("mail", mail);
+
+            List<User> list = query.getResultList();
+            if (!list.isEmpty()) {
+                user = list.get(0);
+            }
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            user = null;
+        }
+
+        if (user == null){
+            throw new DataException("User doesn't exist");
+        }
+
+        return user;
     }
 
-    public boolean deleteEntity(String mail) {
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    public List getEntityList() throws DataException {
+
+        String query = "SELECT u FROM User u";
+        List list =  getEntityManager().createQuery(query).getResultList();
+        //closeEntityManager();
+
+        return list;
+    }
+
+    /**
+     * @param mail
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteEntity(String mail) throws DataException {
 
         User user = getEntityByMail(mail);
-        em.getTransaction().begin();
-        em.remove(user);
-        em.getTransaction().commit();
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(user);
+        getEntityManager().getTransaction().commit();
+
+        //closeEntityManager();
 
         return false;
+    }
+
+    public User authEntity(String username, String password) throws Exception{
+        User user = null;
+
+        try {
+            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByPseudo", User.class);
+            query.setParameter("username", username);
+
+            List<User> list = query.getResultList();
+            if (!list.isEmpty()) {
+                user = list.get(0);
+            }
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            user = null;
+        }
+
+        if (user == null || !user.getHashkey().equals(password)){
+            throw new DataException("User doesn't exist");
+        }else{
+            return user;
+        }
     }
 }
