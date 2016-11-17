@@ -1,9 +1,12 @@
 
 /** Crée une session avec un cookie qui contient le hashkey */
 function connexion(json){
+
+    Cookies.set('hashkey', json["hashkey"]);
+    Cookies.set('mail', json["mail"]);
+    Cookies.set('pseudo', json["pseudo"]);
+
     console.log(json);
-    console.log("code: " + json["code"] + " message: " + json["message"]);
-    Cookies.set('hashkey', json["message"]);
     window.location.href = "/JSP/home.jsp";
 }
 

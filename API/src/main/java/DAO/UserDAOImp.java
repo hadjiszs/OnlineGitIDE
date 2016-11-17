@@ -17,7 +17,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @return
      * @throws DataException
      */
-    public String addEntity(User user) throws DataException {
+    public User addEntity(User user) throws DataException {
         User usr;
         try{
             usr = getEntityByMail(user.getMail());
@@ -36,7 +36,7 @@ public class UserDAOImp extends DAO implements UserDAO {
             throw new DataException("User already exists");
         }
 
-        return user.getHashkey();
+        return user;
 
     }
 
@@ -88,6 +88,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         return user;
     }
 
+
     /**
      * @return
      * @throws Exception
@@ -118,7 +119,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         return false;
     }
 
-    public String authEntity(String username, String password) throws Exception{
+    public User authEntity(String username, String password) throws Exception{
         User user = null;
 
         try {
@@ -135,11 +136,10 @@ public class UserDAOImp extends DAO implements UserDAO {
             user = null;
         }
 
-        if (user == null){
+        if (user == null || !user.getHashkey().equals(password)){
             throw new DataException("User doesn't exist");
+        }else{
+            return user;
         }
-
-        return user.getHashkey();
-
     }
 }

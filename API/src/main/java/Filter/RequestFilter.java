@@ -25,6 +25,14 @@ public class RequestFilter implements Filter{
         System.out.println("[API] [FILTER] url: " + request.getRequestURI());
 
 
+        Cookie[] cookies = request.getCookies();
+
+        for (int i = 0; i < cookies.length; i++) {
+            String name = cookies[i].getName();
+            String value = cookies[i].getValue();
+            System.out.println(name + " " + value);
+        }
+
         chain.doFilter(req,res);
         /*if(request.getRequestURI().contains("/auth/connect")){
             chain.doFilter(req,res);

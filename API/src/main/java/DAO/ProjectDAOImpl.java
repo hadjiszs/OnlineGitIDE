@@ -47,7 +47,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         } catch(IllegalArgumentException exception) {
             project = null;
         }finally {
-            closeEntityManager();
+            //closeEntityManager();
         }
 
         if (null == project){
@@ -60,7 +60,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     public List getEntityList(User user) throws DataException {
         String query = "SELECT p FROM Project p ";
         List list = getEntityManager().createQuery(query).getResultList();
-        closeEntityManager();
+        //closeEntityManager();
 
         return list;
     }
@@ -71,7 +71,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         getEntityManager().remove(project);
         getEntityManager().getTransaction().commit();
 
-        closeEntityManager();
+        //closeEntityManager();
 
         return true;
     }

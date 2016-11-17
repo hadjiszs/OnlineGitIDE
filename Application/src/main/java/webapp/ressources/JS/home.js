@@ -33,12 +33,20 @@ function deroulerPanel(){
 
 
 $(document).ready(function() {
-    //ApiRequest('GET',"/project/getall","",connexion);
+
+    // Liste des projets de l'utilisateur
+    var url = "/api/project/getall?mail=" +  Cookies.get('mail');
+    ApiRequest('GET',url,"",listProject);
+
+    //Liste
+
+
 
 
 });
 
 function listProject(json){
+    console.log(json);
     $.each(data, function(index, element) {
         $('#listeProjets').append(element);
     });
