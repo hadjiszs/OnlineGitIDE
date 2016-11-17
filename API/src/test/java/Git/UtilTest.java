@@ -49,8 +49,14 @@ public class UtilTest {
         JsonObject content = Util.getContent(USER, DIR_NAME, revision, path);
 
         System.out.println(content);
-        Boolean test = Util.deleteRepository(USER, DIR_NAME);
-        assertTrue(test);
+    }
+
+    @Test
+    public void testGetBranches() throws Exception {
+        //Recuperation du contenu d'un fichier pour une certaine révision
+        JsonObject branches = Util.getBranches(USER, DIR_NAME);
+        Assert.assertNotNull(branches);
+        System.out.println(branches);
     }
 
     @Test
@@ -66,4 +72,5 @@ public class UtilTest {
         Boolean test = Util.deleteRepository("userTest", "TestGitRepository.git");
         assertTrue(test);
     }
+
 }
