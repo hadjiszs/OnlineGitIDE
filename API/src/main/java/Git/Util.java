@@ -1,6 +1,7 @@
 package Git;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -181,4 +182,20 @@ public class Util {
 
         return ret;
     }
+
+
+    public static  JsonObject getBranches(String creator, String repo) throws Exception {
+
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        List<Ref> call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
+        //System.out.println(git.branchList().call().size());
+        JsonObjectBuilder build = factory.createObjectBuilder();
+        for(Ref ref : call) {
+            build.add("branch", ref.getName());
+        }
+        return build.build();
+
+    }
+
 }
