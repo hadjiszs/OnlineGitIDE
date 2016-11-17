@@ -4,12 +4,15 @@ import Model.User;
 import Service.FichierUtiliseServiceImpl;
 import Service.UserService;
 import Service.UserServiceImpl;
+import Util.DataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by hadjiszs on 21/10/16.
@@ -18,6 +21,7 @@ import javax.annotation.PostConstruct;
 @RequestMapping("/file")
 public class FileEditController {
     public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
+    private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
@@ -49,7 +53,7 @@ public class FileEditController {
         try {
             u = userService.getEntityByMail(mail);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
         }
 
         fichierUtiliseServiceImpl.editEntity(u, id, contenue);

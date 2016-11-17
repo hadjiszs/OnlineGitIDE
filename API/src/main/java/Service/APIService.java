@@ -23,4 +23,8 @@ public abstract class APIService {
     public static void close() {
         entityManagerFactory.close();
     }
+
+    public static EntityManager getEm() {
+        return em;
+    }
 }
