@@ -1,7 +1,6 @@
 package Git;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -35,7 +34,7 @@ public class Util {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
-            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository + ".git"));
+            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository));
 
             // a RevWalk allows to walk over commits based on some filtering that is defined
             try  {
@@ -103,7 +102,7 @@ public class Util {
      * @return True si le repo a été supprimé, false sinon
      */
     public static boolean deleteRepository(String creator, String repository) {
-        File dir = new File(Constantes.REPOPATH + creator + "/" + repository + ".git");
+        File dir = new File(Constantes.REPOPATH + creator + "/" + repository);
         return deleteDirectory(dir);
     }
 
@@ -121,7 +120,7 @@ public class Util {
         }
 
         // prepare a new folder for the cloned repository
-        File localPath = new File(Constantes.REPOPATH + creator + "/" + newRepo+".git");
+        File localPath = new File(Constantes.REPOPATH + creator + "/" + newRepo);
 
         // then clone
         System.out.println("Cloning from " + remoteURL + " to " + localPath);
@@ -132,7 +131,7 @@ public class Util {
     }
 
     public static JsonObject getContent(String creator, String repo, String revision, String path) throws Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo+".git"));
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         JsonObject ret = factory.createObjectBuilder()
                 .add("content", BlobUtils.getContent(git.getRepository(), revision, path))
@@ -140,15 +139,46 @@ public class Util {
         return ret;
     }
 
-    public static  JsonObject getBranches(String creator, String repo) throws Exception {
+
+//    Creation fichier
+//              /git/<creator>/<depot>/create/file/<branch>
+//    createFile(user, depot, branch)
+    public static JsonObject createBranch(String creator,
+                                          String repo,
+                                          String branch) throws Exception {
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
-        JsonBuilderFactory factory = Json.createBuilderFactory(null);
-        List<Ref> call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
-        //System.out.println(git.branchList().call().size());
-        JsonObjectBuilder build = factory.createObjectBuilder();
-        for(Ref ref : call) {
-            build.add("branch", ref.getName());
+
+        boolean branchExiste = false;
+        // Verifier que la branche n existe pas deja
+        List<Ref> refs = git.branchList().call();
+        for(Ref ref : refs) {
+            if(ref.getName().equals("refs/heads/"+ branch)) {
+                branchExiste = true;
+                break;
+            }
         }
-        return build.build();
+
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+
+        // @FIXME : ajouter code correspondant à une branche déjà créé
+        if(branchExiste) {
+            JsonObject ret = factory.createObjectBuilder()
+                    .add("code", "CODE CORRESPONDANT A UNE BRANCHE DÉJÀ EXISTANTE")
+                    .build();
+
+            return ret;
+        }
+
+        // sinon, on cree la branche
+        git.branchCreate()
+                .setName(branch)
+                .call();
+
+        // @FIXME : ajouter code correspondant à une branche qui a été crée
+        JsonObject ret = factory.createObjectBuilder()
+                .add("code", "CODE CORRESPONDANT À CRÉATION D'UNE BRANCHE")
+                .build();
+
+        return ret;
     }
 }
