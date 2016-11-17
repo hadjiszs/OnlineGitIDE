@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
 
     public List getEntityList() throws NullPointerException {
         try {
-    }
-
             return userDAO.getEntityList();
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
@@ -52,5 +50,12 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
+    public User authEntity(String username, String password) throws DataException {
+        try {
+            return userDAO.authEntity(username,password);
+        } catch (Exception e) {
+            LOGGER.log( Level.FINE, e.toString(), e);
+        }
+        return null;
+    }
 }

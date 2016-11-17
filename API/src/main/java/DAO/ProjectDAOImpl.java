@@ -15,16 +15,15 @@ import java.util.logging.Logger;
 public class ProjectDAOImpl extends DAO implements ProjectDAO {
     private static final Logger LOGGER = Logger.getLogger( ProjectDAOImpl.class.getName() );
 
-    public ProjectDAOImpl(EntityManager em) {
-        super(em);
-    }
 
     public boolean addEntity(Project project) throws DataException{
-        Project proj;
+        Project proj = null;
 
         try{
-            if (project.getId() != null)
+            if (project.getId() != null){
                 proj = getEntityById(project.getId());
+            }
+
         }catch (Exception ex){
             proj = null;
             LOGGER.log( Level.FINE, ex.toString(), ex);
@@ -41,6 +40,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             } catch (Exception e) {
                 LOGGER.log( Level.FINE, e.toString(), e);
             }
+        }
     }
 
     /* TODO ajouter update */
