@@ -14,5 +14,4 @@ public interface UserService {
     User getEntityById(Long id) throws DataException;
     boolean deleteEntity(String mail) throws DataException;
     List getEntityList() throws NullPointerException;
-    boolean deleteEntity(String mail) throws DataException;
 }

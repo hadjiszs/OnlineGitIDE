@@ -49,7 +49,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @throws DataException
      */
     public User getEntityById(Long id) throws DataException {
-        User user;
+        User user = null;
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
@@ -57,7 +57,8 @@ public class UserDAOImp extends DAO implements UserDAO {
         }finally {
             closeEntityManager();
 
-        return user;
+            return user;
+        }
     }
 
     /**

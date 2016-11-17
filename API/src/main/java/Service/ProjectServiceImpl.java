@@ -22,9 +22,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public boolean addEntity(Project project) throws DataException {
-        if (project.getId() == null){
-            return projectDAO.addEntity(project);
-        } catch (Exception e) {
+        try {
+            if (project.getId() == null) {
+                return projectDAO.addEntity(project);
+            }
+        }catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
         return false;
