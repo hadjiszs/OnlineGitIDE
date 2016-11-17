@@ -58,4 +58,17 @@ BODY{
     margin-bottom:10px;
 }
 
+#secondeBarre{
+    margin-top:5px;
+}
+
+#messageCommit{
+    width:60%;
+}
+
+#envoyerCommit{
+    margin-left:20px;
+}
+
+
 

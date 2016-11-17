@@ -57,12 +57,33 @@
         </header>
         <main class="container-fluid">
             <aside class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <select name="theme" id="changerTheme">
-                        <option value="dracula">Dracula</option>
-                        <option value="night">Night</option>
-                        <option value="rubyblue">RubyBlue</option>
-                    </select>
+                <div class="col-lg-8 col-lg-offset-2" id="premiereBarre">
+                    <div class="btn-group">
+                        <select class="form-control" id="changerTheme">
+                            <option value="dracula">Dracula</option>
+                            <option value="night">Night</option>
+                            <option value="rubyblue">RubyBlue</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <select class="form-control" id="tauxIndentation">
+                            <option value="1">Indentation 1</option>
+                            <option value="2">Indentation 2</option>
+                            <option value="3">Indentation 3</option>
+                            <option value="4">Indentation 4</option>
+                            <option value="5">Indentation 5</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <input  type="button" class="btn btn-default" id="commit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                    </div>
                 </div>
             </aside>
 
@@ -73,22 +94,22 @@ import com.demo.util.MyType;
 import com.demo.util.MyInterface;
 
 public enum Enum {
-  VAL1, VAL2, VAL3
+VAL1, VAL2, VAL3
 }
 
 public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
+public static final MyType<T, V> member;
 
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
+private class InnerClass {
+public int zero() {
+return 0;
+}
+}
 
-  @Override
-  public MyType method() {
-    return member;
-  }
+@Override
+public MyType method() {
+return member;
+}
 }
                         </textarea>
                     </div>
@@ -121,6 +142,32 @@ public class Class<T, V> implements MyInterface {
                 <p> BLABLABLA </p>
             </section>
         </main>
+
+        <!-- Modal -->
+        <div id="fenetreCommit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Ajouter un message pour votre Commit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="fenetreCommit.jsp" method="post">
+                            <input type="text" placeholder="Votre message de commit .." name="messageCommit" id="messageCommit"/>
+                            <input  class="btn btn-success" id="envoyerCommit" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+
+            </div>
+        </div>
+        <!-- Fin Modal -->
         <script async src="../JS/edit.js"></script>
     </body>
 </html>

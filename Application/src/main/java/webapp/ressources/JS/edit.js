@@ -5,11 +5,14 @@
 /* Vaut true si le panel est visible à l'écran */
 var deroulerDroite = false;
 var deroulerGauche = false;
-var input = document.getElementById("changerTheme");
+var inputChangerTheme = document.getElementById("changerTheme");
+var inputChangerIndentation = document.getElementById("tauxIndentation");
 
 $("#ancrePanelDroite").click(deroulerPanelDroite);
 $("#ancrePanelGauche").click(deroulerPanelGauche);
 $("#changerTheme").change(changerTheme);
+$("#tauxIndentation").change(changerIndentation);
+$("#autoIndent").click(indenterEditeur);
 
 function deroulerPanelDroite(){
     if(!deroulerDroite){
@@ -65,8 +68,9 @@ var editeur = CodeMirror.fromTextArea(txt, {
     lineNumbers: true,
     matchBrackets: true,
     mode: "text/x-java",
-    theme: input.options[input.selectedIndex].value,
+    theme: inputChangerTheme.options[inputChangerTheme.selectedIndex].value,
     viewportMargin: Infinity,
+    indentUnit: parseInt(inputChangerIndentation.options[inputChangerIndentation.selectedIndex].value),
 
 });
 
@@ -74,14 +78,34 @@ var mac = CodeMirror.keyMap.default === CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
 
 function changerTheme(){
-    editeur.setOption("theme", input.options[input.selectedIndex].value);
+    editeur.setOption("theme", inputChangerTheme.options[inputChangerTheme.selectedIndex].value);
 }
 
 /* Enregistrement automatique de l'éditeur toutes les 30 secondes */
 window.setInterval(function(){
     //TODO
+    editeur.getDoc().getValue();
+    console.log(editeur.getDoc().getValue());//Permet d'avoir le contenu de l'éditeur
 }, 30000);
 
-editeur.getDoc().getValue(); //Permet d'avoir le contenu de l'éditeur
 
+
+$("#TODO").click(setEditeur);
+
+function setEditeur(){
+    editeur.setValue("COUCOU");
+}
+
+function indenterEditeur(){
+    var nbLigne = editeur.lineCount();
+    for (i=0;i<nbLigne;i++){
+        editeur.indentLine(i);
+    }
+
+}
+
+function changerIndentation(){
+    editeur.setOption("indentUnit", parseInt(inputChangerIndentation.options[inputChangerIndentation.selectedIndex].value));
+    indenterEditeur();
+}
 
