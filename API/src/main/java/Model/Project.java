@@ -9,6 +9,7 @@ import java.util.Date;
  */
 @Entity
 public class Project implements Serializable {
+    public enum TypeProject {JAVA, MAVEN, C, CPP}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,14 +29,16 @@ public class Project implements Serializable {
 
     private String root;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('JAVA', 'MAVEN', 'C', 'CPP')")
+    private TypeProject type;
 
     public Project(){
 
     }
 
 
-    public Project(String name, String version, String type, String root) {
+    public Project(String name, String version, TypeProject type, String root) {
         this.name = name;
         this.version = version;
         this.type = type;
@@ -78,7 +81,7 @@ public class Project implements Serializable {
 
     public String getRoot() { return root; }
 
-    private void setRoot(String root) {this.root = root; }
+    public void setRoot(String root) {this.root = root; }
 
     public String getVersion() {
         return version;
@@ -88,11 +91,11 @@ public class Project implements Serializable {
         this.version = version;
     }
 
-    public String getType() {
+    public TypeProject getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeProject type) {
         this.type = type;
     }
 }

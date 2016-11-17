@@ -13,5 +13,5 @@ public interface UserDAO {
         User getEntityByMail(String mail) throws DataException;
         User getEntityById(Long id) throws DataException;
         List getEntityList() throws DataException;
-        boolean deleteEntity(String mail) throws DataException;
+        boolean deleteEntity(User user) throws DataException;
 }

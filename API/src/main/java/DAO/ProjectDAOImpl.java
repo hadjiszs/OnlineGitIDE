@@ -1,10 +1,8 @@
 package DAO;
 
 import Model.Project;
-import Model.User;
 import Util.DataException;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -57,7 +55,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         return project;
     }
 
-    public List getEntityList(User user) throws DataException {
+    public List getEntityList() throws DataException {
         String query = "SELECT p FROM Project p ";
         List list = getEntityManager().createQuery(query).getResultList();
         closeEntityManager();
@@ -65,10 +63,9 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         return list;
     }
 
-    public boolean deleteEntity(Long id) throws DataException{
-        Project project = getEntityById(id);
+    public boolean deleteEntity(Project project) throws DataException{
         getEntityManager().getTransaction().begin();
-        getEntityManager().remove(project);
+        getEntityManager().remove(getEntityManager().contains(project) ? project : getEntityManager().merge(project));
         getEntityManager().getTransaction().commit();
 
         closeEntityManager();

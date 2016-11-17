@@ -3,7 +3,10 @@ package Controller;
 import Model.User;
 import Service.UserService;
 import Service.UserServiceImpl;
-import Util.*;
+import Util.Constantes;
+import Util.Status;
+import Util.StatusOK;
+import Util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
 import java.util.List;
 
 
@@ -31,10 +33,10 @@ public class UserController {
             id = userService.addEntity(mail, pseudo, pass);
         }catch(Exception ex){
             ex.printStackTrace();
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI, id)), HttpStatus.OK);
     }
 
@@ -45,11 +47,11 @@ public class UserController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
-            return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(user), HttpStatus.OK);
+        return new ResponseEntity(Util.convertToJson(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,11 +61,11 @@ public class UserController {
         try{
             users = userService.getEntityList();
         }catch(Exception ex){
-            return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertListToJson(users), HttpStatus.OK);
+        return new ResponseEntity(Util.convertListToJson(users), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,11 +74,11 @@ public class UserController {
         try{
             userService.deleteEntity(mail);
         }catch(Exception ex){
-            return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.OK);
     }
 

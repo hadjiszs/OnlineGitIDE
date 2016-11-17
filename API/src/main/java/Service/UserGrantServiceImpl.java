@@ -6,7 +6,6 @@ import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Util.DataException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +30,8 @@ public class UserGrantServiceImpl implements UserGrantService{
             ProjectService projectService = new ProjectServiceImpl();
 
             User user = userService.getEntityById(idUser);
+
+
             Project project = projectService.getEntityById(idProject);
 
             grant = new UserGrant();

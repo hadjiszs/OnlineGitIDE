@@ -3,9 +3,7 @@ package Service;
 import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
 import Model.Project;
-import Model.User;
 import Util.DataException;
-import jdk.nashorn.internal.ir.PropertyKey;
 
 import java.util.List;
 
@@ -29,11 +27,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDAO.getEntityById(id);
 
     }
-    public List getEntityList(User user) throws DataException{
-        return projectDAO.getEntityList(user);
+    public List getEntityList() throws DataException{
+        return projectDAO.getEntityList();
     }
     public boolean deleteEntity(Long id) throws DataException{
-        return projectDAO.deleteEntity(id);
+        Project project = projectDAO.getEntityById(id);
+        return projectDAO.deleteEntity(project);
     }
 
 }
