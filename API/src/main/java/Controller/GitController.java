@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.json.JsonObject;
-import java.io.File;
 
 /**
  * Created by p1317074 on 16/11/16.
@@ -21,7 +20,7 @@ public class GitController {
     //Contenu d'un fichier
     @RequestMapping(value = "/{revision}/{path}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<String> get(@PathVariable String author, @PathVariable String repository, @PathVariable String revision, @PathVariable String path){
+    ResponseEntity<String> getFile(@PathVariable String author, @PathVariable String repository, @PathVariable String revision, @PathVariable String path){
         JsonObject ret = null;
         try{
             ret = Git.Util.getContent(author, repository, revision, path);
@@ -36,16 +35,28 @@ public class GitController {
     @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<String> getTree(@PathVariable String author, @PathVariable String repository, @PathVariable String revision){
-        //TODO
-        return null;
+        JsonObject ret = null;
+        try{
+            ret = Git.Util.getArborescence(author, repository, revision);
+            if (ret == null) {throw (new Exception("File not found")); }
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
     //liste des branches
     @RequestMapping(value = "/branches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<String> getBranches(@PathVariable String author, @PathVariable String repository){
-        //TODO
-        return null;
+        JsonObject ret = null;
+        try{
+            ret = Git.Util.getBranches(author, repository);
+            if (ret == null) {throw (new Exception("Can't find branches")); }
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
     //liste des commits d'une branche

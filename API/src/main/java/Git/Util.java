@@ -1,6 +1,8 @@
 package Git;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -11,6 +13,7 @@ import org.gitective.core.CommitUtils;
 import java.lang.String;
 import javax.json.*;
 import java.io.File;
+import java.util.List;
 
 import Util.ArboNode;
 import Util.ArboTree;
@@ -32,7 +35,7 @@ public class Util {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
-            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository));
+            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository + ".git"));
 
             // a RevWalk allows to walk over commits based on some filtering that is defined
             try  {
@@ -100,7 +103,7 @@ public class Util {
      * @return True si le repo a été supprimé, false sinon
      */
     public static boolean deleteRepository(String creator, String repository) {
-        File dir = new File(Constantes.REPOPATH + creator + "/" + repository);
+        File dir = new File(Constantes.REPOPATH + creator + "/" + repository + ".git");
         return deleteDirectory(dir);
     }
 
@@ -118,7 +121,7 @@ public class Util {
         }
 
         // prepare a new folder for the cloned repository
-        File localPath = new File(Constantes.REPOPATH + creator + "/" + newRepo);
+        File localPath = new File(Constantes.REPOPATH + creator + "/" + newRepo+".git");
 
         // then clone
         System.out.println("Cloning from " + remoteURL + " to " + localPath);
@@ -129,11 +132,23 @@ public class Util {
     }
 
     public static JsonObject getContent(String creator, String repo, String revision, String path) throws Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo));
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo+".git"));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         JsonObject ret = factory.createObjectBuilder()
                 .add("content", BlobUtils.getContent(git.getRepository(), revision, path))
                 .build();
         return ret;
+    }
+
+    public static  JsonObject getBranches(String creator, String repo) throws Exception {
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        List<Ref> call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
+        //System.out.println(git.branchList().call().size());
+        JsonObjectBuilder build = factory.createObjectBuilder();
+        for(Ref ref : call) {
+            build.add("branch", ref.getName());
+        }
+        return build.build();
     }
 }
