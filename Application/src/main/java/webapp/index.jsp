@@ -8,8 +8,11 @@
     <link rel="stylesheet" type="text/css" href="ressources/CSS/connexion.css">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="ressources/JS/api.js"></script>
+    <script src="ressources/JS/index.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,7 +29,7 @@
                     <header>
                         <h2 class="titreForm">Vous souhaitez accéder à vos Projets ? Connectez-vous !</h2>
                     </header>
-                    <form action="connexion.jsp" name="formConnexion" class="form-horizontal formIndex" method="post">
+                    <form action="" name="formConnexion" class="form-horizontal formIndex" method="post">
                         <div class="form-group">
                             <div class="col-xs-8 col-xs-offset-2">
                                 <input name="username" placeholder="Idenfiant" class="form-control" type="text" id="UserUsername" required />
@@ -82,22 +85,22 @@
                         <h2 class="titreForm">Vous n'avez pas de compte Multimif ? Inscrivez-vous !</h2>
                     </header>
 
-                    <form action="inscription.jsp" name="formInscription" class="form-horizontal formIndex" method="post">
+                    <form action="" name="formInscription" class="form-horizontal formIndex" method="get">
                         <div class="form-group">
                             <div class="col-xs-8 col-xs-offset-2">
-                                <input name="nomInscription" placeholder="Nom" class="form-control" type="text" id="nomInscription"/>
+                                <input name="username" placeholder="Nom" class="form-control" type="text" id="nomInscription"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-8 col-xs-offset-2">
-                                <input name="emailInscription" placeholder="Adresse mail" class="form-control" type="email" id="emailInscription" required />
+                                <input name="mail" placeholder="Adresse mail" class="form-control" type="email" id="emailInscription" required />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-8 col-xs-offset-2">
-                                <input name="passwordInscription" placeholder="Mot de passe" class="form-control" type="password" id="passwordInscription" required />
+                                <input name="password" placeholder="Mot de passe" class="form-control" type="password" id="passwordInscription" required />
                             </div>
                         </div>
 

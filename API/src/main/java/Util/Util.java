@@ -37,4 +37,8 @@ public class Util {
 
         return json;
     }
+
+    public static String convertStringToJson(String str, String value){
+        return "{\""+ str + "\":\"" + value + "\"}";
+    }
 }

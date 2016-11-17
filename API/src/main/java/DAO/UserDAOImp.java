@@ -17,7 +17,7 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @return
      * @throws DataException
      */
-    public Long addEntity(User user) throws DataException {
+    public String addEntity(User user) throws DataException {
         User usr;
         try{
             usr = getEntityByMail(user.getMail());
@@ -29,14 +29,14 @@ public class UserDAOImp extends DAO implements UserDAO {
             getEntityManager().getTransaction().begin();
             getEntityManager().persist(user);
             getEntityManager().getTransaction().commit();
-            closeEntityManager();
+            //closeEntityManager();
 
         } else {
 
             throw new DataException("User already exists");
         }
 
-        return user.getId();
+        return user.getHashkey();
 
     }
 
@@ -52,7 +52,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         }catch (Exception ex){
             throw new DataException("User doesn't exist");
         }finally {
-            closeEntityManager();
+            //closeEntityManager();
         }
 
         return user;
@@ -96,7 +96,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         String query = "SELECT u FROM User u";
         List list =  getEntityManager().createQuery(query).getResultList();
-        closeEntityManager();
+        //closeEntityManager();
 
         return list;
     }
@@ -113,8 +113,33 @@ public class UserDAOImp extends DAO implements UserDAO {
         getEntityManager().remove(user);
         getEntityManager().getTransaction().commit();
 
-        closeEntityManager();
+        //closeEntityManager();
 
         return false;
+    }
+
+    public String authEntity(String username, String password) throws Exception{
+        User user = null;
+
+        try {
+            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByPseudo", User.class);
+            query.setParameter("username", username);
+
+            List<User> list = query.getResultList();
+            if (!list.isEmpty()) {
+                user = list.get(0);
+            }
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            user = null;
+        }
+
+        if (user == null){
+            throw new DataException("User doesn't exist");
+        }
+
+        return user.getHashkey();
+
     }
 }

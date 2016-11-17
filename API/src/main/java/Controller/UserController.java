@@ -7,10 +7,7 @@ import Util.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -23,19 +20,21 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> add(@RequestParam(value="pseudo") String pseudo,
-                                @RequestParam(value="mail") String mail, @RequestParam(value="pass") String pass){
-        Long id;
+    public @ResponseBody ResponseEntity<String> add(@RequestParam(value="username") String username,
+                                @RequestParam(value="mail") String mail, @RequestParam(value="password") String password){
+        String hashkey;
 
         try{
-            id = userService.addEntity(mail, pseudo, pass);
+            hashkey = userService.addEntity(mail, username,password);
         }catch(Exception ex){
             ex.printStackTrace();
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI, id)), HttpStatus.OK);
+        /*return new ResponseEntity<String>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
+                Constantes.OPERATION_MSG_REUSSI, id)), HttpStatus.OK);*/
+        return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+                hashkey)), HttpStatus.OK);
     }
 
         @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,6 +77,25 @@ public class UserController {
 
         return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> get(@RequestParam(value="username") String username,
+                                                    @RequestParam(value = "password") String passwd){
+
+
+        String hashkey;
+        System.out.println("[API] [USER] [LOGIN] " + username + ":" + passwd);
+
+        try{
+            hashkey = userService.authEntity(username,passwd);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+                hashkey)), HttpStatus.OK);
     }
 
     @PostConstruct

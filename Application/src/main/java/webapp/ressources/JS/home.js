@@ -32,3 +32,18 @@ function deroulerPanel(){
 }
 
 
+$(document).ready(function() {
+    //ApiRequest('GET',"/project/getall","",connexion);
+
+
+});
+
+function listProject(json){
+    $.each(data, function(index, element) {
+        $('#listeProjets').append(element);
+    });
+}
+
+
+
+

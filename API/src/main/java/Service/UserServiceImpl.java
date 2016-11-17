@@ -18,11 +18,11 @@ public class UserServiceImpl implements UserService {
         userDAO = new UserDAOImp();
     }
 
-    public Long addEntity(String pseudo, String mail, String hashkey) throws DataException {
+    public String addEntity(String pseudo, String mail, String hashkey) throws DataException {
         User user = new User(pseudo, mail, hashkey);
-        userDAO.addEntity(user);
+        return userDAO.addEntity(user);
 
-        return  user.getId();
+        //return  user.getId();
     }
 
     public User getEntityByMail(String mail) throws DataException {
@@ -39,6 +39,10 @@ public class UserServiceImpl implements UserService {
 
     public boolean deleteEntity(String mail) throws Exception {
         return userDAO.deleteEntity(mail);
+    }
+
+    public String authEntity(String username,String password) throws Exception{
+        return userDAO.authEntity(username,password);
     }
 
 }
