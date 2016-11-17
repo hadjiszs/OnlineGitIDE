@@ -25,12 +25,12 @@ public class UtilTest extends TestCase {
         assertTrue(test);
     }
 
-
+    @Test
     public void testGetContent() throws Exception {
         Util.cloneRemoteRepo("userTest", "TestGitRepository.git", REMOTE_URL);
 
         //Recuperation du contenu d'un fichier pour une certaine révision
-        String content = Util.getContent("userTest", "TestGitRepository.git", "f7ef6d9d3d5ad33656aaa2996272f686e7fd485c", "src/CMakeLists.txt");
+        JsonObject content = Util.getContent("userTest", "TestGitRepository.git", "f7ef6d9d3d5ad33656aaa2996272f686e7fd485c", "src/CMakeLists.txt");
         assertNotNull(content);
         System.out.println(content);
         Boolean test = Util.deleteRepository("userTest", "TestGitRepository.git");

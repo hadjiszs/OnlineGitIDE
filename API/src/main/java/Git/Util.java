@@ -1,7 +1,6 @@
 package Git;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -19,6 +18,7 @@ import Util.ArboTree;
 /**
  * Created by p1317074 on 15/11/16.
  */
+
 public class Util {
 
     /**
@@ -128,8 +128,12 @@ public class Util {
                 .call();
     }
 
-    public static String getContent(String creator, String repo, String revision, String path) throws Exception {
+    public static JsonObject getContent(String creator, String repo, String revision, String path) throws Exception {
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo));
-        return BlobUtils.getContent(git.getRepository(), revision, path);
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonObject ret = factory.createObjectBuilder()
+                .add("content", BlobUtils.getContent(git.getRepository(), revision, path))
+                .build();
+        return ret;
     }
 }
