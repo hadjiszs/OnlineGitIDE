@@ -1,7 +1,6 @@
 package Util;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Util<T> {
 
 
     public List<T> convertToObjectJSON(String json){
-        List<T> list = new ArrayList();
+        List<T> list = new ArrayList<T>();
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
         try {
             list = mapper.readValue(json, mapper.getTypeFactory().constructType(List.class,

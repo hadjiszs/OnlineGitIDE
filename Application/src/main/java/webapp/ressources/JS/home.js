@@ -62,11 +62,11 @@ $(document).ready(function() {
 });
 
 function listProject(json){
-    console.log(json);
     $("#listeProjets").empty();
 
     $.each(json, function(index, element) {
-        $('#listeProjets').append(element);
+        console.log(index + " " +element);
+        $('#listeProjets').append( '<a value=="'+ element.id +'" href="#" class="list-group-item">'+ element.name + '</a>');
     });
 }
 

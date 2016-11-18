@@ -77,11 +77,11 @@ public class ProjectDAOTest {
         assertEquals(proj.getRoot(), project.getRoot());
     }
 
-    /*
+    @Test
     public void getEntityList() {
         Exception exception = null;
-        Project proj;
         List<Project> projectList = new ArrayList();
+        Project proj;
 
         try {
             projectList = projectDAO.getEntityList();
@@ -100,14 +100,14 @@ public class ProjectDAOTest {
         assertEquals(proj.getVersion(), project.getVersion());
         assertEquals(proj.getType(), project.getType());
         assertEquals(proj.getRoot(), project.getRoot());
-    }*/
+    }
 
-    /*@Test(expected = NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void suppressEntity() {
         Exception exception = null;
 
         /* On supprime l'object */
-/*
+
         try {
             projectDAO.deleteEntity(project);
         } catch (Exception e) {
@@ -115,10 +115,10 @@ public class ProjectDAOTest {
             exception = e;
         }
 
-        assertNull(exception);*/
+        assertNull(exception);
 
         /* On vérifie qu'il n'existe pas déjà */
-/*
+
         List<Project> projectList = new ArrayList();
         Project proj = null;
 
@@ -132,7 +132,7 @@ public class ProjectDAOTest {
 
         proj = projectList.stream().filter(p -> p.getId().equals(project.getId()))
                     .findFirst().get();
-    }*/
+    }
 
     @AfterClass
     public static void tearDownAfterClass(){

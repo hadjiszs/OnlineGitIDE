@@ -3,7 +3,6 @@ package Service;
 import Model.User;
 import Util.DataException;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -14,6 +13,6 @@ public interface UserService {
     User getEntityByMail(String mail) throws DataException;
     User getEntityById(Long id) throws DataException;
     List getEntityList() throws Exception;
-    boolean deleteEntity(String mail) throws Exception;
+    boolean deleteEntity(Long idUser) throws Exception;
     User authEntity(String username,String password) throws Exception;
 }

@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public boolean deleteEntity(String mail) throws DataException {
+    public boolean deleteEntity(Long idUser) throws DataException {
         try {
-            User user = getEntityByMail(mail);
+            User user = getEntityById(idUser);
             return userDAO.deleteEntity(user);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);

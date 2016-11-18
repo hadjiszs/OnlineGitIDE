@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Project;
-import Model.User;
 import Util.DataException;
 
 import java.util.List;
@@ -15,14 +14,16 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     private static final Logger LOGGER = Logger.getLogger( ProjectDAOImpl.class.getName() );
 
 
-    public Boolean addEntity(Project project) throws DataException{
+    public boolean addEntity(Project project) throws DataException{
         Project proj = null;
 
         System.out.println("salut");
         System.out.println("pr: " + project.getId());
+
         try{
             if (project.getId() != null){
-            System.out.println("proj: "+ proj);
+                System.out.println("proj: "+ proj);
+                proj = getEntityById(project.getId());
             }
 
         }catch (Exception ex){
@@ -56,7 +57,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             project = getEntityManager().find(Project.class, id);
             System.out.println("project: " + project);
         } catch(Exception exception) {
-            closeEntityManager();
+            project = null;
             LOGGER.log( Level.FINE, exception.toString(), exception);
         }finally {
             closeEntityManager();
@@ -75,10 +76,11 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         return project;
     }
 
-    public List<Project> getEntityList(User user) throws DataException {
-        String query = "SELECT p FROM Project p ";
-        List list = getEntityManager().createQuery(query).getResultList();
+    public List<Project> getEntityList() throws DataException {
+        String query = "Project.findAll";
+        List list = getEntityManager().createNamedQuery(query, Project.class).getResultList();
         closeEntityManager();
+
         return list;
     }
 

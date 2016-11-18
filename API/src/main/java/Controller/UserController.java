@@ -37,10 +37,10 @@ public class UserController {
             user = userService.addEntity(mail, username,password);
         }catch(Exception ex){
             ex.printStackTrace();
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,53 +54,52 @@ public class UserController {
             user = userService.authEntity(username,passwd);
         }catch (Exception ex){
             ex.printStackTrace();
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
 
 
     @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<User> get(@RequestParam(value="mail") String mail){
+    public @ResponseBody ResponseEntity<String> get(@RequestParam(value="mail") String mail){
         User user;
 
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
-            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertToJson(user), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(Util.convertToJson(user), HttpStatus.ACCEPTED);
     }
 
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(){
+    public @ResponseBody ResponseEntity<List<User>> getAll(){
         List<User> users;
 
         try{
             users = userService.getEntityList();
         }catch(Exception ex){
-            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertListToJson(users), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(users, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> remove(@RequestParam(value="mail") String mail){
+    public @ResponseBody ResponseEntity<Status> remove(@RequestParam(value="idUser") Long idUser){
 
         try{
-            userService.deleteEntity(mail);
+            userService.deleteEntity(idUser);
         }catch(Exception ex){
-            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_RATE,
+                    ex.getMessage()), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_REUSSI,
+                Constantes.OPERATION_MSG_REUSSI), HttpStatus.ACCEPTED);
     }
 
 }

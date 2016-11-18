@@ -5,7 +5,6 @@ import Model.User;
 import Model.UserGrant;
 import Util.DataException;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**

@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Project;
-import Model.User;
 import Model.UserGrant;
 import Service.*;
 import Util.Constantes;
@@ -20,15 +19,36 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
- * Created by amaia.nazabal on 10/21/16.
+ * Controleur pour la gestion des projets
  */
 @RestController
-@RequestMapping("/project") //api/project
+@RequestMapping("/project")
 public class ProjectController {
-    ProjectService projectService ;
+
+    /**
+     * Service des projets
+     */
+    ProjectService projectService;
+
+    /**
+     * Service des user
+     */
     UserService userService;
+
+    /**
+     * Service de gestion de droit
+     */
     UserGrantService userGrantService;
 
+    /**
+     * Créer un nouveau projet
+     * @param name le nom du projet
+     * @param version
+     * @param root
+     * @param type le language utilisé
+     * @param idUser l'id de l'user qui crée le projet
+     * @return l'id du projet créer
+     */
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "name") String name,
                                                     @RequestParam(value = "version") String version,
@@ -42,55 +62,73 @@ public class ProjectController {
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Util.convertToJson(new Status(-1, ex.getMessage())),
+                                                                        HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI, project.getId())), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
+                                                                    Constantes.OPERATION_MSG_REUSSI,
+                                                                    project.getId())),
+                                                        HttpStatus.ACCEPTED);
     }
 
+    /**
+     * Récupère les informations d'un projet
+     * @param id l'id du projet
+     * @return le json de la classe projet
+     */
     @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> get(@RequestParam(value = "id") Long id){
+    public @ResponseBody ResponseEntity<Project> get(@RequestParam(value = "id") Long id){
         Project project;
 
         try {
             project = projectService.getEntityById(id);
         }catch (Exception ex) {
-            return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertToJson(project), HttpStatus.ACCEPTED);
+        return new ResponseEntity<Project>(project, HttpStatus.ACCEPTED);
     }
 
-    /*@RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getall(@RequestParam(value = "idUser") Long idUser){
-        List<Project> projects = null;
-        User user = null;
+    /**
+     * Renvoi la liste des projets dans la base de donnée
+     * @return la liste des projets de la BDD
+     */
+    @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> getall(){
+        List<Project> projects;
 
         try {
-            user = userService.getEntityById(idUser);
-            projects = projectService.getEntityList(user);
+            projects = projectService.getEntityList();
         }catch (Exception ex) {
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                                                                                HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<String>(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
-    }*/
+    }
 
+    /**
+     * Supprime un projet de la bas de donnée
+     * @param id l'id du projet à supprimer
+     * @return un code réussite
+     */
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
         try {
             projectService.deleteEntity(id);
         }catch (Exception ex) {
-            return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())),
+            return new ResponseEntity<>(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
     }
 
 
+    /**
+     * Initialise les services utilisés par la classe
+     */
     @PostConstruct
     public void init(){
         projectService = new ProjectServiceImpl();
