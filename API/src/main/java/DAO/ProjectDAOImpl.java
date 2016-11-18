@@ -15,34 +15,31 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     private static final Logger LOGGER = Logger.getLogger( ProjectDAOImpl.class.getName() );
 
 
-    public boolean addEntity(Project project) throws DataException{
+    public Project addEntity(Project project) throws DataException{
         Project proj = null;
 
+        System.out.println("salut");
+        System.out.println("pr: " + project.getId());
         try{
-            if (project.getId() != null){
-                proj = getEntityById(project.getId());
-            }
+            /*proj = getEntityById(project.getId());
+            System.out.println("proj: "+ proj);
+            if(proj == null){
+                throw new Exception("Project already exists");
+            }else{*/
+                getEntityManager().getTransaction().begin();
+                getEntityManager().persist(project);
+                getEntityManager().getTransaction().commit();
+
+            //}
 
         }catch (Exception ex){
-            proj = null;
-
             LOGGER.log( Level.FINE, ex.toString(), ex);
-        }
-
-        if (proj == null){
-            getEntityManager().getTransaction().begin();
-            getEntityManager().persist(project);
-            getEntityManager().getTransaction().commit();
+            throw new DataException("Project doesn't exists");
+        }finally {
             closeEntityManager();
-        }else {
-
-            try {
-                throw new Exception("Project already exists");
-            } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
-            }
         }
-        return true;
+
+        return project;
     }
 
     /* TODO ajouter update */
@@ -55,21 +52,13 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
 
         try {
             project = getEntityManager().find(Project.class, id);
-        } catch(IllegalArgumentException exception) {
-            project = null;
+            System.out.println("project: " + project);
+        } catch(Exception exception) {
             closeEntityManager();
             LOGGER.log( Level.FINE, exception.toString(), exception);
+            throw new DataException("Project doesn't exists");
         }
         closeEntityManager();
-        if (project == null){
-            try {
-                throw new Exception("Project doesn't exists");
-            } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
-            }
-
-        }
-
         return project;
     }
 
@@ -77,7 +66,6 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         String query = "SELECT p FROM Project p ";
         List list = getEntityManager().createQuery(query).getResultList();
         closeEntityManager();
-
         return list;
     }
 /*

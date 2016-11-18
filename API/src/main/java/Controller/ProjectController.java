@@ -36,9 +36,9 @@ public class ProjectController {
                                                     @RequestParam(value = "type") Project.TypeProject type,
                                                     @RequestParam(value = "user") Long idUser){
 
-        Project project = new Project(name, version, type, root);
+        Project project = null;
         try {
-            projectService.addEntity(project);
+            project = projectService.addEntity(new Project(name, version, type, root));
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
         }catch (Exception ex) {
             ex.printStackTrace();

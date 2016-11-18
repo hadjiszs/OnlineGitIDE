@@ -20,13 +20,13 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO = new ProjectDAOImpl();
     }
 
-    public boolean addEntity(Project project) throws DataException{
+    public Project addEntity(Project project) throws DataException{
         try {
             return projectDAO.addEntity(project);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
-        return false;
+        return null;
     }
 
     public Project getEntityById(Long id) throws DataException{
