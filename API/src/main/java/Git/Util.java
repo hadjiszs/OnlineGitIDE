@@ -4,18 +4,13 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
-import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
@@ -29,6 +24,8 @@ import java.util.List;
 
 import Util.ArboNode;
 import Util.ArboTree;
+
+import static org.eclipse.jgit.lib.Constants.HEAD;
 
 /**
  * Created by p1317074 on 15/11/16.
@@ -206,7 +203,7 @@ public class Util {
         }
 
         if(branchExiste == false) {
-            status = GitStatus.BRANCHE_CREATED;
+            status = GitStatus.BRANCH_CREATED;
             // On cree la branche
             git.branchCreate()
                     .setName(branch)
@@ -215,7 +212,39 @@ public class Util {
             status = GitStatus.BRANCH_NOT_CREATED;
 
         JsonObject ret = factory.createObjectBuilder()
-                .add("code", String.valueOf(status))
+                .add("code", status.getValue())
+                .build();
+
+        return ret;
+    }
+
+
+    /**
+     * Créer une branche
+     *
+     * @param creator utilisateur proprietaire du depot
+     * @param repo    nom du depot
+     * @return un code de réponse renvoyé un json
+     * @throws Exception
+     */
+    public static JsonObject createRepository(String creator,
+                                              String repo) throws Exception {
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        GitStatus status = GitStatus.REPOSITORY_NOT_CREATED;
+
+        // Chemin vers le nouveau repository
+        String path = Constantes.REPO_FULLPATH + creator + "/" + repo;
+        System.out.println("CHEMIN:" + path);
+        File localPath = new File(path);
+
+        // Création du dépot
+        Git git = Git.init().setDirectory(localPath).call();
+
+        if(git.getRepository().getRef(HEAD) != null)
+            status = GitStatus.REPOSITORY_CREATED;
+
+        JsonObject ret = factory.createObjectBuilder()
+                .add("code", status.getValue())
                 .build();
 
         return ret;
@@ -344,4 +373,5 @@ public class Util {
 
         return factory.createObjectBuilder().add("commits", build).build();
     }
+
 }

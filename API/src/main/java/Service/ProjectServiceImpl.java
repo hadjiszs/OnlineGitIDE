@@ -2,9 +2,11 @@ package Service;
 
 import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
+import Git.GitStatus;
 import Model.Project;
 import Util.DataException;
 
+import javax.json.JsonObject;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,13 +21,27 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO = new ProjectDAOImpl();
     }
 
-    public Boolean addEntity(Project project) throws DataException{
+    public Boolean addEntity(Project project) throws DataException {
+        boolean ok = true;
+
+        // Creation dans la bdd
         try {
-            return projectDAO.addEntity(project);
+            ok = projectDAO.addEntity(project);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
-        return null;
+
+        // Creation physique du depot
+        if(ok)
+            try {
+                JsonObject content = Git.Util.createRepository(project.getAdminPseudo(), project.getName());
+                ok = content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
+                return ok;
+            } catch (Exception e) {
+                LOGGER.log( Level.FINE, e.toString(), e);
+            }
+
+        return ok;
     }
 
     public Project getEntityById(Long id) throws DataException{

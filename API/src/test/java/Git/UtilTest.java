@@ -2,10 +2,12 @@ package Git;
 
 import org.junit.*;
 import org.junit.rules.TestName;
+import sun.awt.SunHints;
 
 import static org.junit.Assert.*;
 
 import javax.json.JsonObject;
+import javax.sound.midi.SysexMessage;
 
 
 /**
@@ -29,16 +31,16 @@ public class UtilTest {
         System.out.println("  ");
     }
 
-//    @BeforeClass
-//    public static void init() throws Exception {
-//        Util.cloneRemoteRepo(USER, DIR_NAME, REMOTE_URL);
-//    }
+    @BeforeClass
+    public static void init() throws Exception {
+        Util.cloneRemoteRepo(USER, DIR_NAME, REMOTE_URL);
+    }
 
-//    @AfterClass
-//    public static void end() throws Exception {
-//        System.out.println("# Suppression du dépôt ; fin tests #");
-//        Util.deleteRepository(USER, DIR_NAME);
-//    }
+    @AfterClass
+    public static void end() throws Exception {
+        System.out.println("# Suppression du dépôt ; fin tests #");
+        Util.deleteRepository(USER, DIR_NAME);
+    }
 
     @Test
     public void testGetArborescence() throws Exception {
@@ -67,10 +69,29 @@ public class UtilTest {
     public void testCreateBranch() throws Exception {
         // Creation d'une branche
         String nomBranche = "nouvelle_branche";
+        GitStatus statusAttendu = GitStatus.BRANCH_CREATED;
 
         JsonObject content = Util.createBranch(USER, DIR_NAME, nomBranche);
 
-        System.out.println(content);
+        Assert.assertEquals(
+                "Erreur lors de création de branche : "+ nomBranche,
+                content.get("code").toString(),
+                statusAttendu.toString());
+    }
+
+    @Test
+    public void testCreateRepository() throws Exception {
+        // Creation d'une branche
+        String nomCreator = "johndoe";
+        String nomRepository = "Nouveau_Repository";
+        GitStatus statusAttendu = GitStatus.REPOSITORY_CREATED;
+
+        JsonObject content = Util.createRepository(nomCreator, nomRepository);
+
+        Assert.assertEquals(
+                "Erreur de création du repository : "+ nomCreator +"/" + nomRepository,
+                content.get("code").toString(),
+                statusAttendu.toString());
     }
 
     @Test
