@@ -1,7 +1,9 @@
 package Util;
 
+import Model.Project;
 import Model.User;
 import Model.UserGrant;
+import Service.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,20 +19,35 @@ public class Compile {
     public Compile() {
     }
 
-    public String executeCompilation(UserGrant userGrant, User currentUser) throws InterruptedException, IOException {
-        // params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
+    public String executeCompilation(long idProject,Long idCurrentUser) throws InterruptedException, IOException, DataException {
+
+        /*
+        params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
+        besoin de currentProject,currentUser,
+        */
 
 
-        //besoin de currentProject,currentUser,
+        UserGrantService userGrantService= new UserGrantServiceImpl();
+        ProjectService projectService = new ProjectServiceImpl();
+        UserService userService = new UserServiceImpl();
+
+        // On récupère le prop
+        User prop= userGrantService.getAdminByEntity(idProject);
+        // On récupère le project
+        Project currentProject = projectService.getEntityById(idProject);
+        // On récupère CurrentUser
+        User currentUser = userService.getEntityById(idCurrentUser);
 
 
 
 
-        this.executeAction(Constantes.COMPILE_CLONE, "mahmoud", "appTest", "user");  // 1 - CLONE
+
+
+        this.executeAction(Constantes.COMPILE_CLONE, prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());  // 1 - CLONE
         // 2 - update Project Files
-        this.executeAction(Constantes.COMPILE_COMPILE, "mahmoud", "appTest", "user"); // 3 - COMPILATION
-        String result = this.resultStage("user"); // 4 - GET RESULT
-        this.executeAction(Constantes.COMPILE_CLEAN, "mahmoud", "appTest", "user"); //CLEAN
+        this.executeAction(Constantes.COMPILE_COMPILE,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString()); // 3 - COMPILATION
+        String result = this.resultStage(currentUser.getId().toString()); // 4 - GET RESULT
+        this.executeAction(Constantes.COMPILE_CLEAN,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString()); //CLEAN
 
         return result;
     }
@@ -76,7 +93,7 @@ public class Compile {
 
     public void getTempFiles()
     {
-        //get all files from BD by User and Project
+        //get all files from BD by CurrentUser and Project
         //for each file cp to cloneRepository () and file(PATH)
 
     }
