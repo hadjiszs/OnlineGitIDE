@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by amaia.nazabal on 11/16/16.
  */
@@ -25,6 +28,7 @@ import java.util.List;
 @RequestMapping("/permission")
 public class PermissionController {
     private UserGrantService userGrantService;
+    private static final Logger LOGGER = Logger.getLogger( PermissionController.class.getName() );
 
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
@@ -33,7 +37,7 @@ public class PermissionController {
         try {
             userGrantService.addEntity(idUser, idProject, UserGrant.Permis.Dev);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
             return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     e.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -48,7 +52,7 @@ public class PermissionController {
         try {
              developers = userGrantService.getDevelopersByEntity(idProject);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
             return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     e.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -62,7 +66,7 @@ public class PermissionController {
         try{
             user = userGrantService.getAdminByEntity(idProject);
         }catch(Exception ex){
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
         }
@@ -77,7 +81,7 @@ public class PermissionController {
         try{
             projects = userGrantService.getProjectsByEntity(idUser);
         }catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
         }
@@ -92,12 +96,12 @@ public class PermissionController {
         try{
             permission = userGrantService.hasPermission(idUser, idProject);
         }catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(Util.convertStringToJson("permission", permission + ""), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(Util.convertStringToJson("permission", Boolean.toString(permission) + ""), HttpStatus.ACCEPTED);
     }
 
 

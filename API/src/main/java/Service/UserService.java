@@ -12,7 +12,7 @@ public interface UserService {
     User addEntity(String pseudo, String mail, String hashkey) throws DataException;
     User getEntityByMail(String mail) throws DataException;
     User getEntityById(Long id) throws DataException;
-    List getEntityList() throws Exception;
-    boolean deleteEntity(Long idUser) throws Exception;
-    User authEntity(String username,String password) throws Exception;
+    List getEntityList() throws DataException;
+    boolean deleteEntity(Long idUser) throws DataException;
+    User authEntity(String username,String password) throws DataException;
 }

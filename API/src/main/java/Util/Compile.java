@@ -13,8 +13,8 @@ public class Compile {
 
 
     public String executeCommpilation(String projectName,String currentUser,String projectOwner,String projectType) throws InterruptedException, IOException {
-        String result = new String();
-        Process p1 = null;
+        String result;
+        Process p1;
         Runtime rt = Runtime.getRuntime();
 
         // Phase 1 : Copie
@@ -46,6 +46,8 @@ public class Compile {
         //Phase 3 : Clean
         p1 = rt.exec("./clean.sh "+currentUser);
         p1.waitFor();
+
+        in.close();
 
         return result;
     }

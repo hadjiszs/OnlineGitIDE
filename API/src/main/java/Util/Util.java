@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/20/16.
@@ -45,12 +47,13 @@ public class Util<T> {
 
     public List<T> convertToObjectJSON(String json){
         List<T> list = new ArrayList();
+        final Logger LOGGER = Logger.getLogger( Util.class.getName() );
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
         try {
             list = mapper.readValue(json, mapper.getTypeFactory().constructType(List.class,
                     this.getClass().getGenericSuperclass().getClass()));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
         }
 
         return list;
