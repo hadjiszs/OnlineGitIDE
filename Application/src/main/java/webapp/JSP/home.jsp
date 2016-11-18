@@ -46,7 +46,7 @@
                             <li><a href="edit.jsp">Edition</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">Deconnexion</a></li>
+                            <li><a id="deconnexion" href="#">Deconnexion</a></li>
                         </ul>
                     </div>
                 </div>

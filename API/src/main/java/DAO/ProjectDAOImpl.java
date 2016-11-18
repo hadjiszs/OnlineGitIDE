@@ -4,7 +4,6 @@ import Model.Project;
 import Model.User;
 import Util.DataException;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,9 +19,9 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         Project proj = null;
 
         try{
-            if (project.getId() != null){
+            /*if (project.getId() != null){
                 proj = getEntityById(project.getId());
-            }
+            }*/
 
         }catch (Exception ex){
             proj = null;
@@ -41,6 +40,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
                 LOGGER.log( Level.FINE, e.toString(), e);
             }
         }
+        return true;
     }
 
     /* TODO ajouter update */
@@ -56,7 +56,6 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         } catch(IllegalArgumentException exception) {
             project = null;
             LOGGER.log( Level.FINE, exception.toString(), exception);
-            //closeEntityManager();
         }
 
         if (project == null){
@@ -71,22 +70,21 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         return project;
     }
 
-    public List getEntityList(User user) throws DataException {
+    public List<Project> getEntityList(User user) throws DataException {
         String query = "SELECT p FROM Project p ";
         List list = getEntityManager().createQuery(query).getResultList();
         //closeEntityManager();
 
         return list;
     }
-
-    public boolean deleteEntity(Long id) throws DataException{
-        Project project = getEntityById(id);
+/*
+    public boolean deleteEntity(Project project) throws DataException{
         getEntityManager().getTransaction().begin();
-        getEntityManager().remove(project);
+        getEntityManager().remove(getEntityManager().contains(project) ? project : getEntityManager().merge(project));
         getEntityManager().getTransaction().commit();
 
         //closeEntityManager();
 
         return true;
-    }
+    }*/
 }

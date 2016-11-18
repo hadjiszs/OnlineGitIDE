@@ -19,7 +19,7 @@ import java.io.File;
 @Controller
 @RequestMapping("/tree")
 public class FileTreeController {
-
+/*
 
     // /api/tree/getEntityById?path=
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,5 +33,5 @@ public class FileTreeController {
             return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<String>(ft.toJsonFileTree().toString(),HttpStatus.OK);
-    }
+    }*/
 }

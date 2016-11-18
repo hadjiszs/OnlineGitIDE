@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class FileEditController {
     public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
     private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
-
+/*
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<String> get(@RequestParam(value="id") Long id,
@@ -68,7 +68,7 @@ public class FileEditController {
         // @FIXME : renvoyer une réponse correcte
         return new ResponseEntity<String>("tmp ok", HttpStatus.OK);
     }
-
+*/
     @PostConstruct
     public void init() {
         fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();

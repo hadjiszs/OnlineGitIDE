@@ -1,13 +1,21 @@
 
 /** Crée une session avec un cookie qui contient le hashkey */
 function connexion(json){
-
+    Cookies.set('id', json["id"]);
     Cookies.set('hashkey', json["hashkey"]);
     Cookies.set('mail', json["mail"]);
     Cookies.set('pseudo', json["pseudo"]);
 
     console.log(json);
     window.location.href = "/JSP/home.jsp";
+}
+
+function deconnexion(){
+    Cookies.remove('id');
+    Cookies.remove('hashkey');
+    Cookies.remove('mail');
+    Cookies.remove('pseudo');
+    window.location.href = "/";
 }
 
 /* Execute une requête vers l'API */

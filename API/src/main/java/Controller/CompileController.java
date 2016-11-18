@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
 @RequestMapping("/compile")
 public class CompileController {
     private EntityManager entityManager;
-
+/*
     @RequestMapping(value = "/c", produces = "application/json; charset=utf-8")
     public @ResponseBody
     ResponseEntity<String> compile(@RequestParam("currentUser") String currentUser,
@@ -37,5 +37,5 @@ public class CompileController {
 
         return new ResponseEntity<String>(Util.convertToJson("reponse"), HttpStatus.OK);
     }
-
+*/
 }

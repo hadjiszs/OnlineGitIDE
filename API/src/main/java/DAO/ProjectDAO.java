@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProjectDAO {
     boolean addEntity(Project project) throws DataException;
     Project getEntityById(Long id) throws DataException;
-    List getEntityList(User user) throws DataException;
-    boolean deleteEntity(Long id) throws DataException;
+    List<Project> getEntityList(User user) throws DataException;
+    //boolean deleteEntity(Project project) throws DataException;
 
 }

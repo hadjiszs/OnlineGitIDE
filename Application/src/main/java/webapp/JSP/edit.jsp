@@ -16,16 +16,16 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="../CSS/edit.css">
+        <link rel="stylesheet" type="text/css" href="../ressources/CSS/edit.css">
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <script src="../../codeMirror/lib/codemirror.js"></script>
-        <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
-        <script src="../../codeMirror/mode/clike/clike.js"></script>
-        <link href="../img/favicon.ico" rel="icon" type="image/x-icon" />
+        <script src="../codeMirror/lib/codemirror.js"></script>
+        <link rel="stylesheet" href="../codeMirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../codeMirror/theme/dracula.css">
+        <script src="../codeMirror/mode/clike/clike.js"></script>
+        <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <header>

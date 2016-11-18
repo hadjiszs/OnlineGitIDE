@@ -5,7 +5,6 @@ import DAO.UserDAOImp;
 import Model.User;
 import Util.DataException;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     public List getEntityList() throws NullPointerException {
         try {
+        /*if (user == null){
+            throw new DataException("User doesn't exists");
+        }*/
             return userDAO.getEntityList();
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     public boolean deleteEntity(String mail) throws DataException {
         try {
-            return userDAO.deleteEntity(mail);
+            //return userDAO.deleteEntity(mail);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
@@ -53,6 +55,15 @@ public class UserServiceImpl implements UserService {
     public User authEntity(String username, String password) throws DataException {
         try {
             return userDAO.authEntity(username,password);
+        } catch (Exception e) {
+            LOGGER.log( Level.FINE, e.toString(), e);
+        }
+        return null;
+    }
+
+    public User getEntityById(Long id) throws DataException{
+        try {
+            return userDAO.getEntityById(id);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }

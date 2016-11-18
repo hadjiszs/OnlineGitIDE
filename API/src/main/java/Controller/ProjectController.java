@@ -4,7 +4,10 @@ import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Service.*;
-import Util.*;
+import Util.Constantes;
+import Util.Status;
+import Util.StatusOK;
+import Util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +33,7 @@ public class ProjectController {
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "name") String name,
                                                     @RequestParam(value = "version") String version,
                                                     @RequestParam(value = "root") String root,
-                                                    @RequestParam(value = "type") String type,
+                                                    @RequestParam(value = "type") Project.TypeProject type,
                                                     @RequestParam(value = "user") Long idUser){
 
         Project project = new Project(name, version, type, root);
@@ -39,53 +42,53 @@ public class ProjectController {
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<String>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI, project.getId())), HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(@RequestParam(value = "id") Long id){
         Project project;
 
         try {
             project = projectService.getEntityById(id);
         }catch (Exception ex) {
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(project), HttpStatus.ACCEPTED);
-    }
+        return new ResponseEntity(Util.convertToJson(project), HttpStatus.ACCEPTED);
+    }*/
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getall(@RequestParam(value = "mail") String mail){
-        List<Project> projects;
+    public @ResponseBody ResponseEntity<String> getall(@RequestParam(value = "idUser") Long idUser){
+        List<Project> projects = null;
+        User user = null;
 
         try {
-            User user = userService.getEntityByMail(mail);
+            user = userService.getEntityById(idUser);
             projects = projectService.getEntityList(user);
         }catch (Exception ex) {
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
-                    HttpStatus.NOT_FOUND);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return new ResponseEntity<String>(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
     }
-
+/*
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
         try {
             projectService.deleteEntity(id);
         }catch (Exception ex) {
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
+            return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
-    }
+    }*/
 
 
     @PostConstruct

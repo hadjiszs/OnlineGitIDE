@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Model.UserGrantID;
@@ -56,7 +55,6 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
         try {
             grant = getEntityManager().find(UserGrant.class, id);
         } catch (Exception e) {
-            e.printStackTrace();
             closeEntityManager();
             throw new DataException("Permis doesn't exists");
         }
@@ -80,7 +78,7 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
 
     public boolean deleteEntity(UserGrant grant) throws DataException {
         getEntityManager().getTransaction().begin();
-        getEntityManager().remove(grant);
+        getEntityManager().remove(getEntityManager().contains(grant) ? grant : getEntityManager().merge(grant));
         getEntityManager().getTransaction().commit();
 
         closeEntityManager();
