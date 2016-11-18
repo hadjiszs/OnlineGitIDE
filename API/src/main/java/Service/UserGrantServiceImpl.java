@@ -35,7 +35,6 @@ public class UserGrantServiceImpl implements UserGrantService{
 
             User user = userService.getEntityById(idUser);
 
-            System.out.println(idProject);
             Project project = projectService.getEntityById(idProject);
 
             System.out.println(project);
