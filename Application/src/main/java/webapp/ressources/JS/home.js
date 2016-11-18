@@ -32,3 +32,51 @@ function deroulerPanel(){
 }
 
 
+$(document).ready(function() {
+
+    /////////////// TEST ////////////////
+    // Test création d'un projet
+
+    var url = "/api/project/add?name=test&version=1&root=/&type=JAVA&user="+ Cookies.get('id');
+    ApiRequest('GET',url,"",addProject);
+
+    /*var url = "/api/project/add?name=salut&version=1&root=/&type=JAVA&user="+ Cookies.get('id');
+    ApiRequest('GET',url,"",addProject);*/
+
+    // Liste des projets de l'utilisateur
+    var url = "/api/project/getall?idUser=" +  Cookies.get('id');
+    ApiRequest('GET',url,"",listProject);
+
+    //Liste
+
+
+    $("#deconnexion").on("click", function (e) {
+        e.preventDefault();
+        deconnexion();
+    })
+
+
+
+
+
+});
+
+function listProject(json){
+    $("#listeProjets").empty();
+
+    $.each(json, function(index, element) {
+        console.log(index + " " +element);
+        $('#listeProjets').append( '<a value=="'+ element.id +'" href="#" class="list-group-item">'+ element.name + '</a>');
+    });
+}
+
+function addProject(json){
+    console.log(json);
+    console.log(json["id"]);
+    $("#listeProjets").append(JSON.stringify(json));
+    Cookies.set('project', json["id"]);
+}
+
+
+
+

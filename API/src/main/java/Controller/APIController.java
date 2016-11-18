@@ -1,25 +1,45 @@
 package Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import Model.User;
+import Service.APIService;
+import Util.Util;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
- * Created by amaia.nazabal on 10/19/16.
+ * Controller par défaut de l'API
  */
-
 @RestController
+@RequestMapping("/")
 public class APIController {
 
-    @RequestMapping("/add")
-    public User user(@RequestParam(value="pseudo") String pseudo,
-                     @RequestParam(value="mail") String mail){
-        return new User(mail, pseudo);
+    /**
+     * Page par défault de l'API
+     * @return Un json contenant le statut de l'API
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> get(){
+        return new ResponseEntity<String>(Util.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
-    @RequestMapping("/new")
-    public void index(){
-        System.out.println("default");
+    /**
+     * Initialise la persistance de l'API
+     */
+    @PostConstruct
+    public void init() {
+        System.out.println("[API] [Controller] Init");
+        APIService.persistance();
+    }
+
+    /**
+     * Ferme la persistance de l'API
+     */
+    @PreDestroy
+    public void destroy(){
+        APIService.close();
     }
 }

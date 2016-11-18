@@ -8,54 +8,74 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "user_grant")
+@NamedQueries(value = {
+        @NamedQuery(name = "findByUser", query = "SELECT g FROM UserGrant g WHERE g.userId = :id"),
+        @NamedQuery(name = "findProjectsByUserType", query = "SELECT g FROM UserGrant g WHERE g.projectId = :id AND gran = :type")
+})
 @IdClass(UserGrantID.class)
 public class UserGrant implements Serializable {
-    private enum Permis {ADMIN, DEV};
+
+    public enum Permis {Admin, Dev};
+
     @MapsId("id")
     @Id
-    private Long projetId;
+    private Long projectId;
 
-    @MapsId("mail")
+    @MapsId("id")
     @Id
-    private String mail;
+    private Long userId;
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('Admin', 'Dev')")
-    private Permis gran; //On ne peut pas utiliser grant parce que c'est une mot clé de Mysql
+    private Permis gran; /* On ne peut pas utiliser grant parce que c'est une mot clé de Mysql */
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mail", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
+
+    @ManyToOne(targetEntity = Project.class)
+    @JoinColumn(name = "projectId", insertable = false, updatable = false)
+    private Project project;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        setProjectId(project.getId());
+        this.project = project;
+    }
 
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
+        setUserId(user.getId());
         this.user = user;
     }
 
-    public Long getProjetId() {
-        return projetId;
-    }
-
-    public void setProjetId(Long projetId) {
-        this.projetId = projetId;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public Permis getGrant() {
+    public Permis getGran() {
         return gran;
     }
 
-    public void setGrant(Permis gran) {
+    public void setGran(Permis gran) {
         this.gran = gran;
     }
 }
