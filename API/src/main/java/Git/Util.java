@@ -2,17 +2,29 @@ package Git;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepository;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.String;
 import javax.json.*;
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import Util.ArboNode;
@@ -25,17 +37,20 @@ import Util.ArboTree;
 public class Util {
 
     /**
+     * Recupere l'arborescence associé à un commit sujet
      *
      * @param creator l'id de l'utilisateur qui a créé le projet
      * @param repository l'id du repository
      * @param revision l'id de la revision (commit) dont on souhaite récuperer l'arborescence
      * @return un nouvel objet Json contenant l'arborescence du projet pour la révision donnée
      */
-    public static JsonObject getArborescence(String creator, String repository, String revision) {
+    public static JsonObject getArborescence(String creator,
+                                             String repository,
+                                             String revision) {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
-            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository + ".git"));
+            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository +".git"));
 
             // a RevWalk allows to walk over commits based on some filtering that is defined
             try  {
@@ -76,7 +91,8 @@ public class Util {
     }
 
     /**
-     * Fonction permettant la suppression d'un dossier. utile à la fonction suivante
+     * Fonction permettant la suppression d'un dossier. utile à la fonction deleteRepository
+     *
      * @param dir le dossier à supprimer
      * @return true si la suppression a été effectuée correctement, false sinon
      */
@@ -97,24 +113,29 @@ public class Util {
     }
 
     /**
+     * Suppression d'un repository
      *
      * @param creator l'id de l'utilisateur qui a créé le dépot
      * @param repository l'id du repo
      * @return True si le repo a été supprimé, false sinon
      */
-    public static boolean deleteRepository(String creator, String repository) {
-        File dir = new File(Constantes.REPOPATH + creator + "/" + repository + ".git");
+    public static boolean deleteRepository(String creator,
+                                           String repository) {
+        File dir = new File(Constantes.REPOPATH + creator + "/" + repository +".git");
         return deleteDirectory(dir);
     }
 
     /**
      * Permet de cloner un repo distant en local
+     *
      * @param creator id de l'utilisateur qui créé le repo
      * @param newRepo id du nouveau Repo
      * @param remoteURL URL du repo distant
      * @throws Exception
      */
-    public static void cloneRemoteRepo(String creator, String newRepo, String remoteURL) throws Exception {
+    public static void cloneRemoteRepo(String creator,
+                                       String newRepo,
+                                       String remoteURL) throws Exception {
         if (newRepo == null) {
             String[] list = remoteURL.split("/");
             newRepo = list[list.length - 1];
@@ -131,8 +152,21 @@ public class Util {
                 .call();
     }
 
-    public static JsonObject getContent(String creator, String repo, String revision, String path) throws Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+    /**
+     * Retourne le contenu d'un fichier
+     *
+     * @param creator l'id de l'utilisateur qui a créé le dépot
+     * @param repo l'id du repo
+     * @param revision
+     * @param path
+     * @return
+     * @throws Exception
+     */
+    public static JsonObject getContent(String creator,
+                                        String repo,
+                                        String revision,
+                                        String path) throws Exception {
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo +".git"));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         JsonObject ret = factory.createObjectBuilder()
                 .add("content", BlobUtils.getContent(git.getRepository(), revision, path))
@@ -140,12 +174,10 @@ public class Util {
         return ret;
     }
 
-
-//    Creation fichier
-//              /git/<creator>/<depot>/create/file/<branch>
-//    createFile(user, depot, branch)
-
     /**
+     * Créer une branche
+     *
+     * /git/<creator>/<depot>/create/branch/<branch>
      *
      * @param creator utilisateur proprietaire du depot
      * @param repo    nom du depot
@@ -157,9 +189,7 @@ public class Util {
                                           String repo,
                                           String branch) throws Exception {
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
-
-        // FIXME : gestion de code de retour dans une classe de constante
-        int codeRetour = 45;
+        GitStatus status;
 
         // Ouverture du depot
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
@@ -176,53 +206,142 @@ public class Util {
         }
 
         if(branchExiste == false) {
-            codeRetour = 55; // FIXME : mettre bon code retour -> branche bien crée
+            status = GitStatus.BRANCHE_CREATED;
             // On cree la branche
             git.branchCreate()
                     .setName(branch)
                     .call();
         } else
-            codeRetour = 57; // FIXME : mettre bon code retour -> nom de branche déjà existant
+            status = GitStatus.BRANCH_NOT_CREATED;
 
         JsonObject ret = factory.createObjectBuilder()
-                .add("code", String.valueOf(codeRetour))
+                .add("code", String.valueOf(status))
                 .build();
 
         return ret;
     }
 
-    public static  JsonObject getBranches(String creator, String repo) throws Exception {
+    /**
+     * Montre les diff entre un commit et son/ses parent(s)
+     *
+     * /git/<creator>/<depot>/showCommit/<revision>
+     *
+     * @param creator   utilisateur proprietaire du depot
+     * @param repo      nom du depot
+     * @param revision  string id du commit sujet (le commit sujet est le commit dont on veut le diff avec ses parents)
+     * @return un code de réponse renvoyé un json
+     * @throws Exception
+     */
+    public static JsonObject showCommit(String creator,
+                                        String repo,
+                                        String revision) throws Exception {
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DiffFormatter formatter = new DiffFormatter(baos);
+
+        // Ouverture du depot
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        Repository repository = git.getRepository();
+
+        // Recuperation du RevCommit associé au commit sujet
+        RevWalk walk = new RevWalk(repository);
+        RevCommit commit = walk.parseCommit(ObjectId.fromString(revision));
+
+        // Arborescence du commit
+        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository, commit);
+
+        // Pour chaque commit parent du commit sujet, on recupere le diff
+        for(RevCommit parent : commit.getParents()) {
+            AbstractTreeIterator newTreeParser = prepareTreeParser(repository, parent);
+
+            List<DiffEntry> diff = git.diff()
+                    .setOldTree(oldTreeParser)
+                    .setNewTree(newTreeParser)
+                    .call();
+
+            formatter.setRepository(repository);
+            for (DiffEntry entry : diff)
+                formatter.format(entry);
+        }
+
+        JsonObject ret = factory.createObjectBuilder()
+                .add("result", baos.toString( String.valueOf(Charset.defaultCharset())) )
+                .build();
+
+        return ret;
+    }
+
+    /**
+     *
+     * @param repository
+     * @param objectId
+     * @return
+     * @throws IOException
+     */
+    private static AbstractTreeIterator prepareTreeParser(Repository repository,
+                                                          RevCommit objectId) throws IOException {
+        RevWalk walk = new RevWalk(repository);
+        RevCommit commit = walk.parseCommit(objectId);
+
+        RevTree tree = walk.parseTree(commit.getTree().getId());
+
+        CanonicalTreeParser oldTreeParser = new CanonicalTreeParser();
+        ObjectReader oldReader = repository.newObjectReader();
+        oldTreeParser.reset(oldReader, tree.getId());
+
+        walk.dispose();
+
+        return oldTreeParser;
+    }
+
+    /**
+     *
+     * @param creator
+     * @param repo
+     * @return
+     * @throws Exception
+     */
+    public static  JsonObject getBranches(String creator,
+                                          String repo) throws Exception {
+
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
+
         List<Ref> call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
         JsonArrayBuilder build = factory.createArrayBuilder();
+
         for(Ref ref : call) {
             //System.out.println(ref.getName());
             build.add(factory.createObjectBuilder().add("name", ref.getName()));
         }
 
         return factory.createObjectBuilder().add("branches", build).build();
-
     }
 
-
-    public static JsonObject getCommits(String creator, String repo, String branch) throws  Exception {
+    /**
+     *
+     * @param creator
+     * @param repo
+     * @param branch
+     * @return
+     * @throws Exception
+     */
+    public static JsonObject getCommits(String creator,
+                                        String repo,
+                                        String branch) throws  Exception {
         Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
-
         Iterable<RevCommit> commits = git.log().all().call();
-
         JsonArrayBuilder build = factory.createArrayBuilder();
 
         Iterable<RevCommit> revCommits = git.log()
                 .add(git.getRepository().resolve(branch))
                 .call();
+
         for(RevCommit revCommit : revCommits){
             build.add(factory.createObjectBuilder().add("id", revCommit.getName()));
         }
 
         return factory.createObjectBuilder().add("commits", build).build();
-
     }
-
 }
