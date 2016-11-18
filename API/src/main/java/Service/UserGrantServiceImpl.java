@@ -23,7 +23,11 @@ public class UserGrantServiceImpl implements UserGrantService{
     public boolean addEntity(Long idUser, Long idProject, UserGrant.Permis type) throws DataException {
         UserGrant grant;
 
-        grant = getEntityById(idUser, idProject);
+        try {
+            grant = getEntityById(idUser, idProject);
+        }catch (Exception e ){
+            grant = null;
+        }
 
         if (grant == null) {
             UserService userService = new UserServiceImpl();
@@ -31,9 +35,10 @@ public class UserGrantServiceImpl implements UserGrantService{
 
             User user = userService.getEntityById(idUser);
 
-
+            System.out.println(idProject);
             Project project = projectService.getEntityById(idProject);
 
+            System.out.println(project);
             grant = new UserGrant();
             grant.setUser(user);
             grant.setProject(project);

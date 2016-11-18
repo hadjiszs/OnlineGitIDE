@@ -22,6 +22,8 @@ public class DAO {
     }
 
     public void closeEntityManager(){
-        em.close();
+        if (em.isOpen()){
+            em.close();
+        }
     }
 }

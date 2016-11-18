@@ -19,12 +19,13 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         Project proj = null;
 
         try{
-            /*if (project.getId() != null){
+            if (project.getId() != null){
                 proj = getEntityById(project.getId());
-            }*/
+            }
 
         }catch (Exception ex){
             proj = null;
+
             LOGGER.log( Level.FINE, ex.toString(), ex);
         }
 
@@ -32,6 +33,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             getEntityManager().getTransaction().begin();
             getEntityManager().persist(project);
             getEntityManager().getTransaction().commit();
+            closeEntityManager();
         }else {
 
             try {
@@ -55,9 +57,10 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             project = getEntityManager().find(Project.class, id);
         } catch(IllegalArgumentException exception) {
             project = null;
+            closeEntityManager();
             LOGGER.log( Level.FINE, exception.toString(), exception);
         }
-
+        closeEntityManager();
         if (project == null){
             try {
                 throw new Exception("Project doesn't exists");
@@ -73,7 +76,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     public List<Project> getEntityList(User user) throws DataException {
         String query = "SELECT p FROM Project p ";
         List list = getEntityManager().createQuery(query).getResultList();
-        //closeEntityManager();
+        closeEntityManager();
 
         return list;
     }
