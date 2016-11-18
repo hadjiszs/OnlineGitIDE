@@ -61,7 +61,7 @@ public class UserController {
     }
 
 
-/*    @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<User> get(@RequestParam(value="mail") String mail){
         User user;
 
@@ -73,9 +73,9 @@ public class UserController {
         }
 
         return new ResponseEntity(Util.convertToJson(user), HttpStatus.OK);
-    }*/
+    }
 
-/*
+
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(){
         List<User> users;
@@ -88,8 +88,8 @@ public class UserController {
         }
 
         return new ResponseEntity(Util.convertListToJson(users), HttpStatus.OK);
-    }*/
-/*
+    }
+
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> remove(@RequestParam(value="mail") String mail){
 
@@ -102,6 +102,6 @@ public class UserController {
 
         return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.OK);
-    }*/
+    }
 
 }

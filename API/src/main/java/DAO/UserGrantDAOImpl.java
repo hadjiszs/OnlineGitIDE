@@ -76,6 +76,8 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
         return userGrant;
     }
 
+
+
     public boolean deleteEntity(UserGrant grant) throws DataException {
         getEntityManager().getTransaction().begin();
         getEntityManager().remove(getEntityManager().contains(grant) ? grant : getEntityManager().merge(grant));
