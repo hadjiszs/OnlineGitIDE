@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/file")
 public class FileEditController {
+
     public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
     private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
 /*
@@ -72,5 +73,9 @@ public class FileEditController {
     @PostConstruct
     public void init() {
         fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
+    }
+
+    public FichierUtiliseServiceImpl getFichierUtiliseServiceImpl() {
+        return fichierUtiliseServiceImpl;
     }
 }

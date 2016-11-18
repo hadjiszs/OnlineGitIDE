@@ -5,6 +5,7 @@ import DAO.ProjectDAOImpl;
 import Model.Project;
 import Model.User;
 import Util.DataException;
+import jdk.nashorn.internal.ir.PropertyKey;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -20,10 +21,12 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO = new ProjectDAOImpl();
     }
 
-    public boolean addEntity(Project project) throws DataException{
+    public boolean addEntity(Project project) throws DataException {
         try {
-            return projectDAO.addEntity(project);
-        } catch (Exception e) {
+            if (project.getId() == null) {
+                return projectDAO.addEntity(project);
+            }
+        }catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
         return false;

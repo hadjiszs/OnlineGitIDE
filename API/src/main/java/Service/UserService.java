@@ -13,7 +13,7 @@ public interface UserService {
     User addEntity(String pseudo, String mail, String hashkey) throws DataException;
     User getEntityByMail(String mail) throws DataException;
     User getEntityById(Long id) throws DataException;
-    List getEntityList() throws Exception;
-    boolean deleteEntity(String mail) throws Exception;
+    boolean deleteEntity(String mail) throws DataException;
+    List getEntityList() throws NullPointerException;
     User authEntity(String username,String password) throws Exception;
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/21/16.
@@ -40,7 +42,7 @@ public class ProjectController {
         try {
             projectService.addEntity(project);
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
             ex.printStackTrace();
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -55,7 +57,7 @@ public class ProjectController {
 
         try {
             project = projectService.getEntityById(id);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
             return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -70,7 +72,8 @@ public class ProjectController {
         try {
             user = userService.getEntityById(idUser);
             projects = projectService.getEntityList(user);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -81,7 +84,7 @@ public class ProjectController {
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
         try {
             projectService.deleteEntity(id);
-        }catch (Exception ex) {
+        }catch (DataException ex) {
             return new ResponseEntity(Util.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -21,7 +23,7 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-
+    private static final Logger LOGGER = Logger.getLogger( UserController.class.getName() );
     @PostConstruct
     public void init(){
         userService = new UserServiceImpl();
@@ -37,7 +39,7 @@ public class UserController {
         try{
             user = userService.addEntity(mail, username,password);
         }catch(Exception ex){
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
 
