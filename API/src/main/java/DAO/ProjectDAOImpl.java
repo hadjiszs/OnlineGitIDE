@@ -73,9 +73,9 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         return project;
     }
 
-    public List<Project> getEntityList(User user) throws DataException {
-        String query = "SELECT p FROM Project p ";
-        List list = getEntityManager().createQuery(query).getResultList();
+    public List<Project> getEntityList() throws DataException {
+        String query = "Project.findAll";
+        List list = getEntityManager().createNamedQuery(query, Project.class).getResultList();
         closeEntityManager();
 
         return list;

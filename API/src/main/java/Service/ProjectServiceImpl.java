@@ -3,7 +3,6 @@ package Service;
 import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
 import Model.Project;
-import Model.User;
 import Util.DataException;
 
 import java.util.List;
@@ -39,9 +38,9 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
-    public List<Project> getEntityList(User user) throws DataException{
+    public List<Project> getEntityList() throws DataException{
         try {
-            return projectDAO.getEntityList(user);
+            return projectDAO.getEntityList();
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
