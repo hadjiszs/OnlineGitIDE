@@ -17,13 +17,26 @@ BODY{
     z-index:10;
 }
 
-#panelGauche{
-    left:-20%;
+@media (min-width: 1300px){
+    #panelGauche{
+        left:-20%;
+    }
+
+    #panelDroite{
+        right:-20%;
+    }
 }
 
-#panelDroite{
-    right:-20%;
+@media (max-width: 1299px){
+    #panelGauche{
+        left:-250px;
+    }
+
+    #panelDroite{
+        right:-250px;
+    }
 }
+
 
 
 #ancrePanelGauche, #ancrePanelDroite{
@@ -41,6 +54,7 @@ BODY{
     border-radius: 200px 10px 10px 200px;
     margin-right:-10px;
     right:0;
+
 }
 
 #ancrePanelGauche{

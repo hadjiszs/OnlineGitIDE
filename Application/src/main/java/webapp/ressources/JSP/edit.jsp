@@ -26,6 +26,11 @@
         <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
         <link rel="stylesheet" href="../../codeMirror/theme/rubyblue.css">
         <script src="../../codeMirror/mode/clike/clike.js"></script>
+
+        <!-- Test -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
+
     </head>
     <body>
         <header>
@@ -137,9 +142,17 @@ return member;
             </a>
 
             <section id="panelGauche">
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
+                    <h2> Arborescence </h2>
+                    <div id="arborescenceFichier">
+                        <ul>
+                            <li>Root node
+                                <ul>
+                                    <li>Child node 1</li>
+                                    <li>Child node 2</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
             </section>
         </main>
 
@@ -168,7 +181,7 @@ return member;
             </div>
         </div>
         <!-- Fin Modal -->
-        <script async src="../JS/edit.js"></script>
+        <script src="../JS/edit.js"></script>
     </body>
 </html>
 

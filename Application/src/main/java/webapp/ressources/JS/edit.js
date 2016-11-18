@@ -14,49 +14,49 @@ $("#changerTheme").change(changerTheme);
 $("#tauxIndentation").change(changerIndentation);
 $("#autoIndent").click(indenterEditeur);
 
-function deroulerPanelDroite(){
-    if(!deroulerDroite){
+function deroulerPanelDroite() {
+    if (!deroulerDroite) {
         $("#panelDroite").animate({
             right: "0px",
-        },1000);
+        }, 1000);
         $("#ancrePanelDroite").animate({
             right: "20%",
-        },1000);
+        }, 1000);
         deroulerDroite = true;
         $("#chevronAncreDroite").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
     }
-    else{
+    else {
         $("#panelDroite").animate({
             right: "-20%",
-        },1000);
+        }, 1000);
         $("#ancrePanelDroite").animate({
             right: "0px",
-        },1000);
+        }, 1000);
         deroulerDroite = false;
         $("#chevronAncreDroite").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
     }
 
 }
 
-function deroulerPanelGauche(){
+function deroulerPanelGauche() {
 
-    if(!deroulerGauche){
+    if (!deroulerGauche) {
         $("#panelGauche").animate({
             left: "0px",
-        },1000);
+        }, 1000);
         $("#ancrePanelGauche").animate({
             left: "20%",
-        },1000);
+        }, 1000);
         deroulerGauche = true;
         $("#chevronAncreGauche").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
     }
-    else{
+    else {
         $("#panelGauche").animate({
             left: "-20%",
-        },1000);
+        }, 1000);
         $("#ancrePanelGauche").animate({
             left: "0px",
-        },1000);
+        }, 1000);
         deroulerGauche = false;
         $("#chevronAncreGauche").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
     }
@@ -109,3 +109,8 @@ function changerIndentation(){
     indenterEditeur();
 }
 
+
+/* Test Tree */
+$(function() {
+    $('#arborescenceFichier').jstree();
+});
