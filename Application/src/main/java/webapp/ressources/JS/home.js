@@ -44,7 +44,7 @@ $(document).ready(function() {
     ApiRequest('GET',url,"",addProject);*/
 
     // Liste des projets de l'utilisateur
-    var url = "/api/project/getall?idUser=" +  Cookies.get('id');
+    url = "/api/project/getall?idUser=" +  Cookies.get('id');
     ApiRequest('GET',url,"",listProject);
 
     //Liste
@@ -62,7 +62,7 @@ $(document).ready(function() {
 });
 
 function listProject(json){
-    console.log(json);
+    //console.log(json);
     $("#listeProjets").empty();
 
     $.each(json, function(index, element) {
@@ -70,8 +70,8 @@ function listProject(json){
     });
 }
 function addProject(json){
-    console.log(json);
-    console.log(json["id"]);
+    //console.log(json);
+    //console.log(json["id"]);
     $("#listeProjets").append(JSON.stringify(json));
 }
 
