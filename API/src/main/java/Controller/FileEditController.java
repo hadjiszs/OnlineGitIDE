@@ -33,9 +33,9 @@ public class FileEditController {
 //                    ex.getMessage())), HttpStatus.NOT_FOUND);
 //        }
 //
-//        return new ResponseEntity<String>(Util.convertToJson(user), HttpStatus.OK);
+//        return new ResponseEntity<String>(Util.convertToJson(user), HttpStatus.ACCEPTED);
         // @FIXME : renvoyer une réponse correcte
-        return new ResponseEntity<String>("tmp ok", HttpStatus.OK);
+        return new ResponseEntity<String>("tmp ok", HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +62,7 @@ public class FileEditController {
 //        }
 //
         // @FIXME : renvoyer une réponse correcte
-        return new ResponseEntity<String>("tmp ok", HttpStatus.OK);
+        return new ResponseEntity<String>("tmp ok", HttpStatus.ACCEPTED);
     }
 
     @PostConstruct

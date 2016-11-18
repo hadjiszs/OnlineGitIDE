@@ -37,7 +37,7 @@ public class UserController {
         }
 
         return new ResponseEntity(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI, id)), HttpStatus.OK);
+                Constantes.OPERATION_MSG_REUSSI, id)), HttpStatus.ACCEPTED);
     }
 
         @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +51,7 @@ public class UserController {
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertToJson(user), HttpStatus.OK);
+        return new ResponseEntity(Util.convertToJson(user), HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,7 +65,7 @@ public class UserController {
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertListToJson(users), HttpStatus.OK);
+        return new ResponseEntity(Util.convertListToJson(users), HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,7 +79,7 @@ public class UserController {
         }
 
         return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI)), HttpStatus.OK);
+                Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
     }
 
     @PostConstruct

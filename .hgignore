@@ -5,4 +5,5 @@ target
 .classpath
 .project
 .DS_Store
-*.iml
+nb-configuration.xml	
+sonar-project.properties
