@@ -1,6 +1,7 @@
 package Util;
 
 import java.io.IOException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class Util<T> {
         return "{\""+ str + "\":\"" + value + "\"}";
     }
 
-    
+
     public List<T> convertToObjectJSON(String json){
         List<T> list = new ArrayList();
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();

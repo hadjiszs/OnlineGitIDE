@@ -28,6 +28,7 @@ public class UserDAOImp extends DAO implements UserDAO {
             getEntityManager().getTransaction().begin();
             getEntityManager().persist(user);
             getEntityManager().getTransaction().commit();
+            closeEntityManager();
         } else {
             closeEntityManager();
             throw new DataException("User already exists");
@@ -50,6 +51,8 @@ public class UserDAOImp extends DAO implements UserDAO {
         }catch (Exception ex){
             closeEntityManager();
             throw new DataException("User doesn't exist");
+        }finally {
+            closeEntityManager();
         }
         closeEntityManager();
         return user;
@@ -75,6 +78,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         } catch(Exception ex) {
             user = null;
+        }finally {
             closeEntityManager();
         }
 
@@ -95,6 +99,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         String query = "SELECT u FROM User u";
         List list =  getEntityManager().createQuery(query).getResultList();
+        closeEntityManager();
 
         closeEntityManager();
         return list;

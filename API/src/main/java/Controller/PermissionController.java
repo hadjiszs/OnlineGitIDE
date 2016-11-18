@@ -3,6 +3,7 @@ package Controller;
 import Model.Project;
 import Model.User;
 import Model.UserGrant;
+import Model.User;
 import Service.UserGrantService;
 import Service.UserGrantServiceImpl;
 import Util.Constantes;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-
 /**
  * Created by amaia.nazabal on 11/16/16.
  */
@@ -27,10 +27,11 @@ import java.util.List;
 @RequestMapping("/permission")
 public class PermissionController {
     private UserGrantService userGrantService;
-/*
+
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
-                                                    @RequestParam(value = "idUser") Long idUser){
+    public @ResponseBody
+    ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
+                               @RequestParam(value = "idUser") Long idUser){
         try {
             userGrantService.addEntity(idUser, idProject, UserGrant.Permis.Dev);
         } catch (Exception e) {
@@ -70,7 +71,7 @@ public class PermissionController {
 
         return new ResponseEntity(Util.convertToJson(user), HttpStatus.ACCEPTED);
     }
-*/
+
     @RequestMapping(value = "/getprojects", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "idUser") Long id){
         List<Project> projects;
@@ -103,8 +104,8 @@ public class PermissionController {
         result.put("permission", permission);
 
         return new ResponseEntity(result.toString(), HttpStatus.ACCEPTED);
-    }
-*/
+    }*/
+
 
     @PostConstruct
     void init(){

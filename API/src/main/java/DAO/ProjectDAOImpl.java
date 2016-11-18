@@ -21,24 +21,27 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         System.out.println("salut");
         System.out.println("pr: " + project.getId());
         try{
-            /*proj = getEntityById(project.getId());
+            if (project.getId() != null){
             System.out.println("proj: "+ proj);
-            if(proj == null){
-                throw new Exception("Project already exists");
-            }else{*/
+            }
+
+        }catch (Exception ex){
+            proj = null;
+            LOGGER.log( Level.FINE, ex.toString(), ex);
+        }
+        try{
+            if (proj == null) {
                 getEntityManager().getTransaction().begin();
                 getEntityManager().persist(project);
                 getEntityManager().getTransaction().commit();
-            return true;
-            //}
-
+            }
         }catch (Exception ex){
             LOGGER.log( Level.FINE, ex.toString(), ex);
             throw new DataException("Project doesn't exists");
         }finally {
             closeEntityManager();
         }
-
+        return true;
     }
 
     /* TODO ajouter update */
@@ -55,9 +58,20 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         } catch(Exception exception) {
             closeEntityManager();
             LOGGER.log( Level.FINE, exception.toString(), exception);
-            throw new DataException("Project doesn't exists");
+        }finally {
+            closeEntityManager();
         }
         closeEntityManager();
+
+        if (project == null){
+            try {
+                throw new Exception("Project doesn't exists");
+            } catch (Exception e) {
+                LOGGER.log( Level.FINE, e.toString(), e);
+            }
+
+        }
+
         return project;
     }
 
@@ -67,14 +81,14 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         closeEntityManager();
         return list;
     }
-/*
+
     public boolean deleteEntity(Project project) throws DataException{
         getEntityManager().getTransaction().begin();
         getEntityManager().remove(getEntityManager().contains(project) ? project : getEntityManager().merge(project));
         getEntityManager().getTransaction().commit();
 
-        //closeEntityManager();
+        closeEntityManager();
 
         return true;
-    }*/
+    }
 }

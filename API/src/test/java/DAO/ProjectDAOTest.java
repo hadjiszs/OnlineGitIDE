@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Project;
+import Model.User;
 import Service.APIService;
 import Util.DataException;
 import org.junit.AfterClass;
@@ -23,11 +24,12 @@ import static org.junit.Assert.*;
  * Created by amaia.nazabal on 11/16/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:API/src/main/webapp/WEB-INF/api-servlet.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProjectDAOTest {
     private ProjectDAO projectDAO = new ProjectDAOImpl();
     private static Project project = new Project();
+    private static User user = new User();
 
     @BeforeClass
     public static void setUpBeforeClass() throws DataException {
@@ -74,8 +76,8 @@ public class ProjectDAOTest {
         assertEquals(proj.getType(), project.getType());
         assertEquals(proj.getRoot(), project.getRoot());
     }
-/*
-    @Test
+
+    /*
     public void getEntityList() {
         Exception exception = null;
         Project proj;
@@ -99,8 +101,8 @@ public class ProjectDAOTest {
         assertEquals(proj.getType(), project.getType());
         assertEquals(proj.getRoot(), project.getRoot());
     }*/
-/*
-    @Test(expected = NoSuchElementException.class)
+
+    /*@Test(expected = NoSuchElementException.class)
     public void suppressEntity() {
         Exception exception = null;
 
@@ -113,7 +115,7 @@ public class ProjectDAOTest {
             exception = e;
         }
 
-        assertNull(exception);
+        assertNull(exception);*/
 
         /* On vérifie qu'il n'existe pas déjà */
 /*

@@ -13,5 +13,5 @@ public interface ProjectDAO {
     Boolean addEntity(Project project) throws DataException;
     Project getEntityById(Long id) throws DataException;
     List<Project> getEntityList(User user) throws DataException;
-    //boolean deleteEntity(Project project) throws DataException;
+    boolean deleteEntity(Project project) throws DataException;
 }

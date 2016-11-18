@@ -85,7 +85,7 @@ public class UserGrantServiceImpl implements UserGrantService{
 
         return result;
     }
-/*
+
     public List getDevelopersByEntity(Long idProject) throws DataException {
         List<User> users = new ArrayList();
         UserService userService = new UserServiceImpl();
@@ -119,5 +119,5 @@ public class UserGrantServiceImpl implements UserGrantService{
         }
 
         return false;
-    }*/
+    }
 }

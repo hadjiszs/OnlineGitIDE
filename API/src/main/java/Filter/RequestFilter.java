@@ -31,7 +31,7 @@ public class RequestFilter implements Filter{
 
         Cookie[] cookies = request.getCookies();
 
-        if(cookies != null){
+        if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
                 String name = cookies[i].getName();
                 String value = cookies[i].getValue();

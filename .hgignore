@@ -5,6 +5,5 @@ target
 .classpath
 .project
 .DS_Store
-nb-configuration.xml
+nb-configuration.xml	
 sonar-project.properties
-

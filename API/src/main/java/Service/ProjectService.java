@@ -13,5 +13,5 @@ public interface ProjectService {
     Boolean addEntity(Project project) throws DataException;
     Project getEntityById(Long id) throws DataException;
     List<Project> getEntityList(User user) throws DataException;
-    //boolean deleteEntity(Long id) throws DataException;
+    boolean deleteEntity(Long id) throws DataException;
 }
