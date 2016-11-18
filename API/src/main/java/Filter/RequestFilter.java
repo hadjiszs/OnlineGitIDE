@@ -27,10 +27,12 @@ public class RequestFilter implements Filter{
 
         Cookie[] cookies = request.getCookies();
 
-        for (int i = 0; i < cookies.length; i++) {
-            String name = cookies[i].getName();
-            String value = cookies[i].getValue();
-            System.out.println(name + " " + value);
+        if(cookies == null){
+            for (int i = 0; i < cookies.length; i++) {
+                String name = cookies[i].getName();
+                String value = cookies[i].getValue();
+                System.out.println(name + " " + value);
+            }
         }
 
         chain.doFilter(req,res);
