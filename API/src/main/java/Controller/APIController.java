@@ -1,10 +1,11 @@
 package Controller;
 
-import Model.User;
 import Service.APIService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import Util.Util;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -14,21 +15,17 @@ import javax.annotation.PreDestroy;
  */
 
 @RestController
+@RequestMapping("/")
 public class APIController {
 
-    @RequestMapping("/add")
-    public User user(@RequestParam(value="pseudo") String pseudo,
-                     @RequestParam(value="mail") String mail){
-        return new User(mail, pseudo, "bla bla bla");
-    }
-
-    @RequestMapping("/new")
-    public void index(){
-        System.out.println("default");
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<String> get(){
+        return new ResponseEntity<String>(Util.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
     @PostConstruct
     public void init() {
+        System.out.println("[API] [Controller] Init");
         APIService.persistance();
     }
 

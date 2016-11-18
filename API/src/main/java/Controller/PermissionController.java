@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/permission")
 public class PermissionController {
     private UserGrantService userGrantService;
-
+/*
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
                                                     @RequestParam(value = "idUser") Long idUser){
@@ -102,7 +102,7 @@ public class PermissionController {
 
         return new ResponseEntity(result.toString(), HttpStatus.ACCEPTED);
     }
-
+*/
 
     @PostConstruct
     void init(){

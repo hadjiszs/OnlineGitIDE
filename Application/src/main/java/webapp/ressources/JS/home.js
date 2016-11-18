@@ -32,3 +32,44 @@ function deroulerPanel(){
 }
 
 
+$(document).ready(function() {
+
+    /////////////// TEST ////////////////
+    // Test création d'un projet
+
+    var url = "/api/project/add?name=test&version=1&root=/&type=JAVA&user="+ Cookies.get('id');
+    ApiRequest('GET',url,"",addProject);
+
+
+    // Liste des projets de l'utilisateur
+    var url = "/api/project/getall?idUser=" +  Cookies.get('id');
+    ApiRequest('GET',url,"",listProject);
+
+    //Liste
+
+
+    $("#deconnexion").on("click", function (e) {
+        e.preventDefault();
+        deconnexion();
+    })
+
+
+
+
+
+});
+
+function listProject(json){
+    console.log(json);
+    $.each(data, function(index, element) {
+        $('#listeProjets').append(element);
+    });
+}
+function addProject(json){
+    console.log(json);
+    console.log(json["id"]);
+}
+
+
+
+

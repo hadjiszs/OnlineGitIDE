@@ -14,18 +14,18 @@
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="../CSS/edit.css">
+        <link rel="stylesheet" type="text/css" href="../ressources/CSS/edit.css">
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <script src="../../codeMirror/lib/codemirror.js"></script>
-        <link rel="stylesheet" href="../../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/dracula.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
-        <script src="../../codeMirror/mode/clike/clike.js"></script>
-
+        <script src="../codeMirror/lib/codemirror.js"></script>
+        <link rel="stylesheet" href="../codeMirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../codeMirror/theme/dracula.css">
+        <script src="../codeMirror/mode/clike/clike.js"></script>
+        <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <header>
@@ -59,9 +59,7 @@
             <aside class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <select id="changerTheme">
-                        <option value="1">Dracula</option>
-                        <option value="2" selected="selected">Night</option>
-                        <option value="3">solarized_light</option>
+                        <option value="dracula">Dracula</option>
                     </select>
                 </div>
             </aside>

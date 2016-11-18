@@ -44,7 +44,7 @@ public class UserGrantServiceImpl implements UserGrantService{
 
         return true;
     }
-
+/*
     public List getProjectsByEntity(String mail) throws DataException {
         List<Project> projects = new ArrayList();
         ProjectService projectService = new ProjectServiceImpl();
@@ -70,7 +70,7 @@ public class UserGrantServiceImpl implements UserGrantService{
 
 
         return projects;
-    }
+    }*/
 
     public UserGrant getEntityById(Long idUser, Long idProject) throws DataException{
         return userGrantDAO.getEntityById(idUser, idProject);
@@ -81,7 +81,7 @@ public class UserGrantServiceImpl implements UserGrantService{
 
         return result;
     }
-
+/*
     public List getDevelopersByEntity(Long idProject) throws DataException {
         List<User> users = new ArrayList();
         UserService userService = new UserServiceImpl();
@@ -115,5 +115,5 @@ public class UserGrantServiceImpl implements UserGrantService{
         }
 
         return false;
-    }
+    }*/
 }
