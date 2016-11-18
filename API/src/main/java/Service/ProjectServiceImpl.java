@@ -47,14 +47,15 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return null;
     }
-/*
+
     public boolean deleteEntity(Long id) throws DataException{
         try {
-            return projectDAO.deleteEntity(id);
+            Project project = getEntityById(id);
+            return projectDAO.deleteEntity(project);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
         return false;
-    }*/
+    }
 
 }

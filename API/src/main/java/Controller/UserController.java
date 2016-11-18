@@ -5,7 +5,6 @@ import Service.UserService;
 import Service.UserServiceImpl;
 import Util.Constantes;
 import Util.Status;
-import Util.StatusOK;
 import Util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

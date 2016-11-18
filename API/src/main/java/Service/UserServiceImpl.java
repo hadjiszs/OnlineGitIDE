@@ -23,8 +23,6 @@ public class UserServiceImpl implements UserService {
     public User addEntity(String pseudo, String mail, String hashkey) throws DataException {
         User user = new User(pseudo, mail, hashkey);
         return userDAO.addEntity(user);
-
-        //return  user.getId();
     }
 
 
@@ -34,9 +32,6 @@ public class UserServiceImpl implements UserService {
 
     public List getEntityList() throws NullPointerException {
         try {
-        /*if (user == null){
-            throw new DataException("User doesn't exists");
-        }*/
             return userDAO.getEntityList();
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
@@ -46,7 +41,8 @@ public class UserServiceImpl implements UserService {
 
     public boolean deleteEntity(String mail) throws DataException {
         try {
-            //return userDAO.deleteEntity(mail);
+            User user = getEntityByMail(mail);
+            return userDAO.deleteEntity(user);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
         }

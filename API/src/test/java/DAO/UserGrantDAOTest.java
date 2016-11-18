@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  * Created by amaia.nazabal on 11/17/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:API/src/main/webapp/WEB-INF/api-servlet.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserGrantDAOTest {
     private UserGrantDAO userGrantDAO = new UserGrantDAOImpl();

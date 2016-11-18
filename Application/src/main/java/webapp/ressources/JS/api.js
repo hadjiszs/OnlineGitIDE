@@ -26,6 +26,7 @@ function ApiRequest(method,url,dataIn,callback) {
             type: 'GET',
             dataType: 'json',
             url: url,
+            async: false,
             timeout: 5000,
             success: function(data, textStatus ){
                 alert('request successful');

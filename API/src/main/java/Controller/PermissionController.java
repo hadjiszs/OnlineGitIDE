@@ -1,13 +1,11 @@
 package Controller;
 
 import Model.Project;
-import Model.User;
 import Model.UserGrant;
+import Model.User;
 import Service.UserGrantService;
 import Service.UserGrantServiceImpl;
-import Util.Constantes;
-import Util.Status;
-import Util.Util;
+import Util.*;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-
 /**
  * Created by amaia.nazabal on 11/16/16.
  */
@@ -27,10 +24,11 @@ import java.util.List;
 @RequestMapping("/permission")
 public class PermissionController {
     private UserGrantService userGrantService;
-/*
+
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
-                                                    @RequestParam(value = "idUser") Long idUser){
+    public @ResponseBody
+    ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
+                               @RequestParam(value = "idUser") Long idUser){
         try {
             userGrantService.addEntity(idUser, idProject, UserGrant.Permis.Dev);
         } catch (Exception e) {
@@ -72,11 +70,11 @@ public class PermissionController {
     }
 
     @RequestMapping(value = "/getprojects", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "mail") String mail){
+    public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "user") Long idUser){
         List<Project> projects;
 
         try{
-            projects = userGrantService.getProjectsByEntity(mail);
+            projects = userGrantService.getProjectsByEntity(idUser);
         }catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
@@ -103,7 +101,7 @@ public class PermissionController {
 
         return new ResponseEntity(result.toString(), HttpStatus.ACCEPTED);
     }
-*/
+
 
     @PostConstruct
     void init(){

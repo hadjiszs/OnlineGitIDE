@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 function listProject(json){
     console.log(json);
-    $.each(data, function(index, element) {
+    $.each(json, function(index, element) {
         $('#listeProjets').append(element);
     });
 }

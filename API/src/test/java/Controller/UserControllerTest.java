@@ -48,7 +48,7 @@ public class UserControllerTest {
     public void addTest(){
         userController.init();
         Exception exception = null;
-        ResponseEntity<String> responseEntity = null;
+        ResponseEntity<User> responseEntity = null;
         try{
             responseEntity = userController
                     .add(user.getPseudo(), user.getMail(), user.getHashkey());
@@ -64,7 +64,7 @@ public class UserControllerTest {
     public void getTest(){
         userController.init();
         Exception exception = null;
-        ResponseEntity<String> responseEntity = null;
+        ResponseEntity<User> responseEntity = null;
         try{
             responseEntity = userController
                     .get(user.getMail());
@@ -98,7 +98,7 @@ public class UserControllerTest {
         List<User> list = mapper.convertValue(listUsers,
                 new TypeReference<List<User>>() { });
 
-        /* java.util.LinkedHashMap cannot be cast to Model.User */
+        /* java.util.LinkedHashMap cannot be cast to Model.User*/
         usr = list.get(0);
         usr = list.stream().filter(u -> u.getId().equals(user.getId()))
                 .findFirst().get();
