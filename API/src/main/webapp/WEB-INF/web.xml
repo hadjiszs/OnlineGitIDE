@@ -7,7 +7,7 @@
         version="3.0">
 
     <display-name>MultiMif Api Servlet</display-name>
-<!--
+
     <filter>
         <filter-name>RequestFilter</filter-name>
         <filter-class>Filter.RequestFilter</filter-class>
@@ -28,5 +28,4 @@
         <servlet-name>api</servlet-name>
     <url-pattern>/*</url-pattern>
     </servlet-mapping>
--->
 </web-app>
