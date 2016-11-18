@@ -15,7 +15,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     private static final Logger LOGGER = Logger.getLogger( ProjectDAOImpl.class.getName() );
 
 
-    public Project addEntity(Project project) throws DataException{
+    public Boolean addEntity(Project project) throws DataException{
         Project proj = null;
 
         System.out.println("salut");
@@ -29,7 +29,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
                 getEntityManager().getTransaction().begin();
                 getEntityManager().persist(project);
                 getEntityManager().getTransaction().commit();
-
+            return true;
             //}
 
         }catch (Exception ex){
@@ -39,7 +39,6 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             closeEntityManager();
         }
 
-        return project;
     }
 
     /* TODO ajouter update */

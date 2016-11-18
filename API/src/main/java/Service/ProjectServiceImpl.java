@@ -20,7 +20,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO = new ProjectDAOImpl();
     }
 
-    public Project addEntity(Project project) throws DataException{
+    public Boolean addEntity(Project project) throws DataException{
         try {
             return projectDAO.addEntity(project);
         } catch (Exception e) {

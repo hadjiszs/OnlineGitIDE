@@ -1,5 +1,6 @@
 package Service;
 
+import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Util.DataException;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface UserGrantService {
     boolean addEntity(Long idUser, Long idProject, UserGrant.Permis type) throws DataException;
-    //List getProjectsByEntity (String mail) throws DataException;
+    List<Project> getProjectsByEntity (Long id) throws DataException;
     //List getDevelopersByEntity (Long idProject) throws DataException;
     //User getAdminByEntity(Long idProject) throws DataException;
    // UserGrant getEntityById(Long idUser, Long idProject) throws DataException;

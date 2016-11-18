@@ -69,22 +69,23 @@ public class PermissionController {
 
         return new ResponseEntity(Util.convertToJson(user), HttpStatus.ACCEPTED);
     }
-
+*/
     @RequestMapping(value = "/getprojects", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "mail") String mail){
+    public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "idUser") Long id){
         List<Project> projects;
 
         try{
-            projects = userGrantService.getProjectsByEntity(mail);
+            projects = userGrantService.getProjectsByEntity(id);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
+        return new ResponseEntity<String>(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
     }
 
+/*
     @RequestMapping(value = "/has", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> has(@RequestParam(value = "idUser") Long idUser,
                                                     @RequestParam(value = "idProject") Long idProject){

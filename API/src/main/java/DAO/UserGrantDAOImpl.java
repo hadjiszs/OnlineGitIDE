@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Model.UserGrantID;
@@ -25,7 +26,7 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
         List<UserGrant> permissions;
 
         Query query = getEntityManager().createNamedQuery("findByUser", UserGrant.class);
-        query.setParameter("id", user.getId());
+        query.setParameter("id",user.getId());
 
         permissions = query.getResultList();
         closeEntityManager();

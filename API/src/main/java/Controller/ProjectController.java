@@ -36,9 +36,9 @@ public class ProjectController {
                                                     @RequestParam(value = "type") Project.TypeProject type,
                                                     @RequestParam(value = "user") Long idUser){
 
-        Project project = null;
+        Project project = new Project(name, version, type, root);
         try {
-            project = projectService.addEntity(new Project(name, version, type, root));
+            projectService.addEntity(project);
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -62,7 +62,7 @@ public class ProjectController {
         return new ResponseEntity(Util.convertToJson(project), HttpStatus.ACCEPTED);
     }*/
 
-    @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getall(@RequestParam(value = "idUser") Long idUser){
         List<Project> projects = null;
         User user = null;
@@ -75,7 +75,7 @@ public class ProjectController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<String>(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
-    }
+    }*/
 /*
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){

@@ -1,14 +1,18 @@
 package Filter;
 
+import Service.UserGrantService;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 /**
  * Created by Alexis on 16/11/2016.
  */
+
 public class RequestFilter implements Filter{
 
     FilterConfig config;
+    private UserGrantService userGrantService;
 
     public void setFilterConfig(FilterConfig config) {
         this.config = config;
