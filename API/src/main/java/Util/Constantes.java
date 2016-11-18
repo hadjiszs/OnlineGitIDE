@@ -18,4 +18,17 @@ public class Constantes {
     public static final String OPERATION_MSG_RATE = "Transaction raté";
 
     public static final String ENTITY_FACTORY = "pu-multimif";
+
+    public static final String PROJECT_JAVA = "Java";
+
+    public static final String PROJECT_C = "C";
+
+    public static final String PROJECT_CPP = "C++";
+
+    public static final String PROJECT_MVN = "Maven";
+
+    public static final String COMPILE_COMPILE = "compile";
+    public static final String COMPILE_CLEAN = "clean";
+    public static final String COMPILE_CLONE = "clone";
+
 }
