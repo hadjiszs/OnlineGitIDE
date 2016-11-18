@@ -1,6 +1,7 @@
 package Filter;
 
 import Service.UserGrantService;
+import org.hibernate.annotations.SourceType;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -31,13 +32,21 @@ public class RequestFilter implements Filter{
 
         Cookie[] cookies = request.getCookies();
 
+        String hashkey = null;
+
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
+                if(cookies[i].getName().equals("hashkey")){
+                    hashkey = cookies[i].getValue();
+                }
+
                 String name = cookies[i].getName();
                 String value = cookies[i].getValue();
                 System.out.println(name + " " + value);
             }
         }
+
+        System.out.println("[API] [FILTER] hashkey: " + hashkey);
 
         chain.doFilter(req,res);
         /*if(request.getRequestURI().contains("/auth/connect")){

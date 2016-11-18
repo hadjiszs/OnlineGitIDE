@@ -69,10 +69,12 @@ function listProject(json){
         $('#listeProjets').append(element);
     });
 }
+
 function addProject(json){
     console.log(json);
     console.log(json["id"]);
     $("#listeProjets").append(JSON.stringify(json));
+    Cookies.set('project', json["id"]);
 }
 
 
