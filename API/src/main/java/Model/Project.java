@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by amaia.nazabal on 10/21/16.
  */
 @Entity
+@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
 public class Project implements Serializable {
     public enum TypeProject {JAVA, MAVEN, C, CPP}
 

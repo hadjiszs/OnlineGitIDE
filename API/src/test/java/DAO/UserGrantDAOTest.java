@@ -195,7 +195,7 @@ public class UserGrantDAOTest {
         assertEquals(permission.getProjectId(), userGrant1.getProjectId());
         assertEquals(permission.getUserId(), userGrant1.getUserId());
     }
-/*
+
     @Test
     public void suppressEntity() {
         Exception exception = null;
@@ -230,17 +230,17 @@ public class UserGrantDAOTest {
         }
 
         assertNull(exception);
-    }*/
+    }
 
     private void deleteUser() throws DataException {
         userDAO.deleteEntity(admin);
         userDAO.deleteEntity(developer);
     }
-/*
+
     private void deleteProject() throws DataException {
         projectDAO.deleteEntity(project);
     }
-*/
+
 
     @AfterClass
     public static void close(){
