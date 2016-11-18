@@ -23,9 +23,15 @@
 
         <script src="../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../codeMirror/theme/dracula.css">
+        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
         <script src="../codeMirror/mode/clike/clike.js"></script>
-        <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
+        <link rel="stylesheet" href="../../codeMirror/theme/rubyblue.css">
+        <script src="../../codeMirror/mode/clike/clike.js"></script>
+
+        <!-- Test -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
+
     </head>
     <body>
         <header>
@@ -55,12 +61,35 @@
                 </div>
             </nav>
         </header>
-        <main class="container">
+        <main class="container-fluid">
             <aside class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <select id="changerTheme">
-                        <option value="dracula">Dracula</option>
-                    </select>
+                <div class="col-lg-8 col-lg-offset-2" id="premiereBarre">
+                    <div class="btn-group">
+                        <select class="form-control" id="changerTheme">
+                            <option value="dracula">Dracula</option>
+                            <option value="night">Night</option>
+                            <option value="rubyblue">RubyBlue</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <select class="form-control" id="tauxIndentation">
+                            <option value="1">Indentation 1</option>
+                            <option value="2">Indentation 2</option>
+                            <option value="3">Indentation 3</option>
+                            <option value="4">Indentation 4</option>
+                            <option value="5">Indentation 5</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
+                        <input  type="button" class="btn btn-default" id="commit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                    </div>
                 </div>
             </aside>
 
@@ -71,31 +100,32 @@ import com.demo.util.MyType;
 import com.demo.util.MyInterface;
 
 public enum Enum {
-  VAL1, VAL2, VAL3
+VAL1, VAL2, VAL3
 }
 
 public class Class<T, V> implements MyInterface {
-  public static final MyType<T, V> member;
+public static final MyType<T, V> member;
 
-  private class InnerClass {
-    public int zero() {
-      return 0;
-    }
-  }
+private class InnerClass {
+public int zero() {
+return 0;
+}
+}
 
-  @Override
-  public MyType method() {
-    return member;
-  }
-
-  public void method2(MyType<T, V> value) {
-    method();
-    value.method3();
-    member = value;
-  }
+@Override
+public MyType method() {
+return member;
+}
 }
                         </textarea>
                     </div>
+            </section>
+
+            <!-- Sortie de compilation -->
+            <section class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                        <p> Rien pour le moment</p>
+                </div>
             </section>
 
             <a id="ancrePanelDroite" aria-label="Panel deroulant">
@@ -113,12 +143,46 @@ public class Class<T, V> implements MyInterface {
             </a>
 
             <section id="panelGauche">
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
+                    <h2> Arborescence </h2>
+                    <div id="arborescenceFichier">
+                        <ul>
+                            <li>Root node
+                                <ul>
+                                    <li>Child node 1</li>
+                                    <li>Child node 2</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
             </section>
         </main>
-        <script async src="../JS/edit.js"></script>
+
+        <!-- Modal -->
+        <div id="fenetreCommit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Ajouter un message pour votre Commit</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="fenetreCommit.jsp" method="post">
+                            <input type="text" placeholder="Votre message de commit .." name="messageCommit" id="messageCommit"/>
+                            <input  class="btn btn-success" id="envoyerCommit" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+
+            </div>
+        </div>
+        <!-- Fin Modal -->
+        <script src="../JS/edit.js"></script>
     </body>
 </html>
 

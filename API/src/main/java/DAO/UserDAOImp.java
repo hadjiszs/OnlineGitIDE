@@ -30,8 +30,10 @@ public class UserDAOImp extends DAO implements UserDAO {
             getEntityManager().getTransaction().commit();
             closeEntityManager();
         } else {
+            closeEntityManager();
             throw new DataException("User already exists");
         }
+        closeEntityManager();
 
         return user;
 
@@ -47,11 +49,12 @@ public class UserDAOImp extends DAO implements UserDAO {
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
+            closeEntityManager();
             throw new DataException("User doesn't exist");
         }finally {
             closeEntityManager();
         }
-
+        closeEntityManager();
         return user;
     }
 
@@ -82,6 +85,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         if (user == null){
             throw new DataException("User doesn't exist");
         }
+        closeEntityManager();
 
         return user;
     }
@@ -97,6 +101,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         List list =  getEntityManager().createQuery(query).getResultList();
         closeEntityManager();
 
+        closeEntityManager();
         return list;
     }
 
@@ -109,9 +114,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         getEntityManager().getTransaction().begin();
         getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
         getEntityManager().getTransaction().commit();
-
         closeEntityManager();
-
         return false;
     }
 
@@ -130,8 +133,9 @@ public class UserDAOImp extends DAO implements UserDAO {
         } catch(Exception exception) {
             exception.printStackTrace();
             user = null;
+            closeEntityManager();
         }
-
+        closeEntityManager();
         if (user == null || !user.getHashkey().equals(password)){
             throw new DataException("User doesn't exist");
         }else{

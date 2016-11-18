@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Project;
-import Model.User;
 import Util.DataException;
 
 import java.util.List;
@@ -18,8 +17,12 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     public boolean addEntity(Project project) throws DataException{
         Project proj = null;
 
+        System.out.println("salut");
+        System.out.println("pr: " + project.getId());
+
         try{
             if (project.getId() != null){
+                System.out.println("proj: "+ proj);
                 proj = getEntityById(project.getId());
             }
 
@@ -27,19 +30,17 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
             proj = null;
             LOGGER.log( Level.FINE, ex.toString(), ex);
         }
-
-        if (proj == null){
-            getEntityManager().getTransaction().begin();
-            getEntityManager().persist(project);
-            getEntityManager().getTransaction().commit();
-            closeEntityManager();
-        }else {
-
-            try {
-                throw new Exception("Project already exists");
-            } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
+        try{
+            if (proj == null) {
+                getEntityManager().getTransaction().begin();
+                getEntityManager().persist(project);
+                getEntityManager().getTransaction().commit();
             }
+        }catch (Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
+            throw new DataException("Project doesn't exists");
+        }finally {
+            closeEntityManager();
         }
         return true;
     }

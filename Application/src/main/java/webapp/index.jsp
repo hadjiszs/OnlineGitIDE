@@ -1,6 +1,6 @@
-<!-- Page d'accueil du site internet -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<!-- Page d'accueil du site internet -->
 <html>
 <head>
     <title> Multimif Groupe 1 - Bienvenue !</title>
@@ -50,7 +50,7 @@
 
                     </form>
 
-                    <!-- Trigger the modal with a button -->
+                    <!-- Lance le modal -->
                     <a data-toggle="modal" data-target="#oubliePassword" id="aOubliePassword">Mot de passe Oublié ?</a>
 
                     <!-- Modal -->

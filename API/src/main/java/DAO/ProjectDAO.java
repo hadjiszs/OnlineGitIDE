@@ -13,5 +13,4 @@ public interface ProjectDAO {
     Project getEntityById(Long id) throws DataException;
     List<Project> getEntityList() throws DataException;
     boolean deleteEntity(Project project) throws DataException;
-
 }

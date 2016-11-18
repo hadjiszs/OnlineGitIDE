@@ -23,7 +23,11 @@ public class UserGrantServiceImpl implements UserGrantService{
     public boolean addEntity(Long idUser, Long idProject, UserGrant.Permis type) throws DataException {
         UserGrant grant;
 
-        grant = getEntityById(idUser, idProject);
+        try {
+            grant = getEntityById(idUser, idProject);
+        }catch (Exception e ){
+            grant = null;
+        }
 
         if (grant == null) {
             UserService userService = new UserServiceImpl();
@@ -31,9 +35,9 @@ public class UserGrantServiceImpl implements UserGrantService{
 
             User user = userService.getEntityById(idUser);
 
-
             Project project = projectService.getEntityById(idProject);
 
+            System.out.println(project);
             grant = new UserGrant();
             grant.setUser(user);
             grant.setProject(project);
@@ -45,15 +49,15 @@ public class UserGrantServiceImpl implements UserGrantService{
         return true;
     }
 
-    public List getProjectsByEntity(Long idUser) throws DataException {
-        List<Project> projects = new ArrayList();
+    public List<Project> getProjectsByEntity(Long id) throws DataException {
+        List<Project> projects = new ArrayList<Project>();
         ProjectService projectService = new ProjectServiceImpl();
         UserService userService = new UserServiceImpl();
         Iterator<UserGrant> iterator;
         User user;
 
         try{
-            user = userService.getEntityById(idUser);
+            user = userService.getEntityById(id);
         }catch(Exception ex) {
             throw new DataException("User doesn't have any project");
         }
