@@ -5,12 +5,15 @@ import Util.DataException;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 10/20/16.
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
+    private static final Logger LOGGER = Logger.getLogger( UserDAOImp.class.getName() );
     /**
      * @param user
      * @return
@@ -21,6 +24,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         try{
             usr = getEntityByMail(user.getMail());
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             usr = null;
         }
 
@@ -49,7 +53,9 @@ public class UserDAOImp extends DAO implements UserDAO {
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
-            user = null;
+            LOGGER.log( Level.FINE, ex.toString(), ex);
+            closeEntityManager();
+            throw new DataException("User doesn't exist");
         }finally {
             closeEntityManager();
         }
@@ -78,6 +84,7 @@ public class UserDAOImp extends DAO implements UserDAO {
                 user = list.get(0);
             }
         } catch(Exception ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             user = null;
         }finally {
             closeEntityManager();
@@ -119,7 +126,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         return false;
     }
 
-    public User authEntity(String username, String password) throws Exception{
+    public User authEntity(String username, String password) throws DataException{
         User user = null;
 
         try {
@@ -132,7 +139,7 @@ public class UserDAOImp extends DAO implements UserDAO {
             }
 
         } catch(Exception exception) {
-            exception.printStackTrace();
+            LOGGER.log( Level.FINE, exception.toString(), exception);
             user = null;
             closeEntityManager();
         }

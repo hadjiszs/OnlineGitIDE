@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface UserDAO {
         User addEntity(User user) throws DataException;
-        User authEntity(String username,String password) throws Exception;
+        User authEntity(String username,String password) throws DataException;
 
         User getEntityByMail(String mail) throws DataException;
         User getEntityById(Long id) throws DataException;

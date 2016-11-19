@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -25,7 +27,7 @@ public class UserController {
     public void init(){
         userService = new UserServiceImpl();
     }
-
+    private static final Logger LOGGER = Logger.getLogger( UserController.class.getName() );
     @RequestMapping(value = "/add", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<User> add(
                                 @RequestParam(value="username") String username,
@@ -36,7 +38,7 @@ public class UserController {
         try{
             user = userService.addEntity(mail, username,password);
         }catch(Exception ex){
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -53,7 +55,7 @@ public class UserController {
         try{
             user = userService.authEntity(username,passwd);
         }catch (Exception ex){
-            ex.printStackTrace();
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
@@ -67,6 +69,7 @@ public class UserController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
@@ -82,6 +85,7 @@ public class UserController {
         try{
             users = userService.getEntityList();
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -94,6 +98,7 @@ public class UserController {
         try{
             userService.deleteEntity(idUser);
         }catch(Exception ex){
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage()), HttpStatus.NOT_FOUND);
         }

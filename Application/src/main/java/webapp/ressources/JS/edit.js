@@ -85,7 +85,7 @@ function changerTheme(){
 window.setInterval(function(){
     //TODO
     editeur.getDoc().getValue();
-    console.log(editeur.getDoc().getValue());//Permet d'avoir le contenu de l'éditeur
+   // console.log(editeur.getDoc().getValue());//Permet d'avoir le contenu de l'éditeur
 }, 30000);
 
 

@@ -10,13 +10,15 @@ import Util.DataException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by amaia.nazabal on 11/15/16.
  */
 public class UserGrantServiceImpl implements UserGrantService{
     private UserGrantDAO userGrantDAO = new UserGrantDAOImpl();
-
+    private static final Logger LOGGER = Logger.getLogger( UserGrantServiceImpl.class.getName() );
     public UserGrantServiceImpl(){
     }
 
@@ -26,6 +28,7 @@ public class UserGrantServiceImpl implements UserGrantService{
         try {
             grant = getEntityById(idUser, idProject);
         }catch (Exception e ){
+            LOGGER.log( Level.FINE, e.toString(), e);
             grant = null;
         }
 
@@ -59,6 +62,7 @@ public class UserGrantServiceImpl implements UserGrantService{
         try{
             user = userService.getEntityById(id);
         }catch(Exception ex) {
+            LOGGER.log( Level.FINE, ex.toString(), ex);
             throw new DataException("User doesn't have any project");
         }
 
@@ -69,7 +73,7 @@ public class UserGrantServiceImpl implements UserGrantService{
                         .getProject().getId()));
             }
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.log( Level.FINE, e.toString(), e);
         }
 
 

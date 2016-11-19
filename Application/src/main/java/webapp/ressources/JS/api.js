@@ -6,7 +6,7 @@ function connexion(json){
     Cookies.set('mail', json["mail"]);
     Cookies.set('pseudo', json["pseudo"]);
 
-    console.log(json);
+    //console.log(json);
     window.location.href = "/JSP/home.jsp";
 }
 
@@ -21,7 +21,7 @@ function deconnexion(){
 /* Execute une requête vers l'API */
 function ApiRequest(method,url,dataIn,callback) {
 
-    if(method == "GET"){
+    if(method === "GET"){
         $.ajax({
             type: 'GET',
             dataType: 'json',
@@ -29,18 +29,18 @@ function ApiRequest(method,url,dataIn,callback) {
             async: false,
             timeout: 5000,
             success: function(data, textStatus ){
-                alert('request successful');
+                //alert('request successful');
                 callback(data);
             },
             error: function(xhr, textStatus, errorThrown){
-                alert('request failed');
+                //alert('request failed');
                 return null;
             }
         });
-    }else if(method == "POST"){
-        alert("post");
-    }else{
-        alert("Method Ajax inconnue !");
+    }else if(method === "POST"){
+        //alert("post");
+   // }else{
+        //alert("Method Ajax inconnue !");
     }
 
 

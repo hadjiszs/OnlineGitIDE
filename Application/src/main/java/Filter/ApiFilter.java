@@ -23,7 +23,7 @@ public class ApiFilter implements Filter  {
         //ServletContext context = getFilterConfig().getServletContext();
 
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletResponse response;
 
         System.out.println("[Application] [FILTER] url: " + request.getRequestURI());
 
