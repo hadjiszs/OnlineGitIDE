@@ -2,7 +2,6 @@ package Util;
 
 import Model.Project;
 import Model.User;
-import Model.UserGrant;
 import Service.*;
 
 import java.io.BufferedReader;
@@ -10,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static Util.Constantes.RESULTS_PATH;
+import static Util.Constantes.*;
 
 /**
  * Created by Mahmoud on 15/11/2016.
@@ -87,13 +86,13 @@ public class Compile {
         Runtime rt = Runtime.getRuntime();
 
         if (action.toString().equals(Constantes.COMPILE_COMPILE)) {
-            p1 = rt.exec("./compileJava.sh " + userName + " " + projectName);
+            p1 = rt.exec("./compileJava.sh " +SCRIPTS_PATH + " " + userName + " " + projectName);
         }
         if (action.toString().equals(Constantes.COMPILE_CLONE)) {
-            p1 = rt.exec("./clone.sh " + propProject + " " + projectName + " " + userName);
+            p1 = rt.exec("./clone.sh " + CLONE_PATH +" "+ propProject + " " + projectName + " " + userName);
         }
         if (action.toString().equals(Constantes.COMPILE_CLEAN)) {
-            p1 = rt.exec("./clean.sh " + userName);
+            p1 = rt.exec("./clean.sh "+ RESULTS_PATH + " " + userName);
         }
     }
 
