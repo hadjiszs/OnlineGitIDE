@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Model.UserGrantID;

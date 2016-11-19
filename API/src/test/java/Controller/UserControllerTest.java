@@ -1,10 +1,8 @@
 package Controller;
 
 import Model.User;
-import Service.APIService;
+import DAO.EntityFactoryManager;
 import Util.*;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -32,9 +30,9 @@ public class UserControllerTest {
 
     @BeforeClass
     public static void init(){
-        APIService.persistance();
+        EntityFactoryManager.persistance();
         user = new User();
-        user.setPseudo("test");
+        user.setUsername("test");
         user.setHashkey("password-test");
         user.setMail("test-test@test.fr");
     }
@@ -47,7 +45,7 @@ public class UserControllerTest {
         ResponseEntity<User> responseEntity = null;
         try{
             responseEntity = userController
-                    .add(user.getPseudo(), user.getMail(), user.getHashkey());
+                    .add(user.getUsername(), user.getMail(), user.getHashkey());
             user.setId(responseEntity.getBody().getId());
         }catch (Exception e){
             exception = e;
@@ -95,7 +93,7 @@ public class UserControllerTest {
 
         assertEquals(user.getId(), usr.getId());
         assertEquals(user.getMail(), usr.getMail());
-        assertEquals(user.getPseudo(), usr.getPseudo());
+        assertEquals(user.getUsername(), usr.getUsername());
         assertEquals(user.getHashkey(), usr.getHashkey());
 
         assertNull(exception);
@@ -122,7 +120,7 @@ public class UserControllerTest {
 
     @AfterClass
     public static void close(){
-        APIService.close();
+        EntityFactoryManager.close();
     }
 
 }

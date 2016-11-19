@@ -1,7 +1,7 @@
 package Controller;
 
-import Service.APIService;
-import Util.Util;
+import DAO.EntityFactoryManager;
+import Util.JsonUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +20,17 @@ public class APIController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(){
-        return new ResponseEntity<String>(Util.convertStringToJson("API","OK"), HttpStatus.OK);
+        return new ResponseEntity<String>(JsonUtil.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
     @PostConstruct
     public void init() {
         System.out.println("[API] [Controller] Init");
-        APIService.persistance();
+        EntityFactoryManager.persistance();
     }
 
     @PreDestroy
     public void destroy(){
-        APIService.close();
+        EntityFactoryManager.close();
     }
 }

@@ -19,12 +19,4 @@ public class Constantes {
 
     public static final String ENTITY_FACTORY = "pu-multimif";
 
-    public static final String PROJECT_JAVA = "Java";
-
-    public static final String PROJECT_C = "C";
-
-    public static final String PROJECT_CPP = "C++";
-
-    public static final String PROJECT_MVN = "Maven";
-
 }

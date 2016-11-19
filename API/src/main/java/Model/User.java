@@ -7,11 +7,9 @@ import java.io.Serializable;
  * Created by Alexis on 17/10/2016.
  */
 @Entity
-
-
 @NamedQueries({
         @NamedQuery(name="User.findByMail", query="SELECT u from User u WHERE u.mail = :mail"),
-        @NamedQuery(name="User.findByPseudo", query="SELECT u from User u WHERE u.pseudo = :username")
+        @NamedQuery(name="User.findByPseudo", query="SELECT u from User u WHERE u.username = :username")
 })
 public class User implements Serializable {
 
@@ -19,21 +17,21 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mail", unique = true)
+    @Column(name = "mail", unique = true, nullable = false)
     private String mail;
 
-    @Column(name = "pseudo", unique = true)
-    private String pseudo;
+    @Column(name = "username", unique = true)
+    private String username;
 
-    @Column(name = "hashkey")
+    @Column(length = 100, nullable = false)
     private String hashkey;
 
     public User(){
 
     }
 
-    public User(String mail, String pseudo, String hashkey) {
-        this.pseudo = pseudo;
+    public User(String mail, String username, String hashkey) {
+        this.username = username;
         this.mail = mail;
         this.hashkey = hashkey;
     }
@@ -50,8 +48,8 @@ public class User implements Serializable {
         return hashkey;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setUsername(String pseudo) {
+        this.username = pseudo;
     }
 
     public void setMail(String mail) {
@@ -62,8 +60,8 @@ public class User implements Serializable {
         this.hashkey = hashkey;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public String getUsername() {
+        return username;
     }
 
     public String getMail() {
@@ -72,6 +70,6 @@ public class User implements Serializable {
 
     @Override
     public String toString(){
-        return String.format("User[pseudo='%s', mail='%s']", pseudo,mail);
+        return String.format("User[pseudo='%s', mail='%s']", username,mail);
     }
 }

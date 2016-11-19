@@ -1,15 +1,11 @@
 package Service;
 
-import Model.User;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 /**
  * Created by hadjiszs on 21/10/16.
  */
-public class FichierServiceTests {
 
+public class FichierServiceTests {
+/*
     private static FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
 
     //private static final Logger LOG = LoggerFactory.getLogger(CategorieDAO.class);
@@ -20,13 +16,13 @@ public class FichierServiceTests {
 
     @BeforeClass
     public static void setUpClass() {
-        APIService.persistance();
+        EntityFactoryManager.persistance();
         fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
     }
 
     @AfterClass
     public static void tearDownClass() {
-        APIService.close();
+        EntityFactoryManager.close();
     }
 
     @Test
@@ -50,7 +46,7 @@ public class FichierServiceTests {
 
         // @TODO: verification que le fichier a bien été modifié dans la bdd
         // fichierUtiliseServiceImpl.getEntityById(id, machin)
-    }
+    }*/
 
 //    @Test
 //    public void testToStringFileTree() throws Exception{

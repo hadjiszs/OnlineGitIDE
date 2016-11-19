@@ -11,7 +11,7 @@ import java.util.Date;
 public class Message implements Serializable {
     @Id
     @Column(columnDefinition = "INTEGER")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

@@ -62,7 +62,6 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         }finally {
             closeEntityManager();
         }
-        closeEntityManager();
 
         if (project == null){
             try {

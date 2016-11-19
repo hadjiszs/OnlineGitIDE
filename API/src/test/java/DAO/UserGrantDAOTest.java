@@ -3,7 +3,6 @@ package DAO;
 import Model.Project;
 import Model.User;
 import Model.UserGrant;
-import Service.APIService;
 import Util.DataException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -38,7 +37,7 @@ public class UserGrantDAOTest {
 
     @BeforeClass
     public static void init(){
-        APIService.persistance();
+        EntityFactoryManager.persistance();
     }
 
     private void addProject() throws DataException {
@@ -53,13 +52,13 @@ public class UserGrantDAOTest {
     }
 
     private void addUser() throws DataException {
-        admin.setPseudo("test-admin");
+        admin.setUsername("test-admin");
         admin.setMail("test-admin@test.fr");
         admin.setHashkey("pass-admin");
 
         userDAO.addEntity(admin);
 
-        developer.setPseudo("test-developer");
+        developer.setUsername("test-developer");
         developer.setMail("test-developer@test.fr");
         developer.setHashkey("pass-developer");
 
@@ -172,7 +171,7 @@ public class UserGrantDAOTest {
         adm = permission.getUser();
         assertNotNull(adm);
         assertEquals(adm.getId(), admin.getId());
-        assertEquals(adm.getPseudo(), admin.getPseudo());
+        assertEquals(adm.getUsername(), admin.getUsername());
         assertEquals(adm.getMail(), admin.getMail());
         assertEquals(adm.getHashkey(), admin.getHashkey());
 
@@ -214,7 +213,6 @@ public class UserGrantDAOTest {
             permission1 = userGrantDAO.getEntityById(userGrant1.getUserId(), userGrant1.getProjectId());
             permission2 = userGrantDAO.getEntityById(userGrant2.getUserId(), userGrant2.getProjectId());
         } catch (Exception e) {
-            e.printStackTrace();
             exception = e;
         }
 
@@ -244,6 +242,6 @@ public class UserGrantDAOTest {
 
     @AfterClass
     public static void close(){
-        APIService.close();
+        EntityFactoryManager.close();
     }
 }

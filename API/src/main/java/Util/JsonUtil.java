@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by amaia.nazabal on 10/20/16.
  */
-public class Util<T> {
+public class JsonUtil<T> {
     public static String convertToJson(Object object){
         String json;
         org.codehaus.jackson.map.ObjectMapper mapper = new org.codehaus.jackson.map.ObjectMapper();

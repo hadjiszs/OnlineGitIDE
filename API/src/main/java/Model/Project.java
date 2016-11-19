@@ -13,7 +13,7 @@ public class Project implements Serializable {
     public enum TypeProject {JAVA, MAVEN, C, CPP}
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -37,7 +37,6 @@ public class Project implements Serializable {
     public Project(){
 
     }
-
 
     public Project(String name, String version, TypeProject type, String root) {
         this.name = name;

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Created by amaia.nazabal on 10/20/16.
  */
 @Entity
-@Table(name = "user_grant")
+@Table(name = "User_Grant")
 @NamedQueries(value = {
         @NamedQuery(name = "findByUser", query = "SELECT g FROM UserGrant g WHERE g.userId = :id"),
         @NamedQuery(name = "findProjectsByUserType", query = "SELECT g FROM UserGrant g WHERE g.projectId = :id AND gran = :type")
@@ -42,7 +42,7 @@ public class UserGrant implements Serializable {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM('Admin', 'Dev')")
+    @Column(columnDefinition = "ENUM('Admin', 'Dev')", nullable = false)
     private Permis gran; /* On ne peut pas utiliser grant parce que c'est une mot clé de Mysql */
 
     @ManyToOne(targetEntity = User.class)
