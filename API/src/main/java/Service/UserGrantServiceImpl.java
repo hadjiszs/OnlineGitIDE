@@ -105,19 +105,17 @@ public class UserGrantServiceImpl implements UserGrantService{
         return userGrant.getUser();
     }
 
-    public boolean deleteEntity(String mail, Long idProject) throws DataException {
-        UserService userService = new UserServiceImpl();
-        ProjectService projectService = new ProjectServiceImpl();
-        UserGrant grant = new UserGrant();
-        User user = userService.getEntityByMail(mail);
-        Project project = projectService.getEntityById(idProject);
+    public boolean deleteEntity(Long idUser, Long idProject, UserGrant.Permis permis) throws DataException {
+        UserGrant grant = getEntityById(idUser, idProject);
 
-        if (user != null && project != null) {
-            grant.setUser(user);
-            grant.setProject(project);
-            return userGrantDAO.deleteEntity(grant);
+        if (grant != null) {
+            if (grant.getGran().equals(permis)){
+                return userGrantDAO.deleteEntity(grant);
+            }else{
+                throw new DataException("The permission doesn't correspond with the indicated");
+            }
+        }else {
+            throw new DataException("The permission doesn't exists");
         }
-
-        return false;
     }
 }

@@ -4,6 +4,8 @@ import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
 import Git.GitStatus;
 import Model.Project;
+import Model.User;
+import Model.UserGrant;
 import Util.DataException;
 
 import javax.json.JsonObject;
@@ -15,14 +17,16 @@ import java.util.logging.Logger;
  * Created by amaia.nazabal on 10/21/16.
  */
 public class ProjectServiceImpl implements ProjectService {
+    UserGrantService userGrantService = new UserGrantServiceImpl();
     ProjectDAO projectDAO;
+
     private static final Logger LOGGER = Logger.getLogger( ProjectServiceImpl.class.getName() );
     public ProjectServiceImpl(){
         projectDAO = new ProjectDAOImpl();
     }
 
-    public Boolean addEntity(Project project) throws DataException {
-        boolean ok = true;
+    public boolean addEntity(Project project) throws DataException{
+        boolean ok = false;
 
         // Creation dans la bdd
         try {
@@ -32,29 +36,25 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         // Creation physique du depot
-        if(ok)
+        if(ok) {
             try {
-                JsonObject content = Git.Util.createRepository(project.getAdminPseudo(), project.getName());
+                User admin = userGrantService.getAdminByEntity(project.getId());
+                JsonObject content = Git.Util.createRepository(admin.getUsername(), project.getName());
                 ok = content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
-                return ok;
             } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
+                LOGGER.log(Level.FINE, e.toString(), e);
+                return  false;
             }
+        }
 
         return ok;
     }
 
     public Project getEntityById(Long id) throws DataException{
-        try {
-            return projectDAO.getEntityById(id);
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-
-        return null;
+        return projectDAO.getEntityById(id);
     }
 
-    public List<Project> getEntityList() throws DataException{
+    public List getEntityList() throws DataException{
         try {
             return projectDAO.getEntityList();
         } catch (Exception e) {
@@ -63,14 +63,28 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
-    public boolean deleteEntity(Long id) throws DataException{
+    public boolean deleteEntity(Long idProject, Long idUser) throws DataException{
+        boolean result;
         try {
-            Project project = getEntityById(id);
-            return projectDAO.deleteEntity(project);
+            User admin = userGrantService.getAdminByEntity(idProject);
+            if (admin.getId().equals(idUser)) {
+                /* On enleve le permis avec l'admin */
+                result = userGrantService.deleteEntity(idUser, idProject, UserGrant.Permis.Admin);
+                if (result) {
+                    Project project = getEntityById(idProject);
+                    result = projectDAO.deleteEntity(project);
+                }else {
+                    throw new DataException("Error removing permission");
+                }
+            } else {
+                throw new DataException("Only the admin has permissions for remove the project");
+            }
+
+            return result;
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
+            throw new DataException(e.getMessage());
         }
-        return false;
     }
 
 }

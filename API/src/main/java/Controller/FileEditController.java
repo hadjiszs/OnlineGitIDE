@@ -1,11 +1,7 @@
 package Controller;
 
-import Service.FichierUtiliseServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
-import java.util.logging.Logger;
 
 /**
  * Created by hadjiszs on 21/10/16.
@@ -13,26 +9,29 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/file")
 public class FileEditController {
-    public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
+
+    /*public FichierUtiliseServiceImpl fichierUtiliseServiceImpl;
+    UserService userService;
     private static final Logger LOGGER = Logger.getLogger( FileEditController.class.getName() );
-/*
+
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<String> get(@RequestParam(value="id") Long id,
-                               @RequestParam(value="projet") String projet) {
+    ResponseEntity<String> get(@RequestParam(value="idProject") Long id,
+                               @RequestParam(value="IdProject") Long idProject) {
 
-        //FichierUtiliseServiceImpl.getEntityById(id, projet);
+        fichierUtiliseServiceImpl.getEntityById(id, projet);
+        User user;
+        try{
+            user = userService.getEntityById(id);
+        }catch(Exception ex){
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+                    ex.getMessage())), HttpStatus.NOT_FOUND);
+        }
 
-//        try{
-//            user = userService.getEntityByMail(mail);
-//        }catch(Exception ex){
-//            return new ResponseEntity<String>(Util.convertToJson(new Util.Status(Util.Constantes.OPERATION_CODE_RATE,
-//                    ex.getMessage())), HttpStatus.NOT_FOUND);
-//        }
-//
-//        return new ResponseEntity<String>(Util.convertToJson(user), HttpStatus.ACCEPTED);
         // @FIXME : renvoyer une réponse correcte
-        return new ResponseEntity<String>("tmp ok", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.ACCEPTED);
+
+        //return new ResponseEntity<>("tmp ok", HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,30 +39,31 @@ public class FileEditController {
     ResponseEntity<String> edit(@RequestParam(value="mail") String mail,
                                  @RequestParam(value="id") String id, // ID hexa corresponodant à l'ObjectID
                                  @RequestParam(value="contenue") String contenue) {
-        UserService userService = new UserServiceImpl();
+
         User u = null;
 
         try {
             u = userService.getEntityByMail(mail);
         } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
+            LOGGER.log(Level.FINE, e.toString(), e);
         }
 
         fichierUtiliseServiceImpl.editEntity(u, id, contenue);
 
-//        try{
-//            user = userService.getEntityByMail(mail);
-//        }catch(Exception ex){
-//            return new ResponseEntity<String>(Util.convertToJson(new Util.Status(Util.Constantes.OPERATION_CODE_RATE,
-//                    ex.getMessage())), HttpStatus.NOT_FOUND);
-//        }
-//
+        try{
+            user = userService.getEntityByMail(mail);
+        }catch(Exception ex){
+            return new ResponseEntity<String>(JsonUtil.convertToJson(new JsonUtil.Status(JsonUtil.Constantes.OPERATION_CODE_RATE,
+                    ex.getMessage())), HttpStatus.NOT_FOUND);
+        }
+
         // @FIXME : renvoyer une réponse correcte
-        return new ResponseEntity<String>("tmp ok", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("tmp ok", HttpStatus.ACCEPTED);
     }
-*/
+
     @PostConstruct
     public void init() {
         fichierUtiliseServiceImpl = new FichierUtiliseServiceImpl();
-    }
+        userService = new UserServiceImpl();
+    }*/
 }

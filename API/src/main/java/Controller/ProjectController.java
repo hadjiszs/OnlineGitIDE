@@ -4,9 +4,9 @@ import Model.Project;
 import Model.UserGrant;
 import Service.*;
 import Util.Constantes;
+import Util.JsonUtil;
 import Util.Status;
 import Util.StatusOK;
-import Util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,11 +62,11 @@ public class ProjectController {
             userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity<>(Util.convertToJson(new Status(-1, ex.getMessage())),
-                                                                        HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(Util.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity<>(JsonUtil.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
                                                                     Constantes.OPERATION_MSG_REUSSI,
                                                                     project.getId())),
                                                         HttpStatus.ACCEPTED);
@@ -84,10 +84,10 @@ public class ProjectController {
         try {
             project = projectService.getEntityById(id);
         }catch (Exception ex) {
-            return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Project>(project, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(project, HttpStatus.ACCEPTED);
     }
 
     /**
@@ -95,16 +95,15 @@ public class ProjectController {
      * @return la liste des projets de la BDD
      */
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getall(){
+    public @ResponseBody ResponseEntity<List<Project>> getAll(){
         List<Project> projects;
 
         try {
             projects = projectService.getEntityList();
         }catch (Exception ex) {
-            return new ResponseEntity<String>(Util.convertToJson(new Status(-1, ex.getMessage())),
-                                                                                HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(Util.convertListToJson(projects), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(projects, HttpStatus.ACCEPTED);
     }
 
     /**
@@ -113,15 +112,16 @@ public class ProjectController {
      * @return un code réussite
      */
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
+    public @ResponseBody ResponseEntity<String> remove (@RequestParam(value = "idProject") Long idProject,
+                                                        @RequestParam(value = "idUser") Long idUser){
         try {
-            projectService.deleteEntity(id);
+            projectService.deleteEntity(idProject, idUser);
         }catch (Exception ex) {
-            return new ResponseEntity<>(Util.convertToJson(new Status(-1, ex.getMessage())),
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+        return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
     }
 

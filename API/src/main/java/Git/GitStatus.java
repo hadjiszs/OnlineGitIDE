@@ -1,8 +1,5 @@
 package Git;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import org.eclipse.jgit.api.Git;
-
 /**
  * Created by hadjiszs on 17/11/16.
  */

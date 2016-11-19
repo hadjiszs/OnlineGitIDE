@@ -1,7 +1,11 @@
 syntax: glob
 target
 *.iml
+Application.iml
+Multimif.iml
+API.iml
 .idea
+.idea/*
 .classpath
 .project
 .DS_Store

@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.User;
-import Service.APIService;
 import Util.DataException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,8 +28,8 @@ public class UserDAOTest {
 
     @BeforeClass
     public static void init (){
-        APIService.persistance();
-        admin.setPseudo("test");
+        EntityFactoryManager.persistance();
+        admin.setUsername("test");
         admin.setMail("test-test@test.fr");
         admin.setHashkey("pass");
     }
@@ -41,7 +40,6 @@ public class UserDAOTest {
         try {
             userDAO.addEntity(admin);
         } catch (DataException e) {
-            e.printStackTrace();
             exception = e;
         }
 
@@ -57,14 +55,13 @@ public class UserDAOTest {
         try {
             usr = userDAO.getEntityByMail(admin.getMail());
         } catch (Exception e) {
-            e.printStackTrace();
             exception = e;
         }
 
         assertNull(exception);
         assertEquals(usr.getId(), admin.getId());
         assertEquals(usr.getMail(), admin.getMail());
-        assertEquals(usr.getPseudo(), admin.getPseudo());
+        assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
 
     }
@@ -77,14 +74,13 @@ public class UserDAOTest {
         try{
             usr = userDAO.getEntityById(admin.getId());
         }catch (Exception e){
-            e.printStackTrace();
             exception = e;
         }
 
         assertNull(exception);
         assertEquals(usr.getId(), admin.getId());
         assertEquals(usr.getMail(), admin.getMail());
-        assertEquals(usr.getPseudo(), admin.getPseudo());
+        assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
 
     }
@@ -98,7 +94,6 @@ public class UserDAOTest {
         try{
             userList = userDAO.getEntityList();
         }catch (Exception e){
-            e.printStackTrace();
             exception = e;
         }
 
@@ -110,7 +105,7 @@ public class UserDAOTest {
         assertNotNull(usr);
         assertEquals(usr.getId(), admin.getId());
         assertEquals(usr.getMail(), admin.getMail());
-        assertEquals(usr.getPseudo(), admin.getPseudo());
+        assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
 
     }
@@ -122,7 +117,6 @@ public class UserDAOTest {
         try {
             userDAO.deleteEntity(admin);
         } catch (Exception e) {
-            e.printStackTrace();
             exception = e;
         }
 
@@ -130,17 +124,16 @@ public class UserDAOTest {
 
         try {
             usr = userDAO.getEntityById(admin.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (DataException e) {
             exception = e;
         }
 
-        assertNull(exception);
+        assertNotNull(exception);
         assertNull(usr);
     }
 
     @AfterClass
     public static void close(){
-        APIService.close();
+        EntityFactoryManager.close();
     }
 }

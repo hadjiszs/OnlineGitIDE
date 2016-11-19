@@ -4,8 +4,8 @@ import Model.User;
 import Service.UserService;
 import Service.UserServiceImpl;
 import Util.Constantes;
+import Util.JsonUtil;
 import Util.Status;
-import Util.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,11 +67,11 @@ public class UserController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
-            return new ResponseEntity<>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(Util.convertToJson(user), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.ACCEPTED);
     }
 
 

@@ -2,12 +2,10 @@ package Git;
 
 import org.junit.*;
 import org.junit.rules.TestName;
-import sun.awt.SunHints;
-
-import static org.junit.Assert.*;
 
 import javax.json.JsonObject;
-import javax.sound.midi.SysexMessage;
+
+import static org.junit.Assert.assertNotNull;
 
 
 /**

@@ -2,11 +2,8 @@ package Controller;
 
 
 
-import Util.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 
@@ -31,11 +28,11 @@ public class CompileController {
         try{
             System.out.println("compile");
         }catch(Exception ex){
-            return new ResponseEntity<String>(Util.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(Util.convertToJson("reponse"), HttpStatus.OK);
+        return new ResponseEntity<String>(JsonUtil.convertToJson("reponse"), HttpStatus.OK);
     }
 */
 }

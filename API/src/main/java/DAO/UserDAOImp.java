@@ -49,12 +49,14 @@ public class UserDAOImp extends DAO implements UserDAO {
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
-            closeEntityManager();
-            throw new DataException("User doesn't exist");
+            user = null;
         }finally {
             closeEntityManager();
         }
-        closeEntityManager();
+
+        if (user == null){
+            throw new DataException("User doesn't exist");
+        }
         return user;
     }
 
@@ -75,7 +77,6 @@ public class UserDAOImp extends DAO implements UserDAO {
             if (!list.isEmpty()) {
                 user = list.get(0);
             }
-
         } catch(Exception ex) {
             user = null;
         }finally {

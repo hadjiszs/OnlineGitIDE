@@ -1,10 +1,15 @@
 package Git;
 
+import Util.ArboNode;
+import Util.ArboTree;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -14,16 +19,15 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.String;
-import javax.json.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
-
-import Util.ArboNode;
-import Util.ArboTree;
 
 import static org.eclipse.jgit.lib.Constants.HEAD;
 

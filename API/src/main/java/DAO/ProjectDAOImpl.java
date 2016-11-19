@@ -62,15 +62,9 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         }finally {
             closeEntityManager();
         }
-        closeEntityManager();
 
         if (project == null){
-            try {
-                throw new Exception("Project doesn't exists");
-            } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
-            }
-
+            throw new DataException("Project doesn't exists");
         }
 
         return project;
