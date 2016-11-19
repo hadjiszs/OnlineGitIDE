@@ -1,9 +1,10 @@
 package Controller;
 
 
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import Util.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 
@@ -13,26 +14,24 @@ import javax.persistence.EntityManager;
 @RestController
 @RequestMapping("/compile")
 public class CompileController {
+
     private EntityManager entityManager;
-/*
-    @RequestMapping(value = "/c", produces = "application/json; charset=utf-8")
-    public @ResponseBody
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public
+    @ResponseBody
     ResponseEntity<String> compile(@RequestParam("currentUser") String currentUser,
-                                   @RequestParam("projectName") String projectName  ){
+                                   @RequestParam("projectName") String projectName) {
 
-        // On récupère les params
-        //cp -rf repositories/nom_propri_project/projectName to compile/currentUser/
-        //compile compile/currentUser/projectName
-        // rm -rf compile/currentUser/projectName
 
-        try{
+        try {
             System.out.println("compile");
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(JsonUtil.convertToJson("reponse"), HttpStatus.OK);
+        return new ResponseEntity<String>(JsonUtil.convertToJson("response"), HttpStatus.OK);
     }
-*/
+
 }
