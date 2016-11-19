@@ -15,6 +15,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
+        <script src="../ressources/JS/editAjax.js";
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/edit.css">
         <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
@@ -24,10 +25,8 @@
 
         <script src="../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
+        <link rel="stylesheet" href="../codeMirror/theme/night.css">
         <script src="../codeMirror/mode/clike/clike.js"></script>
-        <link rel="stylesheet" href="../../codeMirror/theme/rubyblue.css">
-        <script src="../../codeMirror/mode/clike/clike.js"></script>
 
         <!-- Test -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
@@ -134,7 +133,7 @@ return member;
             </a>
 
             <section id="panelDroite">
-                <p> BLABLABLA </p>
+                <div id="arborescence"></div>
                 <p> BLABLABLA </p>
                 <p> BLABLABLA </p>
             </section>
@@ -183,7 +182,7 @@ return member;
             </div>
         </div>
         <!-- Fin Modal -->
-        <script src="../JS/edit.js"></script>
+        <script src="../ressources/JS/edit.js"></script>
     </body>
 </html>
 
