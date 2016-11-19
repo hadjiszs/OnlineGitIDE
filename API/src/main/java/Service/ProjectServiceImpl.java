@@ -4,6 +4,8 @@ import DAO.ProjectDAO;
 import DAO.ProjectDAOImpl;
 import Git.GitStatus;
 import Model.Project;
+import Model.User;
+import Model.UserGrant;
 import Util.DataException;
 
 import javax.json.JsonObject;
@@ -21,7 +23,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO = new ProjectDAOImpl();
     }
 
-    public Boolean addEntity(Project project) throws DataException {
+    public Boolean addEntity(Project project, Long idUser) throws DataException {
         boolean ok = true;
 
         // Creation dans la bdd
@@ -31,15 +33,23 @@ public class ProjectServiceImpl implements ProjectService {
             LOGGER.log( Level.FINE, e.toString(), e);
         }
 
+        UserGrantService userGrantService = new UserGrantServiceImpl();
+        userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
+
         // Creation physique du depot
-        if(ok)
+        if(ok) {
+            User admin = userGrantService.getAdminByEntity(project.getId());
+            if (admin == null)
+                throw new NullPointerException();
+
             try {
-                JsonObject content = Git.Util.createRepository(project.getAdminPseudo(), project.getName());
+                JsonObject content = Git.Util.createRepository(admin.getPseudo(), project.getName());
                 ok = content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
                 return ok;
             } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
+                LOGGER.log(Level.FINE, e.toString(), e);
             }
+        }
 
         return ok;
     }

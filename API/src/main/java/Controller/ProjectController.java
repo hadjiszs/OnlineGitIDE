@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Project;
-import Model.UserGrant;
 import Service.*;
 import Util.Constantes;
 import Util.Status;
@@ -57,9 +56,9 @@ public class ProjectController {
                                                     @RequestParam(value = "user") Long idUser){
 
         Project project = new Project(name, version, type, root);
+
         try {
-            projectService.addEntity(project);
-            userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
+            projectService.addEntity(project, idUser);
         }catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(Util.convertToJson(new Status(-1, ex.getMessage())),
