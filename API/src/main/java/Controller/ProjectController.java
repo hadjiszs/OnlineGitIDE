@@ -62,22 +62,22 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getall(){
+    public @ResponseBody ResponseEntity<List<Project>> getAll(){
         List<Project> projects;
 
         try {
             projects = projectService.getEntityList();
         }catch (Exception ex) {
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(JsonUtil.convertListToJson(projects), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(projects, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getAll(@RequestParam(value = "id") Long id){
+    public @ResponseBody ResponseEntity<String> remove (@RequestParam(value = "idProject") Long idProject,
+                                                        @RequestParam(value = "idUser") Long idUser){
         try {
-            projectService.deleteEntity(id);
+            projectService.deleteEntity(idProject, idUser);
         }catch (Exception ex) {
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
                     HttpStatus.NOT_FOUND);
