@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static Util.Constantes.RESULTS_PATH;
+
 /**
  * Created by Mahmoud on 15/11/2016.
  */
@@ -42,22 +44,26 @@ public class Compile {
 
 
 
+        // 1 - CLONE
+        this.executeAction(Constantes.COMPILE_CLONE, prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());
+        // 2 - update Project Files (temp)
 
-        this.executeAction(Constantes.COMPILE_CLONE, prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());  // 1 - CLONE
-        // 2 - update Project Files
-        this.executeAction(Constantes.COMPILE_COMPILE,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString()); // 3 - COMPILATION
-        String result = this.resultStage(currentUser.getId().toString()); // 4 - GET RESULT
+        // 3 - COMPILATION
+        this.executeAction(Constantes.COMPILE_COMPILE,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());
+        // 4 - GET RESULT
+        String result = this.getCompilationResult(currentUser.getId().toString());
+        // 5 - clean
         this.executeAction(Constantes.COMPILE_CLEAN,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString()); //CLEAN
-
+        //Resultat de la compilation
         return result;
     }
 
-    public String resultStage(String userName) throws FileNotFoundException, IOException {
+    public String getCompilationResult(String userName) throws FileNotFoundException, IOException {
         String result = new String();
         String line = new String();
         BufferedReader in;
 
-        in = new BufferedReader(new FileReader("/Users/Mahmoud/Desktop/Multimif/testCompile/appTest/testCompile/results/" + userName + ".txt"));
+        in = new BufferedReader(new FileReader(RESULTS_PATH + userName + ".txt"));
         result = in.readLine();
         line = "";
         result = "";
@@ -91,7 +97,7 @@ public class Compile {
         }
     }
 
-    public void getTempFiles()
+    public void getTempFiles(Project currentProject ,User currenUser)
     {
         //get all files from BD by CurrentUser and Project
         //for each file cp to cloneRepository () and file(PATH)

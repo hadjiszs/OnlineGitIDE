@@ -6,9 +6,6 @@ package Git;
 public class Constantes {
 
     public static String REPOPATH = "repositories/"; // depots
-    public static String CLONEPATH = "clone/"; //  là où on compile les depot
-    public static String TEMPFILESPATH = "tempFiles/"; // les fichiers temp
-    public static String RESULTPATH = "resuts/"; // Resultat de la compilation
 
 
 }
