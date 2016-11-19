@@ -1,6 +1,10 @@
 syntax: glob
 target
 *.iml
+Application.iml
+API.iml
+.idea/*
+Multimif.iml
 .idea
 .classpath
 .project
