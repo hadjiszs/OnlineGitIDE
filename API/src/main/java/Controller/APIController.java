@@ -11,24 +11,33 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- * Created by amaia.nazabal on 10/19/16.
+ * Controller par défaut de l'API
  */
-
 @RestController
 @RequestMapping("/")
 public class APIController {
 
+    /**
+     * Page par défault de l'API
+     * @return Un json contenant le statut de l'API
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(){
         return new ResponseEntity<String>(JsonUtil.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
+    /**
+     * Initialise la persistance de l'API
+     */
     @PostConstruct
     public void init() {
         System.out.println("[API] [Controller] Init");
         EntityFactoryManager.persistance();
     }
 
+    /**
+     * Ferme la persistance de l'API
+     */
     @PreDestroy
     public void destroy(){
         EntityFactoryManager.close();

@@ -6,6 +6,8 @@ package Util;
 public class StatusOK extends Status {
     private Long id;
 
+    public StatusOK(){}
+
     public StatusOK(int code, String message, Long id){
         super(code, message);
         this.id = id;

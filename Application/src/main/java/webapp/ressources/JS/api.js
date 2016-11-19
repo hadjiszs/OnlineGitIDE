@@ -15,6 +15,7 @@ function deconnexion(){
     Cookies.remove('hashkey');
     Cookies.remove('mail');
     Cookies.remove('pseudo');
+    Cookies.remove('project');
     window.location.href = "/";
 }
 
