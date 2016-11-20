@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * Created by amaia.nazabal on 10/21/16.
+ *
+ * Attention: Le nom de l'id du project doit être differente à 'id'
  */
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
@@ -14,7 +16,7 @@ public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idProject;
 
     private String name;
 
@@ -38,6 +40,7 @@ public class Project implements Serializable {
 
     }
 
+
     public Project(String name, String version, TypeProject type, String root) {
         this.name = name;
         this.version = version;
@@ -47,12 +50,12 @@ public class Project implements Serializable {
         this.lastModification = new Date();
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdProject() {
+        return idProject;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdProject(Long id) {
+        this.idProject = id;
     }
 
     public String getName() {

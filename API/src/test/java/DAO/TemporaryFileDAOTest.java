@@ -5,6 +5,7 @@ import Model.Project;
 import Model.TemporaryFile;
 import Model.User;
 import Util.DataException;
+import Util.TestUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -25,55 +27,25 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TemporaryFileDAOTest {
+public class TemporaryFileDAOTest extends TestUtil{
     private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
     private UserDAO userDAO = new UserDAOImp();
     private ProjectDAO projectDAO = new ProjectDAOImpl();
-
-    private static TemporaryFile temporaryFile;
-    private static  Project project;
-    private static User user;
-
-    @BeforeClass
-    public static void init(){
-        EntityFactoryManager.persistance();
-
-        temporaryFile = new TemporaryFile();
-        temporaryFile.setHashKey("fd0-edkhgad-734ghf4-900p");
-        temporaryFile.setPath("/home/project1/test");
-        temporaryFile.setContent("class Test {}");
-
-    }
-
-    private void addProject() throws DataException {
-        project = new Project();
-
-        project.setName("project-test");
-        project.setCreationDate(new Date());
-        project.setLastModification(new Date());
-        project.setVersion("1.0");
-        project.setType(Project.TypeProject.JAVA);
-        project.setRoot("/home/project-test");
-
-        projectDAO.addEntity(project);
-    }
-
-    private void addUser() throws DataException {
-        user = new User();
-
-        user.setUsername("test-admin");
-        user.setMail("test-admin@test.fr");
-        user.setHashkey("pass-admin");
-
-        userDAO.addEntity(user);
-    }
 
     @Test
     public void addTest(){
         Exception exception = null;
         try{
-            addUser();
-            addProject();
+            newUser();
+            userDAO.addEntity(user);
+
+            newProject();
+            projectDAO.addEntity(project);
+
+            newTemporaryFile();
+            temporaryFile.setProject(project);
+            temporaryFile.setUser(user);
+
             temporaryFileDAO.add(temporaryFile);
 
         }catch (Exception e){
@@ -117,8 +89,8 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
@@ -138,8 +110,8 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
@@ -160,7 +132,7 @@ public class TemporaryFileDAOTest {
         try {
             tmpFile = temporaryFiles.stream().filter(f -> f.getId().equals(temporaryFile.getId()))
                     .findFirst().get();
-        }catch (Exception e){
+        }catch (NoSuchElementException e){
             exception = e;
         }
 
@@ -171,12 +143,12 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
-    public void supprimeTest(){
+    public void supprimeTest() {
         Exception exception = null;
         TemporaryFile tmpFile = null;
         try {
@@ -204,10 +176,5 @@ public class TemporaryFileDAOTest {
         }
 
         assertNull(exception);
-    }
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
     }
 }

@@ -31,7 +31,7 @@ public class TestController {
             throws ServletException, IOException {
 
         logger.info("Returning hello view");
-        System.out.println("salut");
+        //System.out.println("salut");
 
         return new ModelAndView("/view/Test/test.jsp");
     }

@@ -28,61 +28,58 @@ public class PermissionController {
 
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<String> add(@RequestParam(value = "idProject") Long idProject,
+    ResponseEntity<Status> add(@RequestParam(value = "idProject") Long idProject,
                                @RequestParam(value = "idUser") Long idUser){
         try {
             userGrantService.addEntity(idUser, idProject, UserGrant.Permis.Dev);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    e.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_RATE,
+                    e.getMessage()), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
-                Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_REUSSI,
+                Constantes.OPERATION_MSG_REUSSI), HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/getdevelopers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getdevelopers(@RequestParam(value = "idProject") Long idProject){
+    public @ResponseBody ResponseEntity<List<User>> getDevelopers(@RequestParam(value = "idProject") Long idProject){
         List<User> developers;
         try {
              developers = userGrantService.getDevelopersByEntity(idProject);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    e.getMessage())), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(JsonUtil.convertListToJson(developers), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(developers, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/getadmin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getadmin(@RequestParam(value = "idProject") Long idProject) {
+    public @ResponseBody ResponseEntity<User> getAdmin(@RequestParam(value = "idProject") Long idProject) {
         User user;
         try{
             user = userGrantService.getAdminByEntity(idProject);
         }catch(Exception ex){
             ex.printStackTrace();
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/getprojects", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> getprojects(@RequestParam(value = "user") Long idUser){
+    public @ResponseBody ResponseEntity<List<Project>> getProjects(@RequestParam(value = "user") Long idUser){
         List<Project> projects;
 
         try{
             projects = userGrantService.getProjectsByEntity(idUser);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    Constantes.OPERATION_MSG_RATE)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(JsonUtil.convertListToJson(projects), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(projects, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/has", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,6 +95,22 @@ public class PermissionController {
         }
 
         return new ResponseEntity<>(JsonUtil.convertStringToJson("permission", permission + ""), HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<Status> remove (@RequestParam(value = "idUser") Long idUser,
+                                                        @RequestParam(value = "idProject") Long idProject){
+        try{
+            /* On peut supprimer uniquement les permis avec developpers, s'il s'agit du admin
+            * il faudrait supprimer le projet */
+            userGrantService.deleteEntity(idUser, idProject, UserGrant.Permis.Dev);
+        }catch (Exception ex) {
+            //ex.printStackTrace();
+            return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_RATE,
+                    Constantes.OPERATION_MSG_RATE), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new Status(0, Constantes.OPERATION_MSG_REUSSI), HttpStatus.ACCEPTED);
     }
 
 

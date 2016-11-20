@@ -5,17 +5,19 @@ import java.io.Serializable;
 
 /**
  * Created by Alexis on 17/10/2016.
+ * Attention: Le nom de l'id de l'user doit être differente à 'id'
  */
 @Entity
 @NamedQueries({
         @NamedQuery(name="User.findByMail", query="SELECT u from User u WHERE u.mail = :mail"),
-        @NamedQuery(name="User.findByPseudo", query="SELECT u from User u WHERE u.username = :username")
+        @NamedQuery(name="User.findByUsername", query="SELECT u from User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idUser;
 
     @Column(name = "mail", unique = true, nullable = false)
     private String mail;
@@ -36,12 +38,12 @@ public class User implements Serializable {
         this.hashkey = hashkey;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdUser(Long id) {
+        this.idUser = id;
     }
 
     public String getHashkey() {
@@ -66,10 +68,5 @@ public class User implements Serializable {
 
     public String getMail() {
         return mail;
-    }
-
-    @Override
-    public String toString(){
-        return String.format("User[pseudo='%s', mail='%s']", username,mail);
     }
 }

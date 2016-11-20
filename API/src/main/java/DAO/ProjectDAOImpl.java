@@ -17,13 +17,9 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
     public boolean addEntity(Project project) throws DataException{
         Project proj = null;
 
-        System.out.println("salut");
-        System.out.println("pr: " + project.getId());
-
         try{
-            if (project.getId() != null){
-                System.out.println("proj: "+ proj);
-                proj = getEntityById(project.getId());
+            if (project.getIdProject() != null){
+                proj = getEntityById(project.getIdProject());
             }
 
         }catch (Exception ex){
@@ -64,12 +60,7 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         }
 
         if (project == null){
-            try {
-                throw new DataException("Project doesn't exists");
-            } catch (Exception e) {
-                LOGGER.log( Level.FINE, e.toString(), e);
-            }
-
+            throw new DataException("Project doesn't exists");
         }
 
         return project;
