@@ -105,7 +105,7 @@ public class PermissionController {
             * il faudrait supprimer le projet */
             userGrantService.deleteEntity(idUser, idProject, UserGrant.Permis.Dev);
         }catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return new ResponseEntity<>(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE), HttpStatus.NOT_FOUND);
         }

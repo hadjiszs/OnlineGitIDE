@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.User;
-import DAO.EntityFactoryManager;
 import Util.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,6 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -30,7 +31,6 @@ public class UserControllerTest {
 
     @BeforeClass
     public static void init(){
-        EntityFactoryManager.persistance();
         user = new User();
         user.setUsername("test");
         user.setHashkey("password-test");
@@ -46,7 +46,7 @@ public class UserControllerTest {
         try{
             responseEntity = userController
                     .add(user.getUsername(), user.getMail(), user.getHashkey());
-            user.setId(responseEntity.getBody().getId());
+            user.setIdUser(responseEntity.getBody().getIdUser());
         }catch (Exception e){
             exception = e;
         }
@@ -74,7 +74,7 @@ public class UserControllerTest {
     @Test
     public void getAllTest(){
         List<User> userList;
-        User usr;
+        User usr = null;
         Exception exception = null;
         ResponseEntity<List<User>> responseEntity = null;
 
@@ -88,10 +88,15 @@ public class UserControllerTest {
 
         userList = responseEntity.getBody();
 
-        usr = userList.stream().filter(u -> u.getId().equals(user.getId()))
-                .findFirst().get();
+        try {
+            usr = userList.stream().filter(u -> u.getIdUser().equals(user.getIdUser()))
+                    .findFirst().get();
+        }catch (NoSuchElementException e){
+            exception = e;
+        }
 
-        assertEquals(user.getId(), usr.getId());
+        assertNull(exception);
+        assertEquals(user.getIdUser(), usr.getIdUser());
         assertEquals(user.getMail(), usr.getMail());
         assertEquals(user.getUsername(), usr.getUsername());
         assertEquals(user.getHashkey(), usr.getHashkey());
@@ -107,7 +112,7 @@ public class UserControllerTest {
         userController.init();
 
         try{
-            responseEntity = userController.remove(user.getId());
+            responseEntity = userController.remove(user.getIdUser());
         }catch (Exception e){
             exception = e;
         }
@@ -117,10 +122,4 @@ public class UserControllerTest {
 
 
     }
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
-    }
-
 }

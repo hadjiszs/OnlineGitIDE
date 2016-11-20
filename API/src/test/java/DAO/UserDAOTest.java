@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +29,6 @@ public class UserDAOTest {
 
     @BeforeClass
     public static void init (){
-        EntityFactoryManager.persistance();
         admin.setUsername("test");
         admin.setMail("test-test@test.fr");
         admin.setHashkey("pass");
@@ -44,7 +44,7 @@ public class UserDAOTest {
         }
 
         assertEquals(exception, null);
-        assertNotNull(admin.getId());
+        assertNotNull(admin.getIdUser());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class UserDAOTest {
         }
 
         assertNull(exception);
-        assertEquals(usr.getId(), admin.getId());
+        assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
@@ -72,13 +72,13 @@ public class UserDAOTest {
         User usr = new User();
 
         try{
-            usr = userDAO.getEntityById(admin.getId());
+            usr = userDAO.getEntityById(admin.getIdUser());
         }catch (Exception e){
             exception = e;
         }
 
         assertNull(exception);
-        assertEquals(usr.getId(), admin.getId());
+        assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
@@ -99,11 +99,16 @@ public class UserDAOTest {
 
         assertNull(exception);
 
-        usr = userList.stream().filter(u -> u.getId().equals(admin.getId()))
-                .findFirst().get();
+        try {
+            usr = userList.stream().filter(u -> u.getIdUser().equals(admin.getIdUser()))
+                    .findFirst().get();
+        }catch (NoSuchElementException e){
+            exception = e;
+        }
 
+        assertNull(exception);
         assertNotNull(usr);
-        assertEquals(usr.getId(), admin.getId());
+        assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
         assertEquals(usr.getHashkey(), admin.getHashkey());
@@ -123,17 +128,12 @@ public class UserDAOTest {
         assertNull(exception);
 
         try {
-            usr = userDAO.getEntityById(admin.getId());
+            usr = userDAO.getEntityById(admin.getIdUser());
         } catch (DataException e) {
             exception = e;
         }
 
         assertNotNull(exception);
         assertNull(usr);
-    }
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
     }
 }

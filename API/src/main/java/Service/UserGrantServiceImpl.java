@@ -70,7 +70,7 @@ public class UserGrantServiceImpl implements UserGrantService{
             iterator = userGrantDAO.getProjectsByEntity(user).iterator();
             while (iterator.hasNext()) {
                 projects.add(projectService.getEntityById(iterator.next()
-                        .getProject().getId()));
+                        .getProject().getIdProject()));
             }
         }catch (Exception e){
             LOGGER.log( Level.FINE, e.toString(), e);
@@ -98,7 +98,7 @@ public class UserGrantServiceImpl implements UserGrantService{
         Iterator<UserGrant> iterator = permissions.iterator();
 
         while (iterator.hasNext()) {
-            users.add(userService.getEntityById(iterator.next().getUser().getId()));
+            users.add(userService.getEntityById(iterator.next().getUser().getIdUser()));
         }
 
         return users;

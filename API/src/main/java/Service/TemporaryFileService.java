@@ -13,7 +13,7 @@ public interface TemporaryFileService {
     List getEntityByUserProject (Long idUser, Long idProject) throws DataException;
     TemporaryFile getEntityById (Long idTemporaryFile) throws DataException;
     boolean exists (Long idFileTemporary);
-    TemporaryFile add (Long idUser, String hashKey, String content, String path, Long idProject)
+    TemporaryFile addEntity (Long idUser, String hashKey, String content, String path, Long idProject)
             throws DataException;
     boolean deleteEntity(Long idFileTemporary) throws DataException;
 }

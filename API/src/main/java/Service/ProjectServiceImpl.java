@@ -17,33 +17,38 @@ import java.util.logging.Logger;
  * Created by amaia.nazabal on 10/21/16.
  */
 public class ProjectServiceImpl implements ProjectService {
-    UserGrantService userGrantService = new UserGrantServiceImpl();
+    UserGrantService userGrantService;
     ProjectDAO projectDAO;
 
     private static final Logger LOGGER = Logger.getLogger( ProjectServiceImpl.class.getName() );
     public ProjectServiceImpl(){
         projectDAO = new ProjectDAOImpl();
+        userGrantService = new UserGrantServiceImpl();
     }
 
-    public boolean addEntity(Project project) throws DataException{
-        boolean ok = false;
+    public boolean addEntity(Project project, Long idUser) throws DataException{
+        boolean ok;
 
         // Creation dans la bdd
         try {
             ok = projectDAO.addEntity(project);
+
+            /* On cree le rapport du projet avec l'admin */
+            userGrantService.addEntity(idUser, project.getIdProject(), UserGrant.Permis.Admin);
         } catch (Exception e) {
             LOGGER.log( Level.FINE, e.toString(), e);
+            throw new DataException(e.getMessage());
         }
 
         // Creation physique du depot
         if(ok) {
             try {
-                User admin = userGrantService.getAdminByEntity(project.getId());
+                User admin = userGrantService.getAdminByEntity(project.getIdProject());
                 JsonObject content = Git.Util.createRepository(admin.getUsername(), project.getName());
                 ok = content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
             } catch (Exception e) {
                 LOGGER.log(Level.FINE, e.toString(), e);
-                return  false;
+                throw new DataException(e.getMessage());
             }
         }
 
@@ -54,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDAO.getEntityById(id);
     }
 
-    public List getEntityList() throws DataException{
+    public List<Project> getEntityList() throws DataException{
         try {
             return projectDAO.getEntityList();
         } catch (Exception e) {
@@ -67,7 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
         boolean result;
         try {
             User admin = userGrantService.getAdminByEntity(idProject);
-            if (admin.getId().equals(idUser)) {
+            if (admin.getIdUser().equals(idUser)) {
                 /* On enleve le permis avec l'admin */
                 result = userGrantService.deleteEntity(idUser, idProject, UserGrant.Permis.Admin);
                 if (result) {

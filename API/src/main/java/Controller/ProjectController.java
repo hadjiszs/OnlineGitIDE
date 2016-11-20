@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Project;
-import Model.UserGrant;
 import Service.*;
 import Util.Constantes;
 import Util.JsonUtil;
@@ -58,8 +57,8 @@ public class ProjectController {
 
         Project project = new Project(name, version, type, root);
         try {
-            projectService.addEntity(project);
-            userGrantService.addEntity(idUser, project.getId(), UserGrant.Permis.Admin);
+            projectService.addEntity(project, idUser);
+
         }catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
@@ -68,7 +67,7 @@ public class ProjectController {
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new StatusOK(Constantes.OPERATION_CODE_REUSSI,
                                                                     Constantes.OPERATION_MSG_REUSSI,
-                                                                    project.getId())),
+                                                                    project.getIdProject())),
                                                         HttpStatus.ACCEPTED);
     }
 

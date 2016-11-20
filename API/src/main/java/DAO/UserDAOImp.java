@@ -34,13 +34,10 @@ public class UserDAOImp extends DAO implements UserDAO {
             getEntityManager().getTransaction().commit();
             closeEntityManager();
         } else {
-            closeEntityManager();
             throw new DataException("User already exists");
         }
-        closeEntityManager();
 
         return user;
-
     }
 
     /**
@@ -49,13 +46,11 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @throws DataException
      */
     public User getEntityById(Long id) throws DataException {
-        User user;
+        User user = null;
         try {
             user = getEntityManager().find(User.class, id);
         }catch (Exception ex){
             LOGGER.log( Level.FINE, ex.toString(), ex);
-            closeEntityManager();
-            throw new DataException("User doesn't exist");
         }finally {
             closeEntityManager();
         }
@@ -93,7 +88,6 @@ public class UserDAOImp extends DAO implements UserDAO {
         if (user == null){
             throw new DataException("User doesn't exist");
         }
-        closeEntityManager();
 
         return user;
     }
@@ -108,8 +102,6 @@ public class UserDAOImp extends DAO implements UserDAO {
         String query = "SELECT u FROM User u";
         List list =  getEntityManager().createQuery(query).getResultList();
         closeEntityManager();
-
-        closeEntityManager();
         return list;
     }
 
@@ -123,7 +115,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
         getEntityManager().getTransaction().commit();
         closeEntityManager();
-        return false;
+        return true;
     }
 
     public User authEntity(String username, String password) throws DataException{
@@ -141,9 +133,10 @@ public class UserDAOImp extends DAO implements UserDAO {
         } catch(Exception exception) {
             LOGGER.log( Level.FINE, exception.toString(), exception);
             user = null;
+        }finally {
             closeEntityManager();
         }
-        closeEntityManager();
+
         if (user == null || !user.getHashkey().equals(password)){
             throw new DataException("User doesn't exist");
         }else{

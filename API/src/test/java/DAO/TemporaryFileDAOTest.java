@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +37,6 @@ public class TemporaryFileDAOTest {
 
     @BeforeClass
     public static void init(){
-        EntityFactoryManager.persistance();
 
         temporaryFile = new TemporaryFile();
         temporaryFile.setHashKey("fd0-edkhgad-734ghf4-900p");
@@ -74,6 +74,9 @@ public class TemporaryFileDAOTest {
         try{
             addUser();
             addProject();
+            temporaryFile.setProject(project);
+            temporaryFile.setUser(user);
+
             temporaryFileDAO.add(temporaryFile);
 
         }catch (Exception e){
@@ -117,8 +120,8 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
@@ -138,8 +141,8 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
@@ -160,7 +163,7 @@ public class TemporaryFileDAOTest {
         try {
             tmpFile = temporaryFiles.stream().filter(f -> f.getId().equals(temporaryFile.getId()))
                     .findFirst().get();
-        }catch (Exception e){
+        }catch (NoSuchElementException e){
             exception = e;
         }
 
@@ -171,8 +174,8 @@ public class TemporaryFileDAOTest {
         assertEquals(tmpFile.getContent(), temporaryFile.getContent());
         assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
         assertEquals(tmpFile.getPath(), temporaryFile.getPath());
-        assertEquals(tmpFile.getProject().getId(), project.getId());
-        assertEquals(tmpFile.getUser().getId(), user.getId());
+        assertEquals(tmpFile.getProject().getIdProject(), project.getIdProject());
+        assertEquals(tmpFile.getUser().getIdUser(), user.getIdUser());
     }
 
     @Test
@@ -204,10 +207,5 @@ public class TemporaryFileDAOTest {
         }
 
         assertNull(exception);
-    }
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
     }
 }

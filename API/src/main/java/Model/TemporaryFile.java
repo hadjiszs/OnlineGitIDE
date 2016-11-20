@@ -30,12 +30,12 @@ public class TemporaryFile implements Serializable {
     @Column(nullable = false)
     private String path;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "idProject")
     private Project project;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "idUser")
     private User user;
 
     public TemporaryFile(User user, String hashKey, String content, Project project,

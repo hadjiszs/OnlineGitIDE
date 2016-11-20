@@ -58,7 +58,7 @@ public class UserGrant implements Serializable {
     }
 
     public void setProject(Project project) {
-        setProjectId(project.getId());
+        setProjectId(project.getIdProject());
         this.project = project;
     }
 
@@ -67,7 +67,7 @@ public class UserGrant implements Serializable {
     }
 
     public void setUser(User user) {
-        setUserId(user.getId());
+        setUserId(user.getIdUser());
         this.user = user;
     }
 

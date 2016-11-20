@@ -1,6 +1,5 @@
 package Controller;
 
-import DAO.EntityFactoryManager;
 import Model.Project;
 import Model.User;
 import Util.JsonUtil;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +37,6 @@ public class ProjectControllerTest {
 
     @BeforeClass
     public static void init (){
-        EntityFactoryManager.persistance();
         user = new User();
         user.setUsername("test");
         user.setHashkey("password-test");
@@ -63,14 +62,14 @@ public class ProjectControllerTest {
 
         try {
             userResponseEntity = userController.add(user.getUsername(), user.getMail(), user.getHashkey());
-            user.setId(userResponseEntity.getBody().getId());
+            user.setIdUser(userResponseEntity.getBody().getIdUser());
 
             responseEntity = projectController.add(project.getName(), project.getVersion(), project.getRoot(),
-                    project.getType(), user.getId());
+                    project.getType(), user.getIdUser());
 
             JsonUtil<StatusOK> jsonUtil = new JsonUtil<>();
             statusOK = jsonUtil.convertToObjectJSON(responseEntity.getBody(), StatusOK.class);
-            project.setId(statusOK.getId());
+            project.setIdProject(statusOK.getId());
         }catch (Exception e){
             exception = e;
         }
@@ -88,8 +87,14 @@ public class ProjectControllerTest {
         projectController.init();
 
         try{
-            responseEntity = projectController.get(user.getId());
+            responseEntity = projectController.get(project.getIdProject());
+            System.out.println("=============================");
+            System.out.println(responseEntity.toString());
+            System.out.println("=============================");
+
             proj = responseEntity.getBody();
+
+
         }catch (Exception e){
             exception = e;
         }
@@ -97,7 +102,7 @@ public class ProjectControllerTest {
         assertNull(exception);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.ACCEPTED);
         assertNotNull(proj);
-        assertEquals(proj.getId(), project.getId());
+        assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
         assertEquals(proj.getVersion(), project.getVersion());
@@ -123,15 +128,15 @@ public class ProjectControllerTest {
         assertEquals(responseEntity.getStatusCode(), HttpStatus.ACCEPTED);
 
         try{
-            proj = projectList.stream().filter(p -> p.getId().equals(project.getId()))
+            proj = projectList.stream().filter(p -> p.getIdProject().equals(project.getIdProject()))
                     .findFirst().get();
-        }catch (Exception e){
+        }catch (NoSuchElementException e){
             exception = e;
         }
 
         assertNull(exception);
         assertNotNull(proj);
-        assertEquals(proj.getId(), project.getId());
+        assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
         assertEquals(proj.getVersion(), project.getVersion());
@@ -147,7 +152,7 @@ public class ProjectControllerTest {
         projectController.init();
 
         try{
-            responseEntity = projectController.remove(project.getId(), user.getId());
+            responseEntity = projectController.remove(project.getIdProject(), user.getIdUser());
 
             JsonUtil<Status> jsonUtil = new JsonUtil<>();
             status = jsonUtil.convertToObjectJSON(responseEntity.getBody(), Status.class);
@@ -163,7 +168,7 @@ public class ProjectControllerTest {
         Project proj = null;
 
         try{
-            projectResponseEntity = projectController.get(user.getId());
+            projectResponseEntity = projectController.get(user.getIdUser());
             proj = projectResponseEntity.getBody();
         }catch (Exception e){
             exception = e;
@@ -176,7 +181,7 @@ public class ProjectControllerTest {
         ResponseEntity<Status> userResponseEntity = null;
         userController.init();
         try{
-            userResponseEntity = userController.remove(user.getId());
+            userResponseEntity = userController.remove(user.getIdUser());
             status = userResponseEntity.getBody();
         }catch (Exception e){
             exception = e;
@@ -186,11 +191,5 @@ public class ProjectControllerTest {
         assertEquals(userResponseEntity.getStatusCode(), HttpStatus.ACCEPTED);
         assertEquals(status.getCode(), 0);
 
-    }
-
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
     }
 }

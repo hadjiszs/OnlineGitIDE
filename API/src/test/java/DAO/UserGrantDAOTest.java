@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -34,11 +35,6 @@ public class UserGrantDAOTest {
     private static Project project = new Project();
     private static User admin = new User();
     private static User developer = new User();
-
-    @BeforeClass
-    public static void init(){
-        EntityFactoryManager.persistance();
-    }
 
     private void addProject() throws DataException {
         project.setName("project-test");
@@ -111,7 +107,7 @@ public class UserGrantDAOTest {
     @Test
     public void getProjectsByEntity () {
         List<UserGrant> permissionsList = new ArrayList();
-        UserGrant permission;
+        UserGrant permission = null;
         Exception exception = null;
 
         try {
@@ -123,22 +119,27 @@ public class UserGrantDAOTest {
         assertNull(exception);
         assertTrue(permissionsList.size() > 0);
 
-        permission = permissionsList.stream().filter(p -> p.getProjectId().equals(project.getId()))
-                .findFirst().get();
+        try {
+            permission = permissionsList.stream().filter(p -> p.getProjectId().equals(project.getIdProject()))
+                    .findFirst().get();
+        }catch (NoSuchElementException e){
+            exception = e;
+        }
 
+        assertNull(exception);
         assertNotNull(permission);
-        assertEquals(permission.getUserId(), admin.getId());
-        assertEquals(permission.getProjectId(), project.getId());
+        assertEquals(permission.getUserId(), admin.getIdUser());
+        assertEquals(permission.getProjectId(), project.getIdProject());
     }
 
     @Test
     public void getDevelopersByEntity() {
         List<UserGrant> permissionsList = new ArrayList();
-        UserGrant permission;
+        UserGrant permission = null;
         Exception exception = null;
 
         try{
-            permissionsList = userGrantDAO.getDevelopersByEntity(project.getId());
+            permissionsList = userGrantDAO.getDevelopersByEntity(project.getIdProject());
         }catch (Exception e){
             exception = e;
         }
@@ -146,12 +147,17 @@ public class UserGrantDAOTest {
         assertNull(exception);
         assertTrue(permissionsList.size() > 0);
 
-        permission = permissionsList.stream().filter(p -> p.getUserId().equals(developer.getId()))
-                .findFirst().get();
+        try {
+            permission = permissionsList.stream().filter(p -> p.getUserId().equals(developer.getIdUser()))
+                    .findFirst().get();
+        }catch (NoSuchElementException e){
+            exception = e;
+        }
 
+        assertNull(exception);
         assertNotNull(permission);
-        assertEquals(permission.getUserId(), developer.getId());
-        assertEquals(permission.getProjectId(), project.getId());
+        assertEquals(permission.getUserId(), developer.getIdUser());
+        assertEquals(permission.getProjectId(), project.getIdProject());
     }
 
     @Test
@@ -161,7 +167,7 @@ public class UserGrantDAOTest {
         Exception exception = null;
 
         try{
-            permission = userGrantDAO.getAdminByEntity(project.getId());
+            permission = userGrantDAO.getAdminByEntity(project.getIdProject());
         }catch (Exception e){
             exception = e;
         }
@@ -170,7 +176,7 @@ public class UserGrantDAOTest {
 
         adm = permission.getUser();
         assertNotNull(adm);
-        assertEquals(adm.getId(), admin.getId());
+        assertEquals(adm.getIdUser(), admin.getIdUser());
         assertEquals(adm.getUsername(), admin.getUsername());
         assertEquals(adm.getMail(), admin.getMail());
         assertEquals(adm.getHashkey(), admin.getHashkey());
@@ -183,7 +189,7 @@ public class UserGrantDAOTest {
         Exception exception = null;
 
         try {
-            permission = userGrantDAO.getEntityById(admin.getId(), project.getId());
+            permission = userGrantDAO.getEntityById(admin.getIdUser(), project.getIdProject());
         } catch (Exception e) {
             exception = e;
         }
@@ -237,11 +243,5 @@ public class UserGrantDAOTest {
 
     private void deleteProject() throws DataException {
         projectDAO.deleteEntity(project);
-    }
-
-
-    @AfterClass
-    public static void close(){
-        EntityFactoryManager.close();
     }
 }

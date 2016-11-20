@@ -28,7 +28,7 @@ public class UserGrantDAOImpl extends DAO implements UserGrantDAO {
         List<UserGrant> permissions;
 
         Query query = getEntityManager().createNamedQuery("findByUser", UserGrant.class);
-        query.setParameter("id",user.getId());
+        query.setParameter("id",user.getIdUser());
 
         permissions = query.getResultList();
         closeEntityManager();
