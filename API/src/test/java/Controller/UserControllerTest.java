@@ -45,7 +45,7 @@ public class UserControllerTest extends TestUtil{
         }
 
         assertNull(exception);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.ACCEPTED);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
     }
 
     @Test

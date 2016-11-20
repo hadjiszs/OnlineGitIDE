@@ -75,7 +75,7 @@ public class PermissionControllerTest extends TestUtil{
         }
 
         assertNull(exception);
-        assertEquals(userResponseEntity.getStatusCode(), HttpStatus.ACCEPTED);
+        assertEquals(userResponseEntity.getStatusCode(), HttpStatus.CREATED);
         assertEquals(projectResponseEntity.getStatusCode(), HttpStatus.ACCEPTED);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.ACCEPTED);
     }
