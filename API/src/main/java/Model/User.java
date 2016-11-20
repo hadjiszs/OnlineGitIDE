@@ -10,7 +10,8 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(name="User.findByMail", query="SELECT u from User u WHERE u.mail = :mail"),
-        @NamedQuery(name="User.findByPseudo", query="SELECT u from User u WHERE u.username = :username")
+        @NamedQuery(name="User.findByUsername", query="SELECT u from User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 })
 public class User implements Serializable {
 

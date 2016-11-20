@@ -21,11 +21,13 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectDAO projectDAO;
 
     private static final Logger LOGGER = Logger.getLogger( ProjectServiceImpl.class.getName() );
+
     public ProjectServiceImpl(){
         projectDAO = new ProjectDAOImpl();
         userGrantService = new UserGrantServiceImpl();
     }
 
+    @Override
     public boolean addEntity(Project project, Long idUser) throws DataException{
         boolean ok;
 
@@ -55,10 +57,12 @@ public class ProjectServiceImpl implements ProjectService {
         return ok;
     }
 
+    @Override
     public Project getEntityById(Long id) throws DataException{
         return projectDAO.getEntityById(id);
     }
 
+    @Override
     public List<Project> getEntityList() throws DataException{
         try {
             return projectDAO.getEntityList();
@@ -68,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    @Override
     public boolean deleteEntity(Long idProject, Long idUser) throws DataException{
         boolean result;
         try {

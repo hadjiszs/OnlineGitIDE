@@ -158,5 +158,14 @@ public class TemporaryFileServiceTest extends TestUtil {
 
         assertNull(exception);
         assertFalse(result);
+
+        try{
+            projectService.deleteEntity(project.getIdProject(), user.getIdUser());
+            userService.deleteEntity(user.getIdUser());
+        }catch (Exception e){
+            exception = e;
+        }
+
+        assertNull(exception);
     }
 }

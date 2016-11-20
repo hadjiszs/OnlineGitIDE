@@ -20,34 +20,30 @@ public class UserServiceImpl implements UserService {
         userDAO = new UserDAOImp();
     }
 
-    public User addEntity(String pseudo, String mail, String hashkey) throws DataException {
-        User user = new User(pseudo, mail, hashkey);
+    @Override
+    public User addEntity(String username, String mail, String hashkey) throws DataException {
+        User user = new User(username, mail, hashkey);
         return userDAO.addEntity(user);
     }
 
-
+    @Override
     public User getEntityByMail(String mail) throws DataException {
         return userDAO.getEntityByMail(mail);
     }
 
-    public List getEntityList() throws NullPointerException {
-        try {
-            return userDAO.getEntityList();
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-        return null;
+    @Override
+    public List getEntityList() throws DataException {
+        return userDAO.getEntityList();
+
     }
 
+    @Override
     public boolean deleteEntity(Long idUser) throws DataException {
-        try {
-            User user = getEntityById(idUser);
-            return userDAO.deleteEntity(user);
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-        return false;
+        User user = getEntityById(idUser);
+        return userDAO.deleteEntity(user);
     }
+
+    @Override
     public User authEntity(String username, String password) throws DataException {
         try {
             return userDAO.authEntity(username,password);
@@ -57,12 +53,8 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public User getEntityById(Long id) throws DataException{
-        try {
-            return userDAO.getEntityById(id);
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-        return null;
+        return userDAO.getEntityById(id);
     }
 }

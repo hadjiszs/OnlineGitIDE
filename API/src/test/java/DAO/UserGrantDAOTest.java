@@ -218,13 +218,15 @@ public class UserGrantDAOTest {
         try {
             permission1 = userGrantDAO.getEntityById(userGrant1.getUserId(), userGrant1.getProjectId());
             permission2 = userGrantDAO.getEntityById(userGrant2.getUserId(), userGrant2.getProjectId());
-        } catch (Exception e) {
+        } catch (DataException e) {
             exception = e;
         }
 
-        assertNull(exception);
+        assertNotNull(exception);
         assertNull(permission1);
         assertNull(permission2);
+
+        exception = null;
 
         try {
             deleteProject();

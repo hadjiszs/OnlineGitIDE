@@ -13,7 +13,8 @@ import java.util.logging.Logger;
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
-    private static final Logger LOGGER = Logger.getLogger( UserDAOImp.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImp.class.getName());
+
     /**
      * @param user
      * @return
@@ -21,18 +22,25 @@ public class UserDAOImp extends DAO implements UserDAO {
      */
     public User addEntity(User user) throws DataException {
         User usr;
-        try{
+        try {
             usr = getEntityByMail(user.getMail());
-        }catch(Exception ex){
-            LOGGER.log( Level.FINE, ex.toString(), ex);
+        } catch (Exception ex) {
+            LOGGER.log(Level.FINE, ex.toString(), ex);
             usr = null;
         }
 
-        if (usr == null){
-            getEntityManager().getTransaction().begin();
-            getEntityManager().persist(user);
-            getEntityManager().getTransaction().commit();
-            closeEntityManager();
+        if (usr == null) {
+            try {
+                getEntityManager().getTransaction().begin();
+                getEntityManager().persist(user);
+                getEntityManager().getTransaction().commit();
+            }catch (Exception ex) {
+                LOGGER.log(Level.FINE, ex.toString(), ex);
+
+            }finally {
+                closeEntityManager();
+            }
+
         } else {
             throw new DataException("User already exists");
         }
@@ -49,13 +57,13 @@ public class UserDAOImp extends DAO implements UserDAO {
         User user = null;
         try {
             user = getEntityManager().find(User.class, id);
-        }catch (Exception ex){
-            LOGGER.log( Level.FINE, ex.toString(), ex);
-        }finally {
+        } catch (Exception ex) {
+            LOGGER.log(Level.FINE, ex.toString(), ex);
+        } finally {
             closeEntityManager();
         }
 
-        if (user == null){
+        if (user == null) {
             throw new DataException("User doesn't exist");
         }
         return user;
@@ -78,14 +86,14 @@ public class UserDAOImp extends DAO implements UserDAO {
             if (!list.isEmpty()) {
                 user = list.get(0);
             }
-        } catch(Exception ex) {
-            LOGGER.log( Level.FINE, ex.toString(), ex);
+        } catch (Exception ex) {
+            LOGGER.log(Level.FINE, ex.toString(), ex);
             user = null;
-        }finally {
+        } finally {
             closeEntityManager();
         }
 
-        if (user == null){
+        if (user == null) {
             throw new DataException("User doesn't exist");
         }
 
@@ -98,10 +106,16 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @throws Exception
      */
     public List getEntityList() throws DataException {
+        List list = null;
 
-        String query = "SELECT u FROM User u";
-        List list =  getEntityManager().createQuery(query).getResultList();
-        closeEntityManager();
+        try {
+            list = getEntityManager().createNamedQuery("User.findAll", User.class)
+                    .getResultList();
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.toString(), e);
+        } finally {
+            closeEntityManager();
+        }
         return list;
     }
 
@@ -111,18 +125,24 @@ public class UserDAOImp extends DAO implements UserDAO {
      * @throws Exception
      */
     public boolean deleteEntity(User user) throws DataException {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
-        getEntityManager().getTransaction().commit();
-        closeEntityManager();
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
+            getEntityManager().getTransaction().commit();
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.toString(), e);
+        } finally {
+            closeEntityManager();
+        }
+
         return true;
     }
 
-    public User authEntity(String username, String password) throws DataException{
+    public User authEntity(String username, String password) throws DataException {
         User user = null;
 
         try {
-            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByPseudo", User.class);
+            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
             query.setParameter("username", username);
 
             List<User> list = query.getResultList();
@@ -130,16 +150,16 @@ public class UserDAOImp extends DAO implements UserDAO {
                 user = list.get(0);
             }
 
-        } catch(Exception exception) {
-            LOGGER.log( Level.FINE, exception.toString(), exception);
+        } catch (Exception exception) {
+            LOGGER.log(Level.FINE, exception.toString(), exception);
             user = null;
-        }finally {
+        } finally {
             closeEntityManager();
         }
 
-        if (user == null || !user.getHashkey().equals(password)){
+        if (user == null || !user.getHashkey().equals(password)) {
             throw new DataException("User doesn't exist");
-        }else{
+        } else {
             return user;
         }
     }

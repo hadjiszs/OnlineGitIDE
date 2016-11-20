@@ -19,9 +19,11 @@ import java.util.logging.Logger;
 public class UserGrantServiceImpl implements UserGrantService{
     private UserGrantDAO userGrantDAO = new UserGrantDAOImpl();
     private static final Logger LOGGER = Logger.getLogger( UserGrantServiceImpl.class.getName() );
+
     public UserGrantServiceImpl(){
     }
 
+    @Override
     public boolean addEntity(Long idUser, Long idProject, UserGrant.Permis type) throws DataException {
         UserGrant grant;
 
@@ -52,6 +54,7 @@ public class UserGrantServiceImpl implements UserGrantService{
         return true;
     }
 
+    @Override
     public List<Project> getProjectsByEntity(Long id) throws DataException {
         List<Project> projects = new ArrayList<Project>();
         ProjectService projectService = new ProjectServiceImpl();
@@ -80,16 +83,19 @@ public class UserGrantServiceImpl implements UserGrantService{
         return projects;
     }
 
+    @Override
     public UserGrant getEntityById(Long idUser, Long idProject) throws DataException{
         return userGrantDAO.getEntityById(idUser, idProject);
     }
 
+    @Override
     public boolean hasPermission(Long idUser, Long idProject) throws DataException{
         boolean result = (getEntityById(idUser, idProject) != null);
 
         return result;
     }
 
+    @Override
     public List getDevelopersByEntity(Long idProject) throws DataException {
         List<User> users = new ArrayList();
         UserService userService = new UserServiceImpl();
@@ -104,11 +110,13 @@ public class UserGrantServiceImpl implements UserGrantService{
         return users;
     }
 
+    @Override
     public User getAdminByEntity(Long idProject) throws DataException {
         UserGrant userGrant = userGrantDAO.getAdminByEntity(idProject);
         return userGrant.getUser();
     }
 
+    @Override
     public boolean deleteEntity(Long idUser, Long idProject, UserGrant.Permis permis) throws DataException {
         UserGrant grant = getEntityById(idUser, idProject);
 
