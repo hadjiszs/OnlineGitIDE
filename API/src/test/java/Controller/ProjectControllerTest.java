@@ -5,6 +5,7 @@ import Model.User;
 import Util.JsonUtil;
 import Util.Status;
 import Util.StatusOK;
+import Util.TestUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -29,27 +30,9 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ProjectControllerTest {
+public class ProjectControllerTest extends TestUtil{
     private ProjectController projectController = new ProjectController();
     private UserController userController = new UserController();
-    private static User user;
-    private static Project project;
-
-    @BeforeClass
-    public static void init (){
-        user = new User();
-        user.setUsername("test");
-        user.setHashkey("password-test");
-        user.setMail("test-test@test.fr");
-
-        project = new Project();
-        project.setName("project-test");
-        project.setCreationDate(new Date());
-        project.setLastModification(new Date());
-        project.setVersion("1.0");
-        project.setType(Project.TypeProject.JAVA);
-        project.setRoot("/home/project-test");
-    }
 
     @Test
     public void addTest(){
@@ -61,9 +44,11 @@ public class ProjectControllerTest {
         userController.init();
 
         try {
+            newUser();
             userResponseEntity = userController.add(user.getUsername(), user.getMail(), user.getHashkey());
             user.setIdUser(userResponseEntity.getBody().getIdUser());
 
+            newProject();
             responseEntity = projectController.add(project.getName(), project.getVersion(), project.getRoot(),
                     project.getType(), user.getIdUser());
 

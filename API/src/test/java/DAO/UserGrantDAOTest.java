@@ -4,6 +4,7 @@ import Model.Project;
 import Model.User;
 import Model.UserGrant;
 import Util.DataException;
+import Util.TestUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -26,47 +27,25 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserGrantDAOTest {
+public class UserGrantDAOTest extends TestUtil{
     private UserGrantDAO userGrantDAO = new UserGrantDAOImpl();
     private ProjectDAO projectDAO = new ProjectDAOImpl();
     private UserDAO userDAO = new UserDAOImp();
     private static UserGrant userGrant1 = new UserGrant();
     private static UserGrant userGrant2 = new UserGrant();
-    private static Project project = new Project();
-    private static User admin = new User();
-    private static User developer = new User();
-
-    private void addProject() throws DataException {
-        project.setName("project-test");
-        project.setCreationDate(new Date());
-        project.setLastModification(new Date());
-        project.setVersion("1.0");
-        project.setType(Project.TypeProject.JAVA);
-        project.setRoot("/home/project-test");
-
-        projectDAO.addEntity(project);
-    }
-
-    private void addUser() throws DataException {
-        admin.setUsername("test-admin");
-        admin.setMail("test-admin@test.fr");
-        admin.setHashkey("pass-admin");
-
-        userDAO.addEntity(admin);
-
-        developer.setUsername("test-developer");
-        developer.setMail("test-developer@test.fr");
-        developer.setHashkey("pass-developer");
-
-        userDAO.addEntity(developer);
-    }
 
     @Test
     public void addEntity(){
         Exception exception = null;
         try {
-            addProject();
-            addUser();
+            newAdmin();
+            userDAO.addEntity(admin);
+
+            newDeveloper();
+            userDAO.addEntity(developer);
+
+            newProject();
+            projectDAO.addEntity(project);
         } catch (Exception e) {
             exception = e;
         }

@@ -25,17 +25,8 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserControllerTest {
+public class UserControllerTest extends TestUtil{
     private UserController userController = new UserController();
-    private static User user;
-
-    @BeforeClass
-    public static void init(){
-        user = new User();
-        user.setUsername("test");
-        user.setHashkey("password-test");
-        user.setMail("test-test@test.fr");
-    }
 
 
     @Test
@@ -44,6 +35,8 @@ public class UserControllerTest {
         Exception exception = null;
         ResponseEntity<User> responseEntity = null;
         try{
+            newUser();
+
             responseEntity = userController
                     .add(user.getUsername(), user.getMail(), user.getHashkey());
             user.setIdUser(responseEntity.getBody().getIdUser());

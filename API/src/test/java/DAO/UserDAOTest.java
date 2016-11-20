@@ -2,6 +2,7 @@ package DAO;
 
 import Model.User;
 import Util.DataException;
+import Util.TestUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -23,21 +24,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserDAOTest {
+public class UserDAOTest extends TestUtil{
     private UserDAO userDAO = new UserDAOImp();
-    private static User admin = new User();
-
-    @BeforeClass
-    public static void init (){
-        admin.setUsername("test");
-        admin.setMail("test-test@test.fr");
-        admin.setHashkey("pass");
-    }
 
     @Test
     public void addEntity() {
         Exception exception = null;
         try {
+            newAdmin();
             userDAO.addEntity(admin);
         } catch (DataException e) {
             exception = e;

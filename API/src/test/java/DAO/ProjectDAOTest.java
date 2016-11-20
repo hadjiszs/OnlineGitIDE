@@ -3,6 +3,7 @@ package DAO;
 import Model.Project;
 import Model.User;
 import Util.DataException;
+import Util.TestUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -25,26 +26,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ProjectDAOTest {
+public class ProjectDAOTest extends TestUtil{
     private ProjectDAO projectDAO = new ProjectDAOImpl();
-    private static Project project = new Project();
-    private static User user = new User();
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws DataException {
-
-        project.setName("project-test");
-        project.setCreationDate(new Date());
-        project.setLastModification(new Date());
-        project.setVersion("1.0");
-        project.setType(Project.TypeProject.JAVA);
-        project.setRoot("/home/project-test");
-    }
 
     @Test
     public void addEntityTest() throws DataException{
         Exception exception = null;
         try{
+            newProject();
             projectDAO.addEntity(project);
         }catch (Exception ex){
             exception = ex;
