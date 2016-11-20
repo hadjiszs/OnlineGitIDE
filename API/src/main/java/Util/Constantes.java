@@ -27,16 +27,25 @@ public class Constantes {
 
     public static final String PROJECT_MVN = "Maven";
 
-    public static final String COMPILE_COMPILE = "compile";
-    public static final String COMPILE_CLEAN = "clean";
-    public static final String COMPILE_CLONE = "clone";
+    public static final String COMPILE_ACTION = "compile";
+    public static final String CLEAN_ACTION = "clean";
+    public static final String CLONE_ACTION = "clone";
 
 
-    public static final String REPO_PATH = "repositories/"; // depot des projets
-    public static final String CLONE_PATH = "clone/"; // depot des projets pour la compilation
-    public static final String SCRIPTS_PATH = "scripts/"; // scripts
-    public static final String RESULTS_PATH = "results/"; // resultat de la compilation
-    public static String TEMPFILES_PATH = "tempFiles/"; // les fichiers temp
+    public static final String REPO_PATH = "repositories"; // depot des projets
+    public static final String CLONE_PATH = "clone"; // depot des projets pour la compilation
+    public static final String SCRIPTS_PATH = "scripts"; // scripts
+    public static final String RESULTS_PATH = "results"; // resultat de la compilation
+    public static String TEMPFILES_PATH = "tempFiles"; // les fichiers temp
+
+
+    public static String SCRIPT_COMPILE_JAVA = "compileJava.sh"; // script pour compiler un projet Java
+    public static String SCRIPT_COMPILE_CPP = ""; // à faire
+    public static String SCRIPT_COMPILE_MAVEN = ""; // à faire
+
+    public static String SCRIPT_CLONE = "clone.sh"; // script pour cloner
+    public static String SCRIPT_CLEAN = "clean.sh"; // script pour un "clean" apres la compilation
+
 
 
 

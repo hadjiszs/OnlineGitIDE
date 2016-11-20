@@ -44,15 +44,15 @@ public class Compile {
 
 
         // 1 - CLONE
-        this.executeAction(Constantes.COMPILE_CLONE, prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());
+        this.executeAction(CLONE_ACTION, prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString());
         // 2 - update Project Files (temp)
 
         // 3 - COMPILATION
-        this.executeAction(Constantes.COMPILE_COMPILE,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString());
+        this.executeAction(COMPILE_ACTION,  prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString());
         // 4 - GET RESULT
-        String result = this.getCompilationResult(currentUser.getId().toString());
+        String result = this.getCompilationResult(currentUser.getIdUser().toString());
         // 5 - clean
-        this.executeAction(Constantes.COMPILE_CLEAN,  prop.getId().toString(), currentProject.getName(), currentUser.getId().toString()); //CLEAN
+        this.executeAction(CLEAN_ACTION,  prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString()); //CLEAN
         //Resultat de la compilation
         return result;
     }
@@ -81,18 +81,18 @@ public class Compile {
     }
 
 
-    public void executeAction(String action, String propProject, String projectName, String userName) throws IOException {
+    public void executeAction(String action, String propId, String idProject, String idCurrentUser) throws IOException {
         Process p1;
         Runtime rt = Runtime.getRuntime();
 
-        if (action.toString().equals(Constantes.COMPILE_COMPILE)) {
-            p1 = rt.exec("./compileJava.sh " +SCRIPTS_PATH + " " + userName + " " + projectName);
+        if (action.toString().equals(COMPILE_ACTION)) {
+            p1 = rt.exec(SCRIPTS_PATH+"/"+SCRIPT_COMPILE_JAVA+" "+CLONE_PATH +" "+ RESULTS_PATH + " " + idCurrentUser + " " + idProject);
         }
-        if (action.toString().equals(Constantes.COMPILE_CLONE)) {
-            p1 = rt.exec("./clone.sh " + CLONE_PATH +" "+ propProject + " " + projectName + " " + userName);
+        if (action.toString().equals(CLONE_ACTION)) {
+            p1 = rt.exec(SCRIPTS_PATH+"/"+SCRIPT_CLONE+" " + CLONE_PATH +" " + REPO_PATH +" "+ propId + " " + idProject + " " + idCurrentUser);
         }
-        if (action.toString().equals(Constantes.COMPILE_CLEAN)) {
-            p1 = rt.exec("./clean.sh "+ RESULTS_PATH + " " + userName);
+        if (action.toString().equals(CLEAN_ACTION)) {
+            p1 = rt.exec(SCRIPTS_PATH+"/"+SCRIPT_CLEAN+" "+ CLONE_PATH +" " +RESULTS_PATH + " " + idCurrentUser);
         }
     }
 
