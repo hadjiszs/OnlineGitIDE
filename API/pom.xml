@@ -18,7 +18,7 @@
             <jackson.mapper.version>1.9.13</jackson.mapper.version>
             <mysql.connector.version>6.0.4</mysql.connector.version>
             <hibernate.version>5.2.2.Final</hibernate.version>
-            <spring-test.version>3.1.2.RELEASE</spring-test.version>
+            <spring-test.version>3.2.3.RELEASE</spring-test.version>
         </properties>
 
     <artifactId>API</artifactId>
@@ -42,11 +42,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.webmvc}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring-test.version}</version>
         </dependency>
 
         <!-- TESTS -->

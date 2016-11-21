@@ -15,6 +15,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
+        <script src="https://mbraak.github.io/jqTree/tree.jquery.js"></script>
+        <link rel="stylesheet" href="https://mbraak.github.io/jqTree/jqtree.css" type="text/css">
         <script src="../ressources/JS/api.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/home.css">
@@ -57,7 +59,7 @@
                 <section class="col-lg-12" id="divProjets">
                     <header class="titreSection">
                         <h2 class="h2DivProjet"> Mes Projets </h2>
-                        <button class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateProject" id="ajouterProjet"> Créer un Projet</button>
                     </header>
                     <div class="list-group col-lg-8" id="listeProjets">
                         <a href="#" class="list-group-item">Projet 1</a>
@@ -89,40 +91,21 @@
                         <button type="submit" class="btn btn-default">Go !</button>
                     </form>
                 </aside>
-                <header class="col-lg-12">
-                    <h2> Titre du Tableau </h2>
-                </header>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Action</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John Boo</td>
-                            <td>commit</td>
-                            <td>15 Sep, 8:56 AM</td>
-                        </tr>
-                        <tr>
-                            <td>Michael Robinson</td>
-                            <td>commit</td>
-                            <td>15 Sep, 7:12 AM</td>
-                        </tr>
-                        <tr>
-                            <td>Michael Robinson</td>
-                            <td>new branch</td>
-                            <td>15 Sep, 7:12 AM</td>
-                        </tr>
-                        <tr>
-                            <td>John Boo</td>
-                            <td>merge</td>
-                            <td>15 Sep, 2:08 AM</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="col-lg-12">
+                    <h1>Informations du projets</h1>
+                    <select id="listBranch">
+                        <option value=""></option>
+                    </select>
+                    <select id="listCommit">
+                        <option value=""></option>
+                    </select>
+                    <div id="commitArbo"></div>
+                    <div id="openFile"></div>
+                </div>
+
+
+
             </section>
             <a id="ancrePanel" aria-label="Panel deroulant"><span class="glyphicon glyphicon-chevron-left" id="chevronAncre" aria-hidden="true"></span></a>
             <section id="panelDeroulant">
@@ -130,5 +113,55 @@
                 <p> BLABLABLA </p>
             </section>
         </main>
+        <!-- Modal creation projet -->
+        <div id="modalCreateProject" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer un projet</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createProjectForm">
+                            <div class="form-group row">
+                                <label for="projectName-input" class="col-xs-2 col-form-label">nom</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" name="name" id="projectName-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectVersion-input" class="col-xs-2 col-form-label">Version</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="number" name="version" id="projectVersion-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectRoot-input" class="col-xs-2 col-form-label">Root path</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" name="root" id="projectRoot-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectType-select" class="col-xs-2 col-form-label">Type</label>
+                                <div class="col-xs-10">
+                                    <select id="projectType-select" name="type" class="form-control">
+                                        <option value="JAVA">JAVA</option>
+                                        <option value="C++">C++</option>
+                                        <option value="python">Python</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="modalCreateProjectSubmit" type="submit" class="btn btn-success">Créer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </body>
 </html>

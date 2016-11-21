@@ -11,8 +11,8 @@ $(document).ready(function() {
     /* Inscription à l'application */
     $("#btnInscription").on("click",function(e){
         e.preventDefault();
-        var url = "/api/user/add?" + $(this).closest("form").serialize();
-        ApiRequest('GET',url,"",connexion);
+        var url = "/api/user/?" + $(this).closest("form").serialize();
+        ApiRequest('POST',url,"",connexion);
     });
 
 });
