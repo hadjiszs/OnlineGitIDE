@@ -67,8 +67,9 @@ $(document).ready(function() {
     $(".userProject-list").on("click", function (e) {
         e.preventDefault();
         alert("get arborescence");
-        var url = "/git/"+ Cookies.get('idUser') + "/" + $(this).attr("value") + "/branches";
-        ApiRequest('GET',url,"",arborescenceAffichage);
+        listBranch($(this).attr("value"));
+        /*var url = "/git/"+ Cookies.get('idUser') + "/" + $(this).attr("value") + "/branches";
+        ApiRequest('GET',url,"",arborescenceAffichage);*/
     })
 
 
@@ -82,29 +83,60 @@ function refreshPage(){
 
 /* Liste les projets d'un utilisateur */
 function listProject(){
-    url = "/api/project/getall?idUser=" +  Cookies.get('idUser');
-    ApiRequest('GET',url,"",listProjectAffichage);
-}
+    url = "/api/permission/getall?idUser=" +  Cookies.get('idUser');
+    ApiRequest('GET',url,"",function (json){
+                console.log("Liste projets: " + JSON.stringify(json));
+                $("#listeProjets").empty();
 
-/* Affiche la liste des projets d'un utilisateur*/
-function listProjectAffichage(json){
-    console.log("Liste projets: " + JSON.stringify(json));
-    $("#listeProjets").empty();
+                $.each(json, function(index, element) {
 
-    $.each(json, function(index, element) {
-
-        $('#listeProjets').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+                    $('#listeProjets').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+                });
     });
 }
+
+/* Créer un nouveau projet */
 function addProject(json){
-    console.log(json);
+    console.log("Nouveau projet:" + JSON.stringify(json));
     //console.log(json["id"]);
     $("#listeProjets").append(JSON.stringify(json));
 }
 
-function arborescenceAffichage(json){
-    console.log("arbo: " + JSON.stringify(json));
+
+/* Liste les branches d'un projet*/
+function listBranch(idProject){
+    var url = "/git/"+ Cookies.get('idUser') + "/" + idproject + "/branches";
+    ApiRequest('GET',url,"",function(json){
+                $("#listBranch").append('<select class="form-control">');
+                $("#listBranch").append('<option>' +JSON.stringify(json) + '</option>');
+                $("#listBranch").append('</select>');
+            });
 }
+
+function listCommit(idProject,branch){
+    var url = "/git/"+ Cookies.get('idUser') + "/" + idproject + "/listCommit/" + branch;
+    ApiRequest('GET',url,"",function(json){
+                    console.log("Liste des commits de " + branch + ": " + JSON.stringify(json));
+            });
+}
+
+function getFile(idProject,revision){
+    var url = "/git/"+ Cookies.get('idUser') + "/" + idproject + "/" + revision;
+    ApiRequest('GET',url,"",function(json){
+        console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
+    });
+}
+
+function getArborescence(idProject,revision){
+    var url = "/git/"+ Cookies.get('idUser') + "/" + idproject + "//tree/" + revision;
+    ApiRequest('GET',url,"",function(json){
+        console.log("Arborescence de " + revision + ": " + JSON.stringify(json));
+    });
+}
+
+
+
+
 
 
 

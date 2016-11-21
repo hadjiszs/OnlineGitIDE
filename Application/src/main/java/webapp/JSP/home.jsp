@@ -92,6 +92,7 @@
                 <header class="col-lg-12">
                     <h2> Titre du Tableau </h2>
                 </header>
+                <div id="listBranch"></div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
