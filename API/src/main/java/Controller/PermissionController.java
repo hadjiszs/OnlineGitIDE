@@ -74,6 +74,7 @@ public class PermissionController {
 
         try{
             projects = userGrantService.getProjectsByEntity(idUser);
+
         }catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

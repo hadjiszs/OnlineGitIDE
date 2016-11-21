@@ -48,13 +48,19 @@ $(document).ready(function() {
     ApiRequest('GET',url,"",listProject);
 
     //Liste
-
-
     $("#deconnexion").on("click", function (e) {
         e.preventDefault();
         deconnexion();
-    })
+    });
 
+    // Créer un nouveau projet
+    $('#modalCreateProjectSubmit').on("click", function (e) {
+        alert('bonjour');
+        e.preventDefault();
+        var url = "/api/project/add?"+ $("#createProjectForm").serialize() +"&user="+ Cookies.get('id');
+        console.log(url);
+        ApiRequest('GET',url,"",addProject);
+    });
 
 
 
