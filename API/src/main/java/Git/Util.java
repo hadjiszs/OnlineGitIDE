@@ -51,7 +51,9 @@ public class Util {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
-            Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repository +".git"));
+            String path = Constantes.REPO_FULLPATH + creator + "/" + repository + ".git";
+            System.out.println("CHEMIN:" + path);
+            Git git = Git.open(new File(path));
 
             // a RevWalk allows to walk over commits based on some filtering that is defined
             try  {
@@ -122,7 +124,11 @@ public class Util {
      */
     public static boolean deleteRepository(String creator,
                                            String repository) {
-        File dir = new File(Constantes.REPOPATH + creator + "/" + repository +".git");
+        String path = Constantes.REPO_FULLPATH + creator + "/" + repository + ".git";
+        System.out.println("CHEMIN:" + path);
+
+        File dir = new File(path);
+
         return deleteDirectory(dir);
     }
 
@@ -143,7 +149,10 @@ public class Util {
         }
 
         // prepare a new folder for the cloned repository
-        File localPath = new File(Constantes.REPOPATH + creator + "/" + newRepo + ".git");
+        String path = Constantes.REPO_FULLPATH + creator + "/" + newRepo + ".git";
+        System.out.println("CHEMIN:" + path);
+
+        File localPath = new File(path);
 
         // then clone
         System.out.println("Cloning from " + remoteURL + " to " + localPath);
@@ -167,7 +176,10 @@ public class Util {
                                         String repo,
                                         String revision,
                                         String path) throws Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo +".git"));
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
+
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         JsonObject ret = factory.createObjectBuilder()
                 .add("content", BlobUtils.getContent(git.getRepository(), revision, path))
@@ -193,7 +205,9 @@ public class Util {
         GitStatus status;
 
         // Ouverture du depot
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
 
         // Verification que le nom de branche n'existe pas deja dans le depot
         boolean branchExiste = false;
@@ -237,7 +251,7 @@ public class Util {
         GitStatus status = GitStatus.REPOSITORY_NOT_CREATED;
 
         // Chemin vers le nouveau repository
-        String path = Constantes.REPO_FULLPATH + creator + "/" + repo;
+        String path = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + path);
         File localPath = new File(path);
 
@@ -246,6 +260,20 @@ public class Util {
 
         if(git.getRepository().getRef(HEAD) != null)
             status = GitStatus.REPOSITORY_CREATED;
+
+        File myfile = new File(path, "README");
+        if(!myfile.createNewFile()) {
+            throw new IOException("Could not create file " + myfile);
+        }
+
+        // run the add-call
+        git.add()
+                .addFilepattern("README")
+                .call();
+
+        git.commit()
+                .setMessage("add .README")
+                .call();
 
         JsonObject ret = factory.createObjectBuilder()
                 .add("code", status.getValue())
@@ -273,7 +301,9 @@ public class Util {
         DiffFormatter formatter = new DiffFormatter(baos);
 
         // Ouverture du depot
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
         Repository repository = git.getRepository();
 
         // Recuperation du RevCommit associé au commit sujet
@@ -337,7 +367,9 @@ public class Util {
     public static  JsonObject getBranches(String creator,
                                           String repo) throws Exception {
 
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
 
         List<Ref> call = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
@@ -362,7 +394,9 @@ public class Util {
     public static JsonObject getCommits(String creator,
                                         String repo,
                                         String branch) throws  Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         Iterable<RevCommit> commits = git.log().all().call();
         JsonArrayBuilder build = factory.createArrayBuilder();

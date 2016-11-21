@@ -34,10 +34,10 @@ public class UserDAOImp extends DAO implements UserDAO {
                 getEntityManager().getTransaction().begin();
                 getEntityManager().persist(user);
                 getEntityManager().getTransaction().commit();
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 LOGGER.log(Level.FINE, ex.toString(), ex);
 
-            }finally {
+            } finally {
                 closeEntityManager();
             }
 

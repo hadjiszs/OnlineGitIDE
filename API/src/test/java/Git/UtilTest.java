@@ -17,6 +17,7 @@ public class UtilTest {
     private static final String USER = "userTest";
     private static final String DIR_NAME = "TestGitRepository";
 
+
     @Rule public TestName name = new TestName();
 
     @Before
@@ -104,7 +105,6 @@ public class UtilTest {
 
     @Test
     public void testGetBranches() throws Exception {
-        //Recuperation du contenu d'un fichier pour une certaine révision
         JsonObject branches = Util.getBranches(USER, DIR_NAME);
 
         Assert.assertNotNull(branches);
