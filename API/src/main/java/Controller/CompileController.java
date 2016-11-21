@@ -20,18 +20,19 @@ public class CompileController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public
     @ResponseBody
-    ResponseEntity<String> compile(@RequestParam("currentUser") String currentUser,
-                                   @RequestParam("projectName") String projectName) {
+    ResponseEntity<String> compile(@RequestParam("idProject") long idProject,@RequestParam("idCurrentUser") Long idCurrentUser) {
 
-
+        System.out.println("compile");
+        Compile compile=new Compile();
+        String Resultat ="erreur";
         try {
-            System.out.println("compile");
+        Resultat   = compile.executeCompilation(idProject,idCurrentUser);
         } catch (Exception ex) {
             return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(JsonUtil.convertToJson("response"), HttpStatus.OK);
+        return new ResponseEntity<String>(JsonUtil.convertToJson(Resultat), HttpStatus.OK);
     }
 
 }
