@@ -57,7 +57,7 @@
                 <section class="col-lg-12" id="divProjets">
                     <header class="titreSection">
                         <h2 class="h2DivProjet"> Mes Projets </h2>
-                        <button class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateProject" id="ajouterProjet"> Créer un Projet</button>
                     </header>
                     <div class="list-group col-lg-8" id="listeProjets">
                         <a href="#" class="list-group-item">Projet 1</a>
@@ -92,6 +92,7 @@
                 <header class="col-lg-12">
                     <h2> Titre du Tableau </h2>
                 </header>
+                <div id="listBranch"></div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -130,5 +131,55 @@
                 <p> BLABLABLA </p>
             </section>
         </main>
+        <!-- Modal creation projet -->
+        <div id="modalCreateProject" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer un projet</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createProjectForm">
+                            <div class="form-group row">
+                                <label for="projectName-input" class="col-xs-2 col-form-label">nom</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" name="name" id="projectName-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectVersion-input" class="col-xs-2 col-form-label">Version</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="number" name="version" id="projectVersion-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectRoot-input" class="col-xs-2 col-form-label">Root path</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" name="root" id="projectRoot-input">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectType-select" class="col-xs-2 col-form-label">Type</label>
+                                <div class="col-xs-10">
+                                    <select id="projectType-select" name="type" class="form-control">
+                                        <option value="JAVA">JAVA</option>
+                                        <option value="C++">C++</option>
+                                        <option value="python">Python</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="modalCreateProjectSubmit" type="submit" class="btn btn-success">Créer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </body>
 </html>

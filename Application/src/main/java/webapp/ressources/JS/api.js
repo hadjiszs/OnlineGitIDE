@@ -1,7 +1,7 @@
 
 /** Crée une session avec un cookie qui contient le hashkey */
 function connexion(json){
-    Cookies.set('id', json["idUser"]);
+    Cookies.set('idUser', json["idUser"]);
     Cookies.set('hashkey', json["hashkey"]);
     Cookies.set('mail', json["mail"]);
     Cookies.set('username', json["username"]);
@@ -11,7 +11,7 @@ function connexion(json){
 }
 
 function deconnexion(){
-    Cookies.remove('id');
+    Cookies.remove('idUser');
     Cookies.remove('hashkey');
     Cookies.remove('mail');
     Cookies.remove('username');
