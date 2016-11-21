@@ -30,6 +30,7 @@ public class Constantes {
     public static final String COMPILE_ACTION = "compile";
     public static final String CLEAN_ACTION = "clean";
     public static final String CLONE_ACTION = "clone";
+    public static final String MV_TEMP_FILES_ACTION = "getTempFile" ;
 
 
     public static final String REPO_PATH = "repositories"; // depot des projets
@@ -45,6 +46,8 @@ public class Constantes {
 
     public static String SCRIPT_CLONE = "clone.sh"; // script pour cloner
     public static String SCRIPT_CLEAN = "clean.sh"; // script pour un "clean" apres la compilation
+
+    public static String SCRIPT_MV_TEMP_FILE = "mvTempFile.sh";
 
 
 
