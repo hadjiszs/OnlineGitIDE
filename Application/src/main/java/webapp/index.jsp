@@ -64,8 +64,8 @@
                                     <h4 class="modal-title">Besoin d'un nouveau mot de passe ?</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="oubliePassword.jsp" method="post">
-                                        <input type="email" placeholder="Adresse mail" name="mailPassword" id="mailPassword" required />
+                                    <form action="oubliePassword.jsp" method="post" id="formPassword">
+                                        <input type="email" placeholder="Votre Adresse mail" name="mailPassword" id="mailPassword" required />
                                         <input  class="btn btn-success" id="btnPassword" type="submit" value="Envoyer" />
                                     </form>
                                 </div>

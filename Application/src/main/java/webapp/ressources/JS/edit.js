@@ -71,7 +71,6 @@ var editeur = CodeMirror.fromTextArea(txt, {
     theme: inputChangerTheme.options[inputChangerTheme.selectedIndex].value,
     viewportMargin: Infinity,
     indentUnit: parseInt(inputChangerIndentation.options[inputChangerIndentation.selectedIndex].value),
-
 });
 
 var mac = CodeMirror.keyMap.default === CodeMirror.keyMap.macDefault;

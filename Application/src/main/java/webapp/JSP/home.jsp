@@ -57,7 +57,7 @@
                 <section class="col-lg-12" id="divProjets">
                     <header class="titreSection">
                         <h2 class="h2DivProjet"> Mes Projets </h2>
-                        <button class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
+                        <button data-toggle="modal" data-target="#creerProjet" class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
                     </header>
                     <div class="list-group col-lg-8" id="listeProjets">
                         <a href="#" class="list-group-item">Projet 1</a>
@@ -130,5 +130,36 @@
                 <p> BLABLABLA </p>
             </section>
         </main>
+
+        <!-- Modal Creation de projet -->
+        <div id="creerProjet" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Parametre du projet </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="creerProjet.jsp" method="post" id="formProjet">
+                            <label class="labelProjet"> Nom du projet </label>
+                            <input type="text" placeholder="Nom du projet" name="nomProjet" id="nomProjet" required />
+                            <label class="labelProjet"> Version du projet </label>
+                            <input type="text" placeholder="Version" name="versionProjet" id="versionProjet" required />
+                            <label class="labelProjet"> Zone de dépôt </label>
+                            <input type="text" placeholder="Lien vers Git" name="gitProjet" id="gitProjet"/>
+                            <input  class="btn btn-success" id="btnProjet" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+
+            </div>
+        </div>
+        <!-- Fin Modal -->
     </body>
 </html>

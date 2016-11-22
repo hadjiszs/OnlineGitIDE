@@ -43,3 +43,21 @@ BODY{
 #chevronAncre{
     line-height:80px;
 }
+
+#nomProjet, #versionProjet, #gitProjet{
+    width:60%;
+    display:block;
+    margin:auto;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.labelProjet{
+    display:block;
+}
+
+#formProjet{
+    width:100%;
+    margin:auto;
+    text-align:center;
+}
