@@ -101,10 +101,10 @@
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
-                        <button type="button" class="btn btn-default" id="TODO">Compiler</button>
-                        <button type="button" class="btn btn-default" id="TODO">Créer une branche</button>
-                        <button type="button" class="btn btn-default" id="TODO">Créer un fichier</button>
-                        <button type="button" class="btn btn-default" id="TODO">Créer un dossier</button>
+                        <button type="button" class="btn btn-default" id="compile">Compiler</button>
+                        <button type="button" class="btn btn-default" id="createBranch">Créer une branche</button>
+                        <button type="button" class="btn btn-default" id="createFile">Créer un fichier</button>
+                        <button type="button" class="btn btn-default" id="createDir">Créer un dossier</button>
                         <input  type="button" class="btn btn-default" id="commit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
                     </div>
                 </div>

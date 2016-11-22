@@ -148,6 +148,11 @@ function listDeveloppers(idProject){
     });
 }
 
+function openProject(idProject,revision){
+    /*Cookies.set('mail', json["mail"]);
+    Cookies.set('username', json["username"]);
+    window.location.href = "/JSP/home.jsp";*/
+}
 
 
 
