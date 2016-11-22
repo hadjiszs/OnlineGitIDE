@@ -81,7 +81,7 @@ public class GitController {
                                    @PathVariable String idUser,
                                    @PathVariable String idRepository,
                                    @PathVariable String revision,
-                                   @RequestParam(value="path") String path){
+                                   @RequestParam(value="path") String path) {
         JsonObject ret = null;
         String author = getUsernameById(idUser);
         String repository = getNameRepositoryById(idRepository);
@@ -127,6 +127,25 @@ public class GitController {
 
         try{
             ret = Git.Util.getBranches(author, repository);
+            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+    }
+
+    //liste des branches
+    @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    public @ResponseBody
+    ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
+                                         @PathVariable String idRepository,
+                                         @PathVariable String revision){
+        JsonObject ret = null;
+        String author = getUsernameById(idUser);
+        String repository = getNameRepositoryById(idRepository);
+
+        try{
+            ret = Git.Util.getInfoCommit(author, repository, revision);
             if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
         }catch (Exception e){
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

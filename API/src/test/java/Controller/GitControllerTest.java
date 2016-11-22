@@ -26,6 +26,7 @@ public class GitControllerTest {
 
     @BeforeClass
     public static void init() throws Exception {
+
         Util.cloneRemoteRepo("userTest", "TestGitRepository", REMOTE_URL);
     }
 

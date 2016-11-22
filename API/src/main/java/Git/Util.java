@@ -406,7 +406,15 @@ public class Util {
                 .call();
 
         for(RevCommit revCommit : revCommits){
-            build.add(factory.createObjectBuilder().add("id", revCommit.getName()));
+            build.add(factory.createObjectBuilder()
+                    .add("id", revCommit.getName())
+                    .add("id", revCommit.getName())
+                    .add("date", revCommit.getCommitTime())
+                    .add("message", revCommit.getFullMessage())
+                    .add("user", revCommit.getCommitterIdent().getName())
+                    .add("email", revCommit.getCommitterIdent().getEmailAddress())
+                    .add("timeZone", revCommit.getCommitterIdent().getTimeZone().getDisplayName())
+                    .add("offsetTimeZone", revCommit.getCommitterIdent().getTimeZoneOffset()));
         }
 
         return factory.createObjectBuilder().add("commits", build).build();
@@ -476,5 +484,25 @@ public class Util {
         return res.build();
     }
 
+    public static JsonObject getInfoCommit(String creator, String repo, String revision) throws IOException {
+        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        System.out.println("CHEMIN:" + pathRepo);
+        Git git = Git.open(new File(pathRepo));
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonArrayBuilder build = factory.createArrayBuilder();
 
+        RevCommit commit = CommitUtils.getCommit(git.getRepository(), revision);
+
+        build.add(factory.createObjectBuilder()
+                .add("id", commit.getName())
+                .add("date", commit.getCommitTime())
+                .add("message", commit.getFullMessage())
+                .add("user", commit.getCommitterIdent().getName())
+                .add("email", commit.getCommitterIdent().getEmailAddress())
+                .add("timeZone", commit.getCommitterIdent().getTimeZone().getDisplayName())
+                .add("offsetTimeZone", commit.getCommitterIdent().getTimeZoneOffset())
+        );
+
+        return factory.createObjectBuilder().add("information", build).build();
+    }
 }
