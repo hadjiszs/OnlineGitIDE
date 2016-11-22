@@ -123,7 +123,8 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
         }
 
         getEntityManager().getTransaction().begin();
-        getEntityManager().remove(temporaryFile);
+        getEntityManager().remove(getEntityManager().contains(temporaryFile)
+                ? temporaryFile : getEntityManager().merge(temporaryFile));
         getEntityManager().getTransaction().commit();
 
         return true;

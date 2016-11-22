@@ -4,6 +4,7 @@ import com.multimif.model.User;
 import com.multimif.util.DataException;
 import com.multimif.util.Messages;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         User usr;
         try {
             usr = getEntityByMail(user.getMail());
-        } catch (Exception ex) {
+        } catch (DataException ex) {
             LOGGER.log(Level.OFF, ex.toString(), ex);
             usr = null;
         }
@@ -82,13 +83,18 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     @Override
     public User getEntityByMail(String mail) throws DataException {
-        User user;
+        User user = null;
 
         TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByMail", User.class);
         query.setParameter("mail", mail);
 
-        user = query.getSingleResult();
-        closeEntityManager();
+        try{
+            user = query.getSingleResult();
+        }catch (NoResultException e){
+            LOGGER.log(Level.OFF, e.toString(), e);
+        }finally {
+            closeEntityManager();
+        }
 
         if (user == null) {
             throw new DataException(Messages.USER_NOT_EXISTS);

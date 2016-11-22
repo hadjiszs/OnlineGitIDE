@@ -1,9 +1,6 @@
 package com.multimif.util;
 
-import com.multimif.model.Project;
-import com.multimif.model.TemporaryFile;
-import com.multimif.model.User;
-import com.multimif.model.UserGrant;
+import com.multimif.model.*;
 
 import java.util.Date;
 
@@ -62,6 +59,8 @@ public abstract class TestUtil {
         temporaryFile.setContent("class Test {}");
         temporaryFile.setProject(null);
         temporaryFile.setUser(null);
+        temporaryFile.setName("file-temporary");
+        temporaryFile.setExtensionType(ExtensionType.JAVA);
     }
 
     protected void newUserGrant1(){

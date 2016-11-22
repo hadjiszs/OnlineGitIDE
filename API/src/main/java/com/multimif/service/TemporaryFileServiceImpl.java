@@ -2,6 +2,7 @@ package com.multimif.service;
 
 import com.multimif.dao.TemporaryFileDAO;
 import com.multimif.dao.TemporaryFileDAOImpl;
+import com.multimif.model.ExtensionType;
 import com.multimif.model.Project;
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
@@ -10,13 +11,14 @@ import com.multimif.util.DataException;
 import java.util.List;
 
 /**
- * Created by amaia.nazabal on 11/18/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/18/16.
  */
 public class TemporaryFileServiceImpl implements TemporaryFileService {
-    UserService userService = new UserServiceImpl();
-    ProjectService projectService = new ProjectServiceImpl();
-
-    TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
+    private UserService userService = new UserServiceImpl();
+    private ProjectService projectService = new ProjectServiceImpl();
+    private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
 
 
     @Override
@@ -47,11 +49,13 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public TemporaryFile addEntity(Long idUser, String hashKey, String content, String path, Long idProject) throws DataException {
+    public TemporaryFile addEntity(Long idUser, String hashKey, String content, String path,
+                                   String name, ExtensionType extension, Long idProject) throws DataException {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
 
-        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path);
+        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path, name,
+                extension.getExtension());
         return temporaryFileDAO.addEntity(temporaryFile);
     }
 

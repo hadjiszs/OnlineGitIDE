@@ -142,7 +142,7 @@ public class TemporaryFileDAOTest extends TestUtil{
     }
 
     @Test
-    public void supprimeTest() {
+    public void suppressTest() {
         Exception exception = null;
         TemporaryFile tmpFile = null;
         try {
