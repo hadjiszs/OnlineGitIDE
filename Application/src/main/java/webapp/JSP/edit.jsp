@@ -83,14 +83,14 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
+                        <button type="button" class="btn btn-default" id="btnAutoIndent">Tout Indenter</button>
+                        <button type="button" class="btn btn-default" id="findTODO">TODO</button>
                         <button type="button" class="btn btn-default" id="TODO">TODO</button>
                         <button type="button" class="btn btn-default" id="TODO">TODO</button>
                         <button type="button" class="btn btn-default" id="TODO">TODO</button>
                         <button type="button" class="btn btn-default" id="TODO">TODO</button>
-                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
-                        <button type="button" class="btn btn-default" id="TODO">TODO</button>
-                        <input  type="button" class="btn btn-default" id="commit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                        <input  type="button" class="btn btn-default" id="commitBtn"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                        <button type="button" class="btn btn-default" id="btnCompiler">Compiler</button>
                     </div>
                 </div>
             </aside>
@@ -125,10 +125,13 @@ return member;
 
             <!-- Sortie de compilation -->
             <section class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                        <p> Rien pour le moment</p>
+                <div class="col-lg-8 col-lg-offset-2" id="divCompilation">
+                    <div id="contenuCompilation">
+                        <p> Sortie du compilateur</p>
+                    </div>
                 </div>
             </section>
+            <!-- Fin compilation -->
 
             <a id="ancrePanelDroite" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-left" id="chevronAncreDroite" aria-hidden="true"></span>
