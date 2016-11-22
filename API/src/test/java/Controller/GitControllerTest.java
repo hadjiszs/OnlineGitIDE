@@ -105,4 +105,12 @@ public class GitControllerTest {
     public void testPostCreateFile() throws Exception {
 
     }
+
+    @Test
+    public void testPostMerge() throws Exception {
+        mockMvc.perform(post("/git/" + USER + "/" + DIR_NAME + "/merge/" + "master/6973050f16380117b412aef271bf7993a16694cf"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("{\"status\":\"Merged\"}"));
+    }
 }

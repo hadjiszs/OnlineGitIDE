@@ -129,4 +129,18 @@ public class GitController {
         return null;
     }
 
+    //Merge
+    @RequestMapping(value = "/merge/{branchname}/{revision}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    public @ResponseBody
+    ResponseEntity<String> postMerge(@PathVariable String author, @PathVariable String repository, @PathVariable String branchname, @PathVariable String revision){
+        JsonObject ret = null;
+        try{
+            ret = Git.Util.merge(author, repository, branchname, revision);
+            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+        }catch (Exception e){
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+    }
+
 }

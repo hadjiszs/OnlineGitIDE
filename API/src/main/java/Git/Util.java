@@ -4,12 +4,15 @@ import Util.ArboNode;
 import Util.ArboTree;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.merge.ResolveMerger;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -19,15 +22,13 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonObject;
+import javax.json.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 import static org.eclipse.jgit.lib.Constants.HEAD;
 
@@ -377,5 +378,70 @@ public class Util {
 
         return factory.createObjectBuilder().add("commits", build).build();
     }
+
+    public static JsonObject merge(String creator, String repo, String nomBranch1, String branch2) throws Exception {
+        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+
+        // Recuperation du RevCommit associé au commit sujet
+        RevWalk walk = new RevWalk(git.getRepository());
+        RevCommit commit = walk.parseCommit(ObjectId.fromString(branch2));
+
+
+        git.checkout().setCreateBranch(false)
+                .setName(nomBranch1)
+                .call();
+
+
+        MergeResult result = git.merge()
+                .include(commit)
+                .setStrategy(MergeStrategy.RESOLVE)
+                .call();
+
+        JsonObjectBuilder res = factory.createObjectBuilder().add("status", result.getMergeStatus().toString());
+        JsonArrayBuilder reasons = factory.createArrayBuilder();
+        JsonArrayBuilder conflictsJson = factory.createArrayBuilder();
+
+        if (!result.getMergeStatus().isSuccessful()) {
+            Map<String, ResolveMerger.MergeFailureReason> failingPaths = result.getFailingPaths();
+            if (failingPaths != null) {
+                for (Map.Entry<String, ResolveMerger.MergeFailureReason> entry : failingPaths.entrySet()) {
+                    reasons.add(factory.createObjectBuilder().add("path", entry.getKey()).build());
+                    reasons.add(factory.createObjectBuilder().add("failure reason", entry.getValue().toString()));
+                }
+            }
+
+            Map<String, int[][]> conflicts = result.getConflicts();
+
+            JsonArrayBuilder files = factory.createArrayBuilder();
+            for (String path : conflicts.keySet()) {
+                int[][] c = conflicts.get(path);
+                JsonArrayBuilder conflictList = factory.createArrayBuilder();
+                for (int i = 0; i < c.length; ++i) {
+                    JsonArrayBuilder details = factory.createArrayBuilder();
+                    for (int j = 0; j < (c[i].length) - 1; ++j) {
+                        if (c[i][j] >= 0) {
+                            details.add(factory.createObjectBuilder()
+                                    .add("commit", result.getMergedCommits()[j].getName())
+                                    .add("line", c[i][j]));
+                        }
+                    }
+                    conflictList.add(factory.createObjectBuilder()
+                            .add("conflict_no", i)
+                            .add("details", details));
+                }
+                files.add(factory.createObjectBuilder()
+                        .add("path", path)
+                        .add("conflictList", conflictList));
+            }
+            conflictsJson.add(factory.createObjectBuilder().add("files", files));
+
+            res.add("failure reasons", reasons);
+            res.add("conflicts", conflictsJson);
+        }
+
+        return res.build();
+    }
+
 
 }
