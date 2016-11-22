@@ -1,9 +1,19 @@
 package com.multimif.git;
 
+import org.eclipse.jgit.api.Git;
+import org.gitective.core.CommitUtils;
 import org.junit.*;
 import org.junit.rules.TestName;
 
 import javax.json.JsonObject;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -111,5 +121,56 @@ public class UtilTest {
 
         Assert.assertNotNull(branches);
         System.out.println(branches);
+    }
+
+    @Test
+    public void testMerge() throws  Exception {
+        Git git = Git.open(new File(Constantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
+        //System.out.println(git.getRepository().getBranch());
+        JsonObject res = Util.createBranch(USER, DIR_NAME, "newbranch");
+        git.checkout().setCreateBranch(false)
+                .setName("newbranch")
+                .call();
+        //System.out.println(git.getRepository().getBranch());
+        Assert.assertNotNull(res);
+        String path = "repositories/" + USER + "/" + DIR_NAME + ".git/";
+        Charset utf8 = StandardCharsets.UTF_8;
+        List<String> lines = Arrays.asList("1st line", "2nd line");
+        Files.write(Paths.get(path + "src/testfile.c"), lines, utf8);
+        git.add()
+                .addFilepattern("src/testfile.c")
+                .call();
+
+        System.out.println(git.status().call().getAdded().toString());
+        //TODO Add method Util.MakeCommit instead of :
+        git.commit()
+                .setAll(true)
+                .setAuthor("TEST", "test.test@test.fr")
+                .setMessage("Ajout d'un fichier")
+                .call();
+
+        git.checkout().setCreateBranch(false)
+                .setName("master")
+                .call();
+        List<String> lines2 = Arrays.asList("1st lineBABABA", "2nd lineBABABA");
+        Files.write(Paths.get(path + "src/testfile.c"), lines2, utf8);
+        git.add()
+                .addFilepattern("src/testfile.c")
+                .call();
+
+        System.out.println(git.status().call().getAdded().toString());
+        //TODO Add method Util.MakeCommit instead of :
+        git.commit()
+                .setAll(true)
+                .setAuthor("TEST2", "test2.test@test.fr")
+                .setMessage("Ajout d'un fichier")
+                .call();
+
+
+        //if (CommitUtils.getMaster(git.getRepository()) == CommitUtils.getHead(git.getRepository())) {System.out.println("NON !");}
+        JsonObject res2 = Util.merge(USER, DIR_NAME, "newbranch", CommitUtils.getMaster(git.getRepository()).getName());
+        Assert.assertNotNull(res2);
+        System.out.println(res2.toString());
+
     }
 }

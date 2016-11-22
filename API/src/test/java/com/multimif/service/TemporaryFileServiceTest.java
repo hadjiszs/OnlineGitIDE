@@ -40,7 +40,7 @@ public class TemporaryFileServiceTest extends TestUtil {
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
             project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
 
-            temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getHashKey(), temporaryFile.getContent(),
+            temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getContent(),
                     temporaryFile.getPath(), project.getIdProject());
         }catch (Exception e){
             exception = e;
@@ -59,7 +59,7 @@ public class TemporaryFileServiceTest extends TestUtil {
         TemporaryFile tmpFile = null;
 
         try {
-            tmpFile = temporaryFileService.getEntityByHashAndUser(user.getIdUser(), temporaryFile.getHashKey());
+            tmpFile = temporaryFileService.getEntityByHash(temporaryFile.getHashKey());
         }catch (DataException e){
             exception = e;
         }
