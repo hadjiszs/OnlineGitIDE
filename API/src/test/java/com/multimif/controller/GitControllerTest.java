@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Created by p1317074 on 17/11/16.
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 17/11/16.
  */
 
 public class GitControllerTest {

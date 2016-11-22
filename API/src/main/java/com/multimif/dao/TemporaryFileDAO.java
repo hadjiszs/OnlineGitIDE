@@ -51,7 +51,7 @@ public interface TemporaryFileDAO {
     /**
      * Cette méthode retourne true ou false si le registre existe dans la base de données.
      *
-     * @param idFileTemporary
+     * @param idFileTemporary l'id du fichier temporel
      * @return true ou false selon l'état de la transaction
      */
     boolean exist (Long idFileTemporary);

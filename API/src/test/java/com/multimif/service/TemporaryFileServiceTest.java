@@ -41,7 +41,7 @@ public class TemporaryFileServiceTest extends TestUtil {
             project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
 
             temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getHashKey(), temporaryFile.getContent(),
-                    temporaryFile.getPath(), temporaryFile.getName(), temporaryFile.getExtensionType(), project.getIdProject());
+                    temporaryFile.getPath(), project.getIdProject());
         }catch (Exception e){
             exception = e;
         }

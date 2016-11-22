@@ -2,7 +2,6 @@ package com.multimif.service;
 
 import com.multimif.dao.TemporaryFileDAO;
 import com.multimif.dao.TemporaryFileDAOImpl;
-import com.multimif.model.ExtensionType;
 import com.multimif.model.Project;
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
@@ -50,12 +49,11 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
 
     @Override
     public TemporaryFile addEntity(Long idUser, String hashKey, String content, String path,
-                                   String name, ExtensionType extension, Long idProject) throws DataException {
+                                   Long idProject) throws DataException {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
 
-        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path, name,
-                extension.getExtension());
+        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path);
         return temporaryFileDAO.addEntity(temporaryFile);
     }
 
