@@ -5,7 +5,7 @@ package com.multimif.util;
  * @version 1.0
  * @since 1.0 22/11/2016.
  */
-public class splitPath {
+public class SplitPath {
 
 
 
