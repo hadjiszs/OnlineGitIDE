@@ -78,7 +78,8 @@
                         <select class="form-control" id="changerTheme">
                             <option value="dracula">Dracula</option>
                             <option value="night">Night</option>
-                            <option value="solarized">Soalrized</option>
+                            <option value="rubyblue">RubyBlue</option>
+                            <option value="solarized">Solarized</option>
                         </select>
                     </div>
                     <div class="btn-group">
@@ -91,19 +92,19 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <select id="listBranch">
-                            <option value="">Branche:</option>
+                        <select class="form-control" id="listBranch">
+                            <option value="">Branche</option>
                       
                         </select>
                     </div>
                     <div class="btn-group">
-                        <select id="listCommit">
-                            <option value="">Commit:</option>
+                        <select class="form-control" id="listCommit">
+                            <option value="">Commit</option>
                         </select>
                     </div>
-                    <div class="btn-group">
 
-                        <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" id="btnAutoIndent">Tout Indenter</button>
                         <button type="button" class="btn btn-default" id="createBranch">Créer une branche</button>
                         <button type="button" class="btn btn-default" id="createFile">Créer un fichier</button>
                         <button type="button" class="btn btn-default" id="createDir">Créer un dossier</button>
@@ -143,7 +144,7 @@ return member;
 
             <!-- Sortie de compilation -->
             <section class="row">
-                <div class="col-lg-8 col-lg-offset-2" id="divCompilation">
+                <div class="col-lg-10 col-lg-offset-1" id="divCompilation">
                     <div id="contenuCompilation">
                         <p> Sortie du compilateur</p>
                     </div>
@@ -193,7 +194,6 @@ return member;
                     </div>
                 </div>
                 <!-- Fin Modal Content -->
-
             </div>
         </div>
         <!-- Fin Modal -->
