@@ -12,8 +12,10 @@ function listBranch(idProject){
             });
         }else{
             console.log("Liste des branch de " + idProject + ": " + JSON.stringify(json));
+            $('#selectBranch').empty();
+
             $.each(json["branches"], function(index, element) {
-                $('#listBranch').append('<option value="'+ idProject+'">' + element.name.substr(element.name.lastIndexOf('/') + 1) + '</option>');
+                $('#selectBranch').append('<option value="'+ idProject+'">' + element.name.substr(element.name.lastIndexOf('/') + 1) + '</option>');
             });
         }
     });
@@ -33,8 +35,9 @@ function listCommit(idProject,branch){
             });
         }else{
             console.log("Liste des commits de " + branch + ": " + JSON.stringify(json));
+            $('#listCommit').empty();
             $.each(json["commits"], function(index, element) {
-                $('#listCommit').append('<option value="'+ idProject+'">' + element.id + '</option>');
+                $('#listCommit').append('<li class="list-group-item ligneCommit" value="'+ idProject+'">' + element.id + '</li>');
             });
         }
     });

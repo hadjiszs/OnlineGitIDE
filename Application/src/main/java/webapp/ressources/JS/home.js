@@ -36,8 +36,11 @@ $(document).ready(function() {
     // On actualise les champs de la page
     refreshPage();
 
+
+    ////////// PROJET /////////////
+
     // Créer un nouveau projet
-    $('#modalCreateProjectSubmit').on("click", function (e) {
+    $('#btnProjet').on("click", function (e) {
         e.preventDefault();
         var url = "/api/project/?"+ $("#createProjectForm").serialize() +"&idUser="+ Cookies.get('idUser');
         ApiRequest('POST',url,"",addProject);
@@ -52,12 +55,43 @@ $(document).ready(function() {
         listDeveloppers(idProject);
     });
 
+    // Si on supprime un projet
+    $('.userProject-list-delete').on('click', function(e){
+        e.preventDefault();
+        alert("delete projet TODO");
+    });
+
+    ////////// Collaboration /////////////
+
+    //Si on click sur une collaboration
+    $(".userCollaboration-list").on("click", function (e) {
+        e.preventDefault();
+        alert("collaboration TODO");
+    });
+
+    // Si on supprime une collaboration
+    $('.userCollaboration-list-delete').on('click', function(e){
+        e.preventDefault();
+        alert("delete collabab TODO");
+    });
+
+    //SI on ouvre un projet
+    $('.userProject-list-open').on('click', function(e){
+       e.preventDefault();
+        alert("open file TODO");
+    });
+
+
+    ////////// Information projet /////////////
+
     //Si on change de branch
-    $('#listBranch').on("change", function (e) {
+    $('#selectBranch').on("change", function (e) {
         e.preventDefault();
         //console.log($('#listBranch option:selected').val() + " " + $('#listBranch option:selected').text());
-        listCommit($('#listBranch option:selected').val(), $('#listBranch option:selected').text());
+        listCommit($('#selectBranch option:selected').val(), $('#selectBranch option:selected').text());
     });
+
+
 
     //Si on change de commit
     /*$('#listCommit').on("change",function(e){
@@ -71,6 +105,7 @@ $(document).ready(function() {
 function refreshPage(){
     listProject();
     listCollarborations();
+    listUser();
 }
 
 /* Liste les projets d'un utilisateur */
@@ -90,7 +125,17 @@ function listProject(){
             $("#listeProjets").empty();
 
             $.each(json, function(index, element) {
-                $('#listeProjets').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+                $('#listeProjets').append(
+                    '<div class="btn-group col-lg-12 ligneListeProjet"> \
+                        <button type="button" class="btn btn-default nomListeProjets userProject-list" value="' + element.idProject +'">' + element.name +'</button> \
+                        <button type="button" class="btn btn-default userProject-list-open" value="' + element.idProject +'">\
+                            <span class="glyphicon glyphicon-pencil"></span>\
+                        </button> \
+                        <button type="button" class="btn btn-default userProject-list-delete" value="' + element.idProject +'">\
+                            <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
+                        </button> \
+                    </div>'
+                );
             });
         }
     });
@@ -113,7 +158,14 @@ function listCollarborations(){
             $("#listeCollaborations").empty();
 
             $.each(json, function(index, element) {
-                $('#listeCollaborations').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+                $('#listeCollaborations').append(
+                '<div class="btn-group col-lg-12 ligneListeCollaborations"> \
+                    <button type="button" class="btn btn-default nomListeCollaborations userCollaboration-list" value="'+ element.idProject +'">' + element.name +'</button> \
+                    <button type="button" class="btn btn-default userCollaboration-list-delete" value="'+ element.idProject +'">\
+                        <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
+                    </button> \
+                </div>'
+                );
             });
         }
     });
@@ -143,7 +195,26 @@ function listDeveloppers(idProject){
                 draggable: true
             });
         }else {
+            $('#listDev').empty();
+            ///////////////////// TODO TEST//////////////////////////
             console.log("List des devs du projets " + idProject + ": " + JSON.stringify(json));
+        }
+    });
+}
+
+function listUser() {
+    var url = "/api/user/";
+    ApiRequest('GET',url,"",function(json){
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Utilisateur',
+                message: 'Impossible de récupérer la liste des utilisateurs de l\'appication',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else {
+            console.log("Liste des users: " + JSON.stringify(json));
         }
     });
 }
