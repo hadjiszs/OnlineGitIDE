@@ -31,8 +31,6 @@ public class ProjectController {
      * Créer un nouveau projet
      *
      * @param name    le nom du projet
-     * @param version version du projet
-     * @param root    le dossier du projet
      * @param type    le language utilisé
      * @param idUser  l'id de l'user qui crée le projet
      * @return l'id du projet créer
@@ -40,14 +38,12 @@ public class ProjectController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> add(@RequestParam(value = "name") String name,
-                                      @RequestParam(value = "version") String version,
-                                      @RequestParam(value = "root") String root,
                                       @RequestParam(value = "type") Project.TypeProject type,
                                       @RequestParam(value = "idUser") Long idUser) {
 
         Project project;
         try {
-            project = projectService.addEntity(name, version, type, root, idUser);
+            project = projectService.addEntity(name, type, idUser);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),

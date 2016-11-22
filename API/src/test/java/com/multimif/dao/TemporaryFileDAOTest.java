@@ -17,7 +17,9 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/18/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/18/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })

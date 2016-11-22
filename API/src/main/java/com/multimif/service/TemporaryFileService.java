@@ -16,7 +16,7 @@ public interface TemporaryFileService {
 
     TemporaryFile getEntityByHashAndUser (Long idUser, String hashKey) throws DataException;
 
-    List getEntityByUserProject (Long idUser, Long idProject) throws DataException;
+    List<TemporaryFile> getEntityByUserProject (Long idUser, Long idProject) throws DataException;
 
     TemporaryFile getEntityById (Long idTemporaryFile) throws DataException;
 

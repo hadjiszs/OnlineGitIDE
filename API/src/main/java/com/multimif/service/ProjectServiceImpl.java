@@ -32,10 +32,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project addEntity(String name, String version, Project.TypeProject type,
-                             String root, Long idUser) throws Exception {
+    public Project addEntity(String name, Project.TypeProject type, Long idUser) throws Exception {
         boolean ok;
-        Project project = new Project(name, version, type, root);
+        Project project = new Project(name, type);
         // Creation dans la bdd
         try {
             ok = projectDAO.addEntity(project);

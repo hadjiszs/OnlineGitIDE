@@ -31,16 +31,12 @@ public class Project implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModification;
 
-    private String version;
-
-    private String root;
-
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('JAVA', 'MAVEN', 'C', 'CPP')")
     private TypeProject type;
 
     public Project(){
-
+        /* On ajoute le constructeur par défaut pour pouvoir instancier des listes*/
     }
 
     /**
@@ -48,15 +44,11 @@ public class Project implements Serializable {
      * Constructeur du projet
      *
      * @param name le nom du projet
-     * @param version la version du projet
      * @param type le type du code
-     * @param root l'address du projet
      */
-    public Project(String name, String version, TypeProject type, String root) {
+    public Project(String name, TypeProject type) {
         this.name = name;
-        this.version = version;
         this.type = type;
-        this.root = root;
         this.creationDate = new Date();
         this.lastModification = new Date();
     }
@@ -91,18 +83,6 @@ public class Project implements Serializable {
 
     public void setLastModification(Date lastModification) {
         this.lastModification = lastModification;
-    }
-
-    public String getRoot() { return root; }
-
-    public void setRoot(String root) {this.root = root; }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public TypeProject getType() {

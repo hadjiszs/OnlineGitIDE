@@ -17,7 +17,9 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/19/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/19/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
@@ -28,15 +30,13 @@ public class ProjectServiceTest extends TestUtil {
 
     @Test
     public void addEntityTest(){
-        boolean result = false;
         Exception exception = null;
         newUser();
         newProject();
 
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
-            project = projectService.addEntity(project.getName(), project.getVersion(), project.getType(),
-                    project.getRoot(), user.getIdUser());
+            project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
         }catch (Exception e){
             exception = e;
         }
@@ -63,8 +63,6 @@ public class ProjectServiceTest extends TestUtil {
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getVersion(), project.getVersion());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     @Test
@@ -94,8 +92,6 @@ public class ProjectServiceTest extends TestUtil {
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getVersion(), project.getVersion());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     @Test

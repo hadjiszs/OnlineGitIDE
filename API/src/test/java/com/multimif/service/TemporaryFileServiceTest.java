@@ -38,8 +38,7 @@ public class TemporaryFileServiceTest extends TestUtil {
 
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
-            project = projectService.addEntity(project.getName(), project.getVersion(), project.getType(),
-                    project.getRoot(), user.getIdUser());
+            project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
 
             temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getHashKey(), temporaryFile.getContent(),
                     temporaryFile.getPath(), temporaryFile.getName(), temporaryFile.getExtensionType(), project.getIdProject());

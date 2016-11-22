@@ -1,7 +1,9 @@
 package com.multimif.service;
 
 /**
- * Created by hadjiszs on 21/10/16.
+ * @author hadjiszs
+ * @version 1.0
+ * @since 1.0 21/10/16.
  */
 
 public class FichierServiceTests {

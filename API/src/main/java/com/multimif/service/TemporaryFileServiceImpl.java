@@ -28,7 +28,7 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public List getEntityByUserProject(Long idUser, Long idProject) throws DataException {
+    public List<TemporaryFile> getEntityByUserProject(Long idUser, Long idProject) throws DataException {
         User user;
         Project project;
 

@@ -19,15 +19,12 @@ public interface ProjectService {
      * couche du DAO pour registrer le projet
      *
      * @param name    le nom du projet
-     * @param version la version du projet
      * @param type    le type du projet
-     * @param root    l'addresse du projet
      * @param idUser  l'utilisateur proprietaire du projet
      * @return le projet si la transaction a fini correctement
      * @throws Exception une exception si le projet déjà existe.
      */
-    Project addEntity(String name, String version, Project.TypeProject type,
-                      String root, Long idUser) throws Exception;
+    Project addEntity(String name, Project.TypeProject type, Long idUser) throws Exception;
 
     /**
      * Cette méthode fait certains validationes et après appel à la
