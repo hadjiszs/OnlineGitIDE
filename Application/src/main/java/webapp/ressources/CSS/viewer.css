@@ -63,30 +63,3 @@ BODY{
     margin-top:5px;
 }
 
-#messageCommit{
-    width:60%;
-}
-
-#envoyerCommit{
-    margin-left:20px;
-}
-
-#divCompilation{
-    margin-bottom:20px;
-}
-
-#contenuCompilation{
-    height:250px;
-    overflow-y : scroll;
-    background:#000;
-    color:#449d44;
-    padding:15px;
-    font-size: large;
-}
-
-.ligneBtnCreer{
-    cursor: pointer;
-}
-
-
-

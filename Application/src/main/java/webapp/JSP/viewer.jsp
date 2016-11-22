@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: thibom
-  Date: 20/10/16
-  Time: 06:15
+  Date: 22/11/16
+  Time: 16:30
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://mbraak.github.io/jqTree/jqtree.css" type="text/css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" type="text/css" href="../ressources/CSS/edit.css">
+        <link rel="stylesheet" type="text/css" href="../ressources/CSS/viewer.css">
         <link href="../ressources/img/favicon.png" rel="icon" type="image/x-icon" />
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -61,9 +61,8 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="home.jsp">Home</a></li>
-                            <li class="active"><a href="edit.jsp">Edition</a></li>
-                            <li><a href="viewer.jsp">Viewer</a></li>
-
+                            <li><a href="edit.jsp">Edition</a></li>
+                            <li class="active"><a href="viewer.jsp">Viewer</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a id="deconnexion" href="#">Deconnexion</a></li>
@@ -94,72 +93,15 @@
                             <option value="solarized">Solarized</option>
                         </select>
                     </div>
-                    <div class="btn-group">
-                        <select class="form-control" id="tauxIndentation">
-                            <option value="1">Indentation 1</option>
-                            <option value="2">Indentation 2</option>
-                            <option value="3">Indentation 3</option>
-                            <option value="4">Indentation 4</option>
-                            <option value="5">Indentation 5</option>
-                        </select>
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default" id="btnAutoIndent">Tout Indenter</button>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Création
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li class="ligneBtnCreer" id="btnCreerBranche"><a>Créer une Branche</a></li>
-                                <li class="ligneBtnCreer" id="btnCreerFichier"><a>Créer un Fichier</a></li>
-                                <li class="ligneBtnCreer" id="btnCreerDossier"><a>Créer un Dossier</a></li>
-                            </ul>
-                        </div>
-                        <input  type="button" class="btn btn-default" id="commitBtn"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
-                        <button type="button" class="btn btn-default" id="btnCompiler">Compiler</button>
-                    </div>
                 </div>
             </aside>
 
             <section class="row">
-                    <div class="col-lg-10 col-lg-offset-1" id="editeurJava">
-                        <textarea id="java-code">
-import com.demo.util.MyType;
-import com.demo.util.MyInterface;
-
-public enum Enum {
-VAL1, VAL2, VAL3
-}
-
-public class Class<T, V> implements MyInterface {
-public static final MyType<T, V> member;
-
-private class InnerClass {
-public int zero() {
-return 0;
-}
-}
-
-@Override
-public MyType method() {
-return member;
-}
-}
-                        </textarea>
-                    </div>
-            </section>
-
-            <!-- Sortie de compilation -->
-            <section class="row">
-                <div class="col-lg-10 col-lg-offset-1" id="divCompilation">
-                    <div id="contenuCompilation">
-                        <p> Sortie du compilateur</p>
-                    </div>
+                <div class="col-lg-10 col-lg-offset-1" id="editeurJava">
+                    <textarea id="java-code">
+                    </textarea>
                 </div>
             </section>
-            <!-- Fin compilation -->
 
             <a id="ancrePanelDroite" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-left" id="chevronAncreDroite" aria-hidden="true"></span>
@@ -176,37 +118,12 @@ return member;
             </a>
 
             <section id="panelGauche">
-                    <h2> Arborescence </h2>
-                    <div id="arborescenceFichier">
-                    </div>
+                <h2> Arborescence </h2>
+                <div id="arborescenceFichier">
+                </div>
             </section>
         </main>
-
-        <!-- Modal -->
-        <div id="fenetreCommit" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Ajouter un message pour votre Commit</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="fenetreCommit.jsp" method="post">
-                            <input type="text" placeholder="Votre message de commit .." name="messageCommit" id="messageCommit"/>
-                            <input  class="btn btn-success" id="envoyerCommit" type="submit" value="Envoyer" />
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    </div>
-                </div>
-                <!-- Fin Modal Content -->
-            </div>
-        </div>
-        <!-- Fin Modal -->
-        <script src="../ressources/JS/edit.js"></script>
+        <script src="../ressources/JS/viewer.js"></script>
     </body>
 </html>
 
