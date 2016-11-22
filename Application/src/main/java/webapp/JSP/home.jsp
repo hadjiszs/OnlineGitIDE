@@ -17,6 +17,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
         <script src="https://mbraak.github.io/jqTree/tree.jquery.js"></script>
         <link rel="stylesheet" href="https://mbraak.github.io/jqTree/jqtree.css" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
         <!-- Script perso -->
         <script src="../ressources/JS/api.js"></script>
@@ -49,7 +51,6 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="home.jsp">Home</a></li>
-                            <li><a href="#">Projet</a></li>
                             <li><a href="edit.jsp">Edition</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

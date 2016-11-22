@@ -108,9 +108,3 @@ function changerIndentation(){
     editeur.setOption("indentUnit", parseInt(inputChangerIndentation.options[inputChangerIndentation.selectedIndex].value));
     indenterEditeur();
 }
-
-
-/* Test Tree */
-$(function() {
-    $('#arborescenceFichier').jstree();
-});

@@ -33,64 +33,38 @@ function deroulerPanel(){
 
 
 $(document).ready(function() {
+    // On actualise les champs de la page
     refreshPage();
-
-    /////////////// TEST ////////////////
-    // Test création d'un projet
-
-    //var url = "/api/project/add?name=test&version=1&root=/&type=JAVA&user="+ Cookies.get('id');
-    //ApiRequest('GET',url,"",addProject);
-
-    /*var url = "/api/project/add?name=salut&version=1&root=/&type=JAVA&user="+ Cookies.get('id');
-    ApiRequest('GET',url,"",addProject);*/
-
-    // Liste des projets de l'utilisateur
-    //url = "/api/project/getall?idUser=" +  Cookies.get('id');
-    //ApiRequest('GET',url,"",listProject);
-
-    //Liste
-    $("#deconnexion").on("click", function (e) {
-        e.preventDefault();
-        deconnexion();
-    });
 
     // Créer un nouveau projet
     $('#modalCreateProjectSubmit').on("click", function (e) {
         e.preventDefault();
         var url = "/api/project/?"+ $("#createProjectForm").serialize() +"&idUser="+ Cookies.get('idUser');
-        console.log(url);
         ApiRequest('POST',url,"",addProject);
     });
 
-    // Si on click sur un projet, on ses informations
+    // Si on click sur un projet, on récupère ses informations
     $(".userProject-list").on("click", function (e) {
         e.preventDefault();
-        alert("get arborescence");
-        listBranch($(this).attr("value"));
-        listCommit($(this).attr("value"),"master");
-        listDeveloppers($(this).attr("value"));
-        /*var url = "/git/"+ Cookies.get('idUser') + "/" + $(this).attr("value") + "/branches";
-        ApiRequest('GET',url,"",arborescenceAffichage);*/
+        var idProject = $(this).attr("value");
+        listBranch(idProject);
+        listCommit(idProject,"master");
+        listDeveloppers(idProject);
     });
 
     //Si on change de branch
     $('#listBranch').on("change", function (e) {
         e.preventDefault();
-        console.log($('#listBranch option:selected').val() + " " + $('#listBranch option:selected').text());
+        //console.log($('#listBranch option:selected').val() + " " + $('#listBranch option:selected').text());
         listCommit($('#listBranch option:selected').val(), $('#listBranch option:selected').text());
     });
 
     //Si on change de commit
-    $('#listCommit').on("change",function(e){
+    /*$('#listCommit').on("change",function(e){
         e.preventDefault();
-        console.log($('#listCommit option:selected').val() + " " + $('#listCommit option:selected').text());
+        //console.log($('#listCommit option:selected').val() + " " + $('#listCommit option:selected').text());
         getArborescence($('#listCommit option:selected').val(),$('#listCommit option:selected').text());
-    });
-
-
-
-
-
+    });*/
 });
 
 /* Actualise la page */
@@ -103,47 +77,74 @@ function refreshPage(){
 function listProject(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/admin";
     ApiRequest('GET',url,"",function (json){
-                console.log("Liste projets: " + JSON.stringify(json));
-                $("#listeProjets").empty();
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Projets',
+                message: 'Impossible de récupérer la liste des projets',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Liste projets: " + JSON.stringify(json));
+            $("#listeProjets").empty();
 
-                $.each(json, function(index, element) {
-
-                    $('#listeProjets').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
-                });
+            $.each(json, function(index, element) {
+                $('#listeProjets').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+            });
+        }
     });
 }
 
-
+/* Liste les collaborations d'un utilisateur */
 function listCollarborations(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/developers";
     ApiRequest('GET',url,"",function (json){
-        console.log("Liste collaboration: " + JSON.stringify(json));
-        $("#listeCollaborations").empty();
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Collaboration',
+                message: 'Impossible de récupérer la liste de collaborations',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Liste collaboration: " + JSON.stringify(json));
+            $("#listeCollaborations").empty();
 
-        $.each(json, function(index, element) {
-
-            $('#listeCollaborations').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
-        });
+            $.each(json, function(index, element) {
+                $('#listeCollaborations').append('<a href="#" value="'+ element.idProject +'"class="list-group-item userProject-list">' + element.name +'</a>');
+            });
+        }
     });
-
-
 }
 
 /* Créer un nouveau projet */
 function addProject(json){
+    BootstrapDialog.show({
+        title: 'Projets',
+        message: 'Projet crée.'
+    });
     console.log("Nouveau projet:" + JSON.stringify(json));
-    //console.log(json["id"]);
-    $("#listeProjets").append(JSON.stringify(json));
     refreshPage();
 }
 
 
-
-
+/* Liste les devéloppeurs d'un projet */
 function listDeveloppers(idProject){
     var url = "/api/permissions/projects/"+ idProject +"/developers";
     ApiRequest('GET',url,"",function(json){
-        console.log("List des devs du projets " + idProject + ": " + JSON.stringify(json));
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Développeurs',
+                message: 'Impossible de récupérer la liste des développeurs du projet',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else {
+            console.log("List des devs du projets " + idProject + ": " + JSON.stringify(json));
+        }
     });
 }
 

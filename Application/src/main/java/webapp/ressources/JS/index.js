@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
     /* Connexion à l'application */
     $("#btnConnexion").on("click",function(e){
         e.preventDefault();
