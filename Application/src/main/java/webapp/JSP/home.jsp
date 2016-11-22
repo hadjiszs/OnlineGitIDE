@@ -23,7 +23,7 @@
         <!-- Script perso -->
         <script src="../ressources/JS/api.js"></script>
         <script src="../ressources/JS/git.js"></script>
-        <script src="../ressources/JS/home.js"></script>
+
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/home.css">
@@ -207,5 +207,7 @@
             </div>
         </div>
         <!-- Fin Modal Ajout de Collaborateur -->
+
+        <script src="../ressources/JS/home.js"></script>
     </body>
 </html>
