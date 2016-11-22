@@ -28,7 +28,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean addEntity(Project project, Long idUser) throws DataException{
+    public Project addEntity(Project project, Long idUser) throws DataException{
         boolean ok;
 
         // Creation dans la bdd
@@ -54,7 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-        return ok;
+        return project;
     }
 
     @Override

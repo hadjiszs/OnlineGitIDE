@@ -29,20 +29,20 @@ public class ProjectServiceTest extends TestUtil {
 
     @Test
     public void addEntityTest(){
-        boolean result = false;
+        Project project = null;
         Exception exception = null;
         newUser();
         newProject();
 
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getHashkey());
-            result = projectService.addEntity(project, user.getIdUser());
+            project = projectService.addEntity(project, user.getIdUser());
         }catch (Exception e){
             exception = e;
         }
 
         assertNull(exception);
-        assertTrue(result);
+        assertNotNull(project);
         assertNotNull(user);
         assertNotNull(project.getIdProject());
     }

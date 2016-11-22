@@ -9,7 +9,7 @@ import java.util.List;
  * Created by amaia.nazabal on 10/21/16.
  */
 public interface ProjectService {
-    boolean addEntity(Project project, Long idUser) throws DataException;
+    Project addEntity(Project project, Long idUser) throws DataException;
     Project getEntityById(Long id) throws DataException;
     List<Project> getEntityList() throws DataException;
     boolean deleteEntity(Long idProject, Long idUser) throws DataException;
