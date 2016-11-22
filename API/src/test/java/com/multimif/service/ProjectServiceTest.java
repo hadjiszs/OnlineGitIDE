@@ -35,13 +35,14 @@ public class ProjectServiceTest extends TestUtil {
 
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
-            result = projectService.addEntity(project, user.getIdUser());
+            project = projectService.addEntity(project.getName(), project.getVersion(), project.getType(),
+                    project.getRoot(), user.getIdUser());
         }catch (Exception e){
             exception = e;
         }
 
         assertNull(exception);
-        assertTrue(result);
+        assertNotNull(project);
         assertNotNull(user);
         assertNotNull(project.getIdProject());
     }

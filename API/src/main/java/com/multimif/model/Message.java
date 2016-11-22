@@ -5,7 +5,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by amaia.nazabal on 10/20/16.
+ *
+ * Classe metier pour les messages du chat
+ *
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/20/16.
  */
 @Entity
 public class Message implements Serializable {

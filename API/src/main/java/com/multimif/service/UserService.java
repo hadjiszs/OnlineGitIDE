@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface UserService {
     User addEntity(String username, String mail, String hashkey) throws DataException;
-    User updateEntity(User user) throws DataException;
+    boolean updateEntity(User user) throws DataException;
     User getEntityByMail(String mail) throws DataException;
     User getEntityById(Long id) throws DataException;
     List<User> getEntityList() throws DataException;

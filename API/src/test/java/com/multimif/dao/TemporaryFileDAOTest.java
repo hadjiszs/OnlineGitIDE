@@ -41,7 +41,7 @@ public class TemporaryFileDAOTest extends TestUtil{
             temporaryFile.setProject(project);
             temporaryFile.setUser(user);
 
-            temporaryFileDAO.add(temporaryFile);
+            temporaryFileDAO.addEntity(temporaryFile);
 
         }catch (Exception e){
             exception = e;

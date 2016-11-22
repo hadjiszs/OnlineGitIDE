@@ -4,8 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by Alexis on 17/10/2016.
- * Attention: Le nom de l'id de l'user doit être differente à 'id'
+ * Classe metier pour les utilisateurs
+ *
+ * @author Alexis
+ * @version 1.0
+ * @since 1.0 17/10/2016.
  */
 @Entity
 @NamedQueries({
@@ -17,6 +20,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /* Attention: Le nom de l'id de l'user doit être differente à 'id' */
     private Long idUser;
 
     @Column(name = "mail", unique = true, nullable = false)
@@ -29,9 +33,20 @@ public class User implements Serializable {
     private String password;
 
     public User(){
-
+        /**
+         * On construit un constructeur vide pour pouvoir déclarer
+         * des listes avec ce type là
+         */
     }
 
+    /**
+     *
+     * Constructeur d'user
+     *
+     * @param mail le mail de l'utilisateur
+     * @param username le pseudo de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
+     */
     public User(String mail, String username, String password) {
         this.username = username;
         this.mail = mail;

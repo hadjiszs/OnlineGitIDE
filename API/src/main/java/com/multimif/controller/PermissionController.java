@@ -20,6 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *
+ * Le controleur pour la gestion de permis
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/16/16.

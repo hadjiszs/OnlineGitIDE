@@ -5,9 +5,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by amaia.nazabal on 10/21/16.
+ * Classe pour la définition du projet.
  *
- * Attention: Le nom de l'id du project doit être differente à 'id'
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/21/16.
  */
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
@@ -16,6 +18,7 @@ public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /* Attention: Le nom de l'id du project doit être differente à 'id' */
     private Long idProject;
 
     private String name;
@@ -40,7 +43,15 @@ public class Project implements Serializable {
 
     }
 
-
+    /**
+     *
+     * Constructeur du projet
+     *
+     * @param name le nom du projet
+     * @param version la version du projet
+     * @param type le type du code
+     * @param root l'address du projet
+     */
     public Project(String name, String version, TypeProject type, String root) {
         this.name = name;
         this.version = version;

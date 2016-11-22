@@ -52,7 +52,7 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
         Project project = projectService.getEntityById(idProject);
 
         TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path);
-        return temporaryFileDAO.add(temporaryFile);
+        return temporaryFileDAO.addEntity(temporaryFile);
     }
 
     @Override

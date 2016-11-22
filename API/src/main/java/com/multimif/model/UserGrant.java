@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ *
+ * Classe pour la définition de permis entre utilisateurs et projets
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 10/20/16.

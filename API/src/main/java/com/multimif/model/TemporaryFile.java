@@ -5,12 +5,14 @@ import java.io.Serializable;
 
 
 /**
- * Created by p1317074 on 19/10/16.
+ * Cette classe c'est pour tous les fichiers d'un utilisateur par rapport un project
+ *
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 19/10/16.
  */
 
 @Entity
-//tous les fichiers d'un utilisateur par rapport un project
-
 @NamedQueries({
         @NamedQuery(name = "TemporaryFile.findByIdAndUser", query = "SELECT f from TemporaryFile f WHERE f.user = :user AND f.hashKey = :hashKey"),
         @NamedQuery(name = "TemporaryFile.findByUserAndProject", query = "SELECT t FROM TemporaryFile t WHERE t.user = :user AND t.project = :project")
@@ -38,6 +40,15 @@ public class TemporaryFile implements Serializable {
     @JoinColumn(name = "idUser")
     private User user;
 
+    /**
+     * Constructeur du temporaryFile
+     *
+     * @param user    utilisateur proprietaire du fichier
+     * @param hashKey du fichier
+     * @param content du fichier
+     * @param project associé au fichier
+     * @param path    dans le dépôt
+     */
     public TemporaryFile(User user, String hashKey, String content, Project project,
                          String path) {
         this.content = content;
@@ -47,7 +58,12 @@ public class TemporaryFile implements Serializable {
         this.path = path;
     }
 
+
     public TemporaryFile() {
+        /**
+         * On construit un constructeur vide pour pouvoir déclarer
+         * des listes avec ce type là
+         */
     }
 
     public Long getId() {

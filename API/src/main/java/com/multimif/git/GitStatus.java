@@ -1,7 +1,9 @@
 package com.multimif.git;
 
 /**
- * Created by hadjiszs on 17/11/16.
+ * @author hadjiszs
+ * @version 1.0
+ * @since 1.0 17/11/16.
  */
 public enum GitStatus {
 
@@ -10,6 +12,7 @@ public enum GitStatus {
     REPOSITORY_CREATED(8200, "Repository créé"),
     BRANCH_NOT_CREATED(9400, "Nom de branche déjà existant"),
     BRANCH_CREATED(9200, "Branche créée");
+
 
     public final int value;
 

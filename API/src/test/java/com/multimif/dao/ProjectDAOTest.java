@@ -67,7 +67,7 @@ public class ProjectDAOTest extends TestUtil{
 
         try {
             projectList = projectDAO.getEntityList();
-        } catch (DataException e) {
+        } catch (Exception e) {
             exception = e;
         }
 
@@ -110,7 +110,7 @@ public class ProjectDAOTest extends TestUtil{
 
         try {
             projectList = projectDAO.getEntityList();
-        } catch (DataException e) {
+        } catch (Exception e) {
             exception = e;
         }
 
