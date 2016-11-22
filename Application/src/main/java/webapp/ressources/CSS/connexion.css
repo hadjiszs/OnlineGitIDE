@@ -61,4 +61,14 @@ small {
 
 #mailPassword{
     width:60%;
+    display:block;
+    margin:auto;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+#formPassword{
+    width:100%;
+    margin:auto;
+    text-align:center;
 }
