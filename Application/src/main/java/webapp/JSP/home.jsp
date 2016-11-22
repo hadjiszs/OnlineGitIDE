@@ -15,13 +15,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
+        <script src="https://mbraak.github.io/jqTree/tree.jquery.js"></script>
+        <link rel="stylesheet" href="https://mbraak.github.io/jqTree/jqtree.css" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+
+        <!-- Script perso -->
         <script src="../ressources/JS/api.js"></script>
+        <script src="../ressources/JS/git.js"></script>
+        <script src="../ressources/JS/home.js"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/home.css">
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script async src="../ressources/JS/home.js"></script>
+
         <link href="../ressources/img/favicon.png" rel="icon" type="image/x-icon" />
     </head>
     <body>
