@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateEntity(User user) throws DataException{
+    public boolean updateEntity(User user) throws DataException{
         return userDAO.updateEntity(user);
     }
 

@@ -17,7 +17,7 @@ public class FolderTraverse {
     /**
      * L'arborescence du dossier sous forme d'un linkedlist
      */
-    private LinkedList FileTree = new LinkedList();
+    private LinkedList fileTree = new LinkedList();
 
 
     /**
@@ -28,7 +28,7 @@ public class FolderTraverse {
     public FolderTraverse(File parent) throws FileNotFoundException{
         // On vérifie si le fichier existe
         if(parent.exists()){
-            FileTree = browse(parent);
+            fileTree = browse(parent);
         }else{
             throw new FileNotFoundException("Impossible de créer l'arborescence, le dossier n'existe pas.");
         }
@@ -58,7 +58,7 @@ public class FolderTraverse {
      * @return la linkedList généré
      */
     public LinkedList getFileTree(){
-        return FileTree;
+        return fileTree;
     }
 
     /**
@@ -116,11 +116,11 @@ public class FolderTraverse {
      * @return l'arborescence en JSON
      */
     public JSONObject toJsonFileTree(){
-        return toJsonFileTreeImpl(FileTree);
+        return toJsonFileTreeImpl(fileTree);
     }
 
     @Override
     public String toString(){
-        return showFileTree(FileTree,"");
+        return showFileTree(fileTree,"");
     }
 }

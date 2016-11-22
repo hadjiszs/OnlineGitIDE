@@ -7,7 +7,9 @@ import java.io.StringWriter;
 import java.util.List;
 
 /**
- * Created by amaia.nazabal on 10/20/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/20/16.
  */
 public class JsonUtil<T> {
     public static String convertToJson(Object object) {

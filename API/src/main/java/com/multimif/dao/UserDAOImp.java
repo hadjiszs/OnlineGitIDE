@@ -2,89 +2,69 @@ package com.multimif.dao;
 
 import com.multimif.model.User;
 import com.multimif.util.DataException;
+import com.multimif.util.Messages;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by amaia.nazabal on 10/20/16.
+ *
+ * Implementation des methodes sur le model User
+ *
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/20/16.
  */
 public class UserDAOImp extends DAO implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImp.class.getName());
 
-    /**
-     * @param user
-     * @return
-     * @throws DataException
-     */
+    @Override
     public User addEntity(User user) throws DataException {
         User usr;
         try {
             usr = getEntityByMail(user.getMail());
-        } catch (Exception ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
+        } catch (DataException ex) {
+            LOGGER.log(Level.OFF, ex.toString(), ex);
             usr = null;
         }
 
         if (usr == null) {
-            try {
-                getEntityManager().getTransaction().begin();
-                getEntityManager().persist(user);
-                getEntityManager().getTransaction().commit();
-            } catch (Exception ex) {
-                LOGGER.log(Level.FINE, ex.toString(), ex);
 
-            } finally {
-                closeEntityManager();
-            }
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(user);
+            getEntityManager().getTransaction().commit();
+
+            closeEntityManager();
 
         } else {
-            throw new DataException("User already exists");
+            throw new DataException(Messages.USER_ALREADY_EXISTS);
         }
 
         return user;
     }
 
-    /**
-     * @param user
-     * @return
-     * @throws DataException
-     */
-    public User updateEntity(User user) throws DataException {
-        User usr;
-        try {
-            usr = getEntityById(user.getIdUser());
-        } catch (Exception ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            usr = null;
-        }
+    @Override
+    public boolean updateEntity(User user) throws DataException {
+        User usr = getEntityById(user.getIdUser());
 
         if (usr != null) {
-            try {
-                getEntityManager().getTransaction().begin();
-                getEntityManager().merge(user);
-                getEntityManager().getTransaction().commit();
-            }catch (Exception ex) {
-                LOGGER.log(Level.FINE, ex.toString(), ex);
-            }finally {
-                closeEntityManager();
-            }
+            getEntityManager().getTransaction().begin();
+            getEntityManager().merge(user);
+            getEntityManager().getTransaction().commit();
 
+            closeEntityManager();
         } else {
-            throw new DataException("User doesn't exists");
+            throw new DataException(Messages.USER_NOT_EXISTS);
         }
 
-        return user;
+        return true;
     }
 
-    /**
-     * @param id
-     * @return
-     * @throws DataException
-     */
+    @Override
     public User getEntityById(Long id) throws DataException {
         User user = null;
         try {
@@ -96,102 +76,72 @@ public class UserDAOImp extends DAO implements UserDAO {
         }
 
         if (user == null) {
-            throw new DataException("User doesn't exist");
+            throw new DataException(Messages.USER_NOT_EXISTS);
         }
         return user;
     }
 
-    /**
-     * @param mail
-     * @return
-     * @throws DataException
-     */
+    @Override
     public User getEntityByMail(String mail) throws DataException {
 
         User user = null;
 
-        try {
-            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByMail", User.class);
-            query.setParameter("mail", mail);
+        TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByMail", User.class);
+        query.setParameter("mail", mail);
 
-            List<User> list = query.getResultList();
-            if (!list.isEmpty()) {
-                user = list.get(0);
-            }
-        } catch (Exception ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            user = null;
-        } finally {
+        try{
+            user = query.getSingleResult();
+        }catch (NoResultException e){
+            LOGGER.log(Level.OFF, e.toString(), e);
+        }finally {
             closeEntityManager();
         }
 
         if (user == null) {
-            throw new DataException("User doesn't exist");
+            throw new DataException(Messages.USER_NOT_EXISTS);
         }
 
         return user;
     }
 
+    @Override
+    public List<User> getEntityList() {
+        List<User> userList;
 
-    /**
-     * @return
-     * @throws Exception
-     */
-    public List<User> getEntityList() throws DataException {
-        List list = null;
+        TypedQuery<User> query = getEntityManager().createNamedQuery("User.findAll", User.class);
+        userList = query.getResultList();
+        closeEntityManager();
 
-        try {
-            list = getEntityManager().createNamedQuery("User.findAll", User.class)
-                    .getResultList();
-        } catch (Exception e) {
-            LOGGER.log(Level.FINE, e.toString(), e);
-        } finally {
-            closeEntityManager();
-        }
-        return list;
+        return userList;
     }
 
-    /**
-     * @param user
-     * @return
-     * @throws Exception
-     */
+    @Override
     public boolean deleteEntity(User user) throws DataException {
-        try {
-            getEntityManager().getTransaction().begin();
-            getEntityManager().remove(getEntityManager().contains(user) ? user : getEntityManager().merge(user));
-            getEntityManager().getTransaction().commit();
-        } catch (Exception e) {
-            LOGGER.log(Level.FINE, e.toString(), e);
-        } finally {
-            closeEntityManager();
-        }
+        getEntityManager().getTransaction().begin();
+        getEntityManager().remove(getEntityManager().contains(user)
+                ? user : getEntityManager().merge(user));
+        getEntityManager().getTransaction().commit();
+        closeEntityManager();
 
         return true;
     }
 
+    @Override
     public User authEntity(String username, String password) throws DataException {
-        User user = null;
+        User user;
 
-        try {
-            TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
-            query.setParameter("username", username);
+        TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
+        query.setParameter("username", username);
 
-            List<User> list = query.getResultList();
-            if (!list.isEmpty()) {
-                user = list.get(0);
-            }
+        user = query.getSingleResult();
+        closeEntityManager();
 
-        } catch (Exception exception) {
-            LOGGER.log(Level.FINE, exception.toString(), exception);
-            user = null;
-        } finally {
-            closeEntityManager();
-        }
-
-        if (user == null || !user.getPassword().equals(password)) {
-            throw new DataException("User doesn't exist");
+        if (user == null) {
+            throw new DataException(Messages.USER_NOT_EXISTS);
         } else {
+            if (!user.getPassword().equals(password)) {
+                throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
+            }
             return user;
         }
     }

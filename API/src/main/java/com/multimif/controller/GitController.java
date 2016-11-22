@@ -1,10 +1,11 @@
 package com.multimif.controller;
 
-import com.multimif.git.*;
-import com.multimif.model.*;
+import com.multimif.git.Constantes;
+import com.multimif.git.Util;
+import com.multimif.model.Project;
+import com.multimif.model.User;
 import com.multimif.service.*;
 import com.multimif.util.DataException;
-import com.multimif.git.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

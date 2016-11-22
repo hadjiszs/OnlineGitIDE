@@ -1,9 +1,9 @@
 package com.multimif.git;
 
 /**
-
- * Created by p1317074 on 15/11/16.
-
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 15/11/16.
  */
 
 public class Constantes {

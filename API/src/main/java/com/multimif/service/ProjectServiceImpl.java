@@ -8,6 +8,7 @@ import com.multimif.model.User;
 import com.multimif.model.UserGrant;
 import com.multimif.util.DataException;
 import com.multimif.git.Util;
+import com.multimif.util.Messages;
 
 import javax.json.JsonObject;
 import java.util.List;
@@ -20,89 +21,74 @@ import java.util.logging.Logger;
  * @since 1.0 10/21/16.
  */
 public class ProjectServiceImpl implements ProjectService {
-    UserGrantService userGrantService;
-    ProjectDAO projectDAO;
+    private UserGrantService userGrantService;
+    private ProjectDAO projectDAO;
 
-    private static final Logger LOGGER = Logger.getLogger( ProjectServiceImpl.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class.getName());
 
-    public ProjectServiceImpl(){
+    public ProjectServiceImpl() {
         projectDAO = new ProjectDAOImpl();
         userGrantService = new UserGrantServiceImpl();
     }
 
     @Override
-    public boolean addEntity(Project project, Long idUser) throws DataException{
+    public Project addEntity(String name, Project.TypeProject type, Long idUser) throws Exception {
         boolean ok;
-
+        Project project = new Project(name, type);
         // Creation dans la bdd
         try {
             ok = projectDAO.addEntity(project);
 
             /* On cree le rapport du projet avec l'admin */
             userGrantService.addEntity(idUser, project.getIdProject(), UserGrant.PermissionType.ADMIN);
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.toString(), e);
             throw new DataException(e.getMessage());
         }
 
         // Creation physique du depot
-        if(ok) {
-            try {
-                User admin = userGrantService.getAdminByEntity(project.getIdProject());
-                JsonObject content = Util.createRepository(admin.getUsername(), project.getName());
-                ok = content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
-            } catch (Exception e) {
-                LOGGER.log(Level.FINE, e.toString(), e);
-                throw new DataException(e.getMessage());
-            }
+        if (ok) {
+            User admin = userGrantService.getAdminByEntity(project.getIdProject());
+            JsonObject content = Util.createRepository(admin.getUsername(), project.getName());
+            content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
         }
 
-        return ok;
+        return project;
     }
 
     @Override
-    public boolean updateEntity(Project project) throws DataException{
+    public boolean updateEntity(Project project) throws DataException {
         return projectDAO.updateEntity(project);
     }
 
     @Override
-    public Project getEntityById(Long id) throws DataException{
+    public Project getEntityById(Long id) throws DataException {
         return projectDAO.getEntityById(id);
     }
 
     @Override
-    public List<Project> getEntityList() throws DataException{
-        try {
-            return projectDAO.getEntityList();
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-        return null;
+    public List<Project> getEntityList() {
+        return projectDAO.getEntityList();
     }
 
     @Override
-    public boolean deleteEntity(Long idProject, Long idUser) throws DataException{
+    public boolean deleteEntity(Long idProject, Long idUser) throws DataException {
         boolean result;
-        try {
-            User admin = userGrantService.getAdminByEntity(idProject);
-            if (admin.getIdUser().equals(idUser)) {
-                /* On enleve le permis avec l'admin */
-                result = userGrantService.deleteEntity(idUser, idProject, UserGrant.PermissionType.ADMIN);
-                if (result) {
-                    Project project = getEntityById(idProject);
-                    result = projectDAO.deleteEntity(project);
-                }else {
-                    throw new DataException("Error removing permission");
-                }
-            } else {
-                throw new DataException("Only the admin has permissions for remove the project");
-            }
+        User admin = userGrantService.getAdminByEntity(idProject);
 
-            return result;
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-            throw new DataException(e.getMessage());
+        if (admin.getIdUser().equals(idUser)) {
+
+            /* On enleve le permis avec l'admin */
+            userGrantService.deleteEntity(idUser, idProject, UserGrant.PermissionType.ADMIN);
+
+            Project project = getEntityById(idProject);
+            result = projectDAO.deleteEntity(project);
+
+        } else {
+            throw new DataException(Messages.PROJECT_DELETE_CONTROL);
         }
+
+        return result;
     }
 
 }
