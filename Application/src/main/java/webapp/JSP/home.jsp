@@ -22,7 +22,7 @@
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <script async src="../ressources/JS/home.js"></script>
-        <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
+        <link href="../ressources/img/favicon.png" rel="icon" type="image/x-icon" />
     </head>
     <body>
         <header>

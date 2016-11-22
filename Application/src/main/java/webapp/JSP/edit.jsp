@@ -17,17 +17,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/edit.css">
-        <link href="../ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
+        <link href="../ressources/img/favicon.png" rel="icon" type="image/x-icon" />
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
         <script src="../codeMirror/lib/codemirror.js"></script>
         <link rel="stylesheet" href="../codeMirror/lib/codemirror.css">
-        <link rel="stylesheet" href="../../codeMirror/theme/night.css">
+        <link rel="stylesheet" href="../codeMirror/theme/night.css">
         <script src="../codeMirror/mode/clike/clike.js"></script>
-        <link rel="stylesheet" href="../../codeMirror/theme/rubyblue.css">
-        <script src="../../codeMirror/mode/clike/clike.js"></script>
+        <link rel="stylesheet" href="../codeMirror/theme/dracula.css">
+        <link rel="stylesheet" href="../codeMirror/theme/rubyblue.css">
+        <script src="../codeMirror/mode/clike/clike.js"></script>
 
         <!-- Test -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
@@ -183,7 +184,7 @@ return member;
             </div>
         </div>
         <!-- Fin Modal -->
-        <script src="../JS/edit.js"></script>
+        <script src="../ressources/JS/edit.js"></script>
     </body>
 </html>
 
