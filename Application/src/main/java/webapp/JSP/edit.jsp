@@ -53,7 +53,6 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="home.jsp">Home</a></li>
-                            <li><a href="#">Projet</a></li>
                             <li class="active"><a href="edit.jsp">Edition</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

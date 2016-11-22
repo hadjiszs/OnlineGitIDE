@@ -4,14 +4,18 @@ BODY{
     margin-top:65px;
 }
 
-.h2DivProjet{
+#divProjets{
+    margin-bottom:20px;
+}
+
+.h2DivProjet, #h2DivCommit, #h2DivCollaboration{
     display:inline;
     vertical-align:top;
     margin-right:10px;
 }
 
 .titreSection{
-    margin-bottom:10px;
+    margin-bottom:25px;
 }
 
 #panelDeroulant{
@@ -44,7 +48,7 @@ BODY{
     line-height:80px;
 }
 
-#nomProjet, #versionProjet, #gitProjet{
+#nomProjet, #selectProjet, #mailAjoutCollaborateur{
     width:60%;
     display:block;
     margin:auto;
@@ -52,12 +56,27 @@ BODY{
     text-align:center;
 }
 
+
+
 .labelProjet{
     display:block;
 }
 
-#formProjet{
+#formProjet, #formAjoutCollaborateur{
     width:100%;
     margin:auto;
     text-align:center;
 }
+
+.spanSupprimerProjet{
+    color:#F00;
+}
+
+.nomListeProjets, .nomListeCollaborations{
+    width:200px;
+}
+
+.ligneListeProjet, .ligneListeCollaborations{
+    margin-bottom:10px;
+}
+

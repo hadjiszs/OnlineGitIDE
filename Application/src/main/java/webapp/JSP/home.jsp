@@ -42,7 +42,6 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="home.jsp">Home</a></li>
-                            <li><a href="#">Projet</a></li>
                             <li><a href="edit.jsp">Edition</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -52,6 +51,7 @@
                 </div>
             </nav>
         </header>
+
         <main class="container">
             <div class="col-lg-5 col-md-12" id="homeGauche">
                 <section class="col-lg-12" id="divProjets">
@@ -59,70 +59,78 @@
                         <h2 class="h2DivProjet"> Mes Projets </h2>
                         <button data-toggle="modal" data-target="#creerProjet" class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
                     </header>
-                    <div class="list-group col-lg-8" id="listeProjets">
-                        <a href="#" class="list-group-item">Projet 1</a>
-                        <a href="#" class="list-group-item active">Projet 2</a>
-                        <a href="#" class="list-group-item">Projet 3</a>
-                        <a href="#" class="list-group-item">Projet 4</a>
-                        <a href="#" class="list-group-item">Projet 5 </a>
+                    <div class="col-lg-12" id="listeProjets">
+                        <div class="btn-group col-lg-12 ligneListeProjet">
+                            <button type="button" class="btn btn-default nomListeProjets">Projet 1</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
+                        <div class="btn-group col-lg-12 ligneListeProjet">
+                            <button type="button" class="btn btn-default nomListeProjets">Projet 2</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
+                        <div class="btn-group col-lg-12 ligneListeProjet">
+                            <button type="button" class="btn btn-default nomListeProjets">Projet 3</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
                     </div>
                 </section>
                 <section class="col-lg-12" id="divCollaboration">
                     <header class="titreSection">
-                        <h2> Mes Collaborations </h2>
+                        <h2 id="h2DivCollaboration"> Mes Collaborations </h2>
                     </header>
-                    <div class="list-group col-lg-8" id="listeCollaborations">
-                        <a href="#" class="list-group-item">Collaboration 1</a>
-                        <a href="#" class="list-group-item ">Collaboration 2</a>
-                        <a href="#" class="list-group-item">Collaboration 3</a>
-                        <a href="#" class="list-group-item">Collaboration 4</a>
-                        <a href="#" class="list-group-item">Collaboration 5 </a>
+                    <div class="btn-group col-lg-12" id="listeCollaborations">
+                        <div class="btn-group col-lg-12 ligneListeCollaborations">
+                            <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 1</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
+                        <div class="btn-group col-lg-12 ligneListeCollaborations">
+                            <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 2</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
+                        <div class="btn-group col-lg-12 ligneListeCollaborations">
+                            <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 3</button>
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
+                        </div>
                     </div>
                 </section>
             </div>
             <section class="col-lg-7 col-md-12" id="homeDroite">
-                <aside class="col-lg-12">
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search ..">
-                        </div>
-                        <button type="submit" class="btn btn-default">Go !</button>
-                    </form>
-                </aside>
-                <header class="col-lg-12">
-                    <h2> Titre du Tableau </h2>
+                <header class="col-lg-12 titreSection">
+                    <h2 id="h2DivCommit"> Nom du Projet </h2>
+                    <button data-toggle="modal" data-target="#ajoutCollaborateur" class="btn btn-success" id="btnAjouterCollaborateur"> Ajouter un Collaborateur</button>
                 </header>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Action</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John Boo</td>
-                            <td>commit</td>
-                            <td>15 Sep, 8:56 AM</td>
-                        </tr>
-                        <tr>
-                            <td>Michael Robinson</td>
-                            <td>commit</td>
-                            <td>15 Sep, 7:12 AM</td>
-                        </tr>
-                        <tr>
-                            <td>Michael Robinson</td>
-                            <td>new branch</td>
-                            <td>15 Sep, 7:12 AM</td>
-                        </tr>
-                        <tr>
-                            <td>John Boo</td>
-                            <td>merge</td>
-                            <td>15 Sep, 2:08 AM</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="col-lg-8" id="divCommit">
+                    <div class="col-lg-12" id="divSelectCommit">
+                        <select class="form-group form-control" id="selectCommit">
+                            <option value="1"> Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3"> Option 3 </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12" id="divAfficherCommit">
+                        <ul class="list-group">
+                            <li class="list-group-item ligneCommit">Commit 1</li>
+                            <li class="list-group-item ligneCommit">Commit 2</li>
+                            <li class="list-group-item ligneCommit">Commit 3</li>
+                            <li class="list-group-item ligneCommit">Commit 4</li>
+                            <li class="list-group-item ligneCommit">Commit 5</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4" id="divListeDeveloppeur">
+                    <header>
+                        <h4> Ils sont sur le Projet</h4>
+                    </header>
+                    <div>
+                        <ul class="list-group">
+                            <li class="list-group-item">Nom 1</li>
+                            <li class="list-group-item">Nom 2</li>
+                            <li class="list-group-item">Nom 3</li>
+                            <li class="list-group-item">Nom 4</li>
+                            <li class="list-group-item">Nom 5</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
             <a id="ancrePanel" aria-label="Panel deroulant"><span class="glyphicon glyphicon-chevron-left" id="chevronAncre" aria-hidden="true"></span></a>
             <section id="panelDeroulant">
@@ -145,10 +153,12 @@
                         <form action="creerProjet.jsp" method="post" id="formProjet">
                             <label class="labelProjet"> Nom du projet </label>
                             <input type="text" placeholder="Nom du projet" name="nomProjet" id="nomProjet" required />
-                            <label class="labelProjet"> Version du projet </label>
-                            <input type="text" placeholder="Version" name="versionProjet" id="versionProjet" required />
-                            <label class="labelProjet"> Zone de dépôt </label>
-                            <input type="text" placeholder="Lien vers Git" name="gitProjet" id="gitProjet"/>
+                            <label class="labelProjet"> Langage </label>
+                            <select class="form-group form-control" id="selectProjet">
+                                <option value="java"> JAVA </option>
+                                <option value="c"> C++ </option>
+                                <option value="python"> Python </option>
+                            </select>
                             <input  class="btn btn-success" id="btnProjet" type="submit" value="Envoyer" />
                         </form>
                     </div>
@@ -160,6 +170,33 @@
 
             </div>
         </div>
-        <!-- Fin Modal -->
+        <!-- Fin Modal Creation de Projet -->
+
+        <!-- Modal Ajout de Collaborateur -->
+        <div id="ajoutCollaborateur" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Ajouter un Collaborateur </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="creerProjet.jsp" method="post" id="formAjoutCollaborateur">
+                            <label class="labelProjet"> Adresse mail du collaborateur </label>
+                            <input type="text" placeholder="Mail avec lequel il s'est inscrit" name="mailAjoutCollaborateur" id="mailAjoutCollaborateur" required />
+                            <input  class="btn btn-success" id="btnAjoutCollaborateur" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+
+            </div>
+        </div>
+        <!-- Fin Modal Ajout de Collaborateur -->
     </body>
 </html>
