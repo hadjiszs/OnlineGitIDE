@@ -61,7 +61,6 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
 
-
     @RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(@RequestParam(value="mail") String mail){
         User user;
@@ -76,7 +75,6 @@ public class UserController {
 
         return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.ACCEPTED);
     }
-
 
     @RequestMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<List<User>> getAll(){

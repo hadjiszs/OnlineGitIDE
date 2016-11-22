@@ -1,13 +1,9 @@
 package DAO;
 
 
-import Model.Project;
 import Model.TemporaryFile;
-import Model.User;
 import Util.DataException;
 import Util.TestUtil;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +11,6 @@ import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -99,7 +94,7 @@ public class TemporaryFileDAOTest extends TestUtil{
         TemporaryFile tmpFile = null;
 
         try{
-            tmpFile = temporaryFileDAO.getEntityByHashKeyAndUser(user,temporaryFile.getHashKey());
+            tmpFile = temporaryFileDAO.getEntityByHashKey(temporaryFile.getHashKey());
         }catch (Exception e){
             exception = e;
         }

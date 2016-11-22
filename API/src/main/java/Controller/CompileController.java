@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
  * Created by Mahmoud on 15/11/2016.
  */
 @RestController
-@RequestMapping("/compile")
+@RequestMapping("/compile/{branch}")
 public class CompileController {
     private EntityManager entityManager;
 /*

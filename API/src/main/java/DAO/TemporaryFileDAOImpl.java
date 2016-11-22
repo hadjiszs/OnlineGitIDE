@@ -7,6 +7,7 @@ import Util.DataException;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.sound.midi.SysexMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +16,16 @@ import java.util.List;
  */
 public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO{
 
-    public TemporaryFile getEntityByHashKeyAndUser(User user, String hashKey) throws DataException {
+    public TemporaryFile getEntityByHashKey(String hashKey) throws DataException {
         TemporaryFile file = null;
-        TypedQuery<TemporaryFile> query = getEntityManager().createNamedQuery("TemporaryFile.findByIdAndUser", TemporaryFile.class);
-        query.setParameter("user", user);
+        TypedQuery<TemporaryFile> query = getEntityManager().createNamedQuery("TemporaryFile.findByHashkey", TemporaryFile.class);
         query.setParameter("hashKey", hashKey);
 
         try {
             file = query.getSingleResult();
         } catch(NoResultException e) {
-            throw new DataException("File doesn't exists");
-        }finally {
+            file = null;
+        } finally {
             closeEntityManager();
         }
 
@@ -34,7 +34,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO{
 
     public List getEntityByUserProject(User user, Project project){
         List<TemporaryFile> temporaryFiles;
-        try{
+        try {
             TypedQuery<TemporaryFile> typedQuery =
                     getEntityManager().createNamedQuery("TemporaryFile.findByUserAndProject",
                             TemporaryFile.class);
@@ -42,9 +42,9 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO{
             typedQuery.setParameter("user", user);
 
             temporaryFiles = typedQuery.getResultList();
-        }catch (Exception e){
+        } catch (Exception e) {
             temporaryFiles = new ArrayList<>();
-        }finally {
+        } finally {
             closeEntityManager();
         }
 
@@ -72,6 +72,10 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO{
     }
 
     public TemporaryFile add(TemporaryFile temporaryFile) throws DataException {
+        // si le temporary file existe déjà, on s'en va
+        if(getEntityByHashKey(temporaryFile.getHashKey()) != null)
+            return null;
+
         getEntityManager().getTransaction().begin();
         getEntityManager().persist(temporaryFile);
         getEntityManager().getTransaction().commit();

@@ -367,7 +367,6 @@ public class Util {
      */
     public static  JsonObject getBranches(String creator,
                                           String repo) throws Exception {
-
         String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));

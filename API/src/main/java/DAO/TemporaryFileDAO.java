@@ -11,7 +11,7 @@ import java.util.List;
  * Created by amaia.nazabal on 11/18/16.
  */
 public interface TemporaryFileDAO {
-    TemporaryFile getEntityByHashKeyAndUser (User user, String hashKey) throws DataException;
+    TemporaryFile getEntityByHashKey(String hashKey) throws DataException;
     List getEntityByUserProject (User user, Project project);
     TemporaryFile getEntityById (Long idTemporaryFile) throws DataException;
     boolean exist (Long idFileTemporary);

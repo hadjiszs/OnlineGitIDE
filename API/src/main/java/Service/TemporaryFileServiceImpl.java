@@ -20,9 +20,8 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
 
 
     @Override
-    public TemporaryFile getEntityByHashAndUser(Long idUser, String hashKey) throws DataException {
-        User user = userService.getEntityById(idUser);
-        return temporaryFileDAO.getEntityByHashKeyAndUser(user, hashKey);
+    public TemporaryFile getEntityByHash(String hashKey) throws DataException {
+        return temporaryFileDAO.getEntityByHashKey(hashKey);
     }
 
     @Override
@@ -47,11 +46,11 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public TemporaryFile addEntity(Long idUser, String hashKey, String content, String path, Long idProject) throws DataException {
+    public TemporaryFile addEntity(Long idUser, String content, String path, Long idProject) throws DataException {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
 
-        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path);
+        TemporaryFile temporaryFile = new TemporaryFile(user, content, project, path);
         return temporaryFileDAO.add(temporaryFile);
     }
 

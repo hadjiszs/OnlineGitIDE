@@ -107,7 +107,9 @@ public class ProjectController {
 
     /**
      * Supprime un projet de la bas de donnée
-     * @param id l'id du projet à supprimer
+     *
+     * @param idProject l'id du projet à supprimer
+     * @param idUser l'id du projet à supprimer
      * @return un code réussite
      */
     @RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -129,7 +131,7 @@ public class ProjectController {
      * Initialise les services utilisés par la classe
      */
     @PostConstruct
-    public void init(){
+    public void init() {
         projectService = new ProjectServiceImpl();
         userService = new UserServiceImpl();
         userGrantService = new UserGrantServiceImpl();
