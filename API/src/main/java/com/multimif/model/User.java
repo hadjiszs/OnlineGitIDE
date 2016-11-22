@@ -43,11 +43,11 @@ public class User implements Serializable {
      *
      * Constructeur d'user
      *
-     * @param mail le mail de l'utilisateur
      * @param username le pseudo de l'utilisateur
+     * @param mail le mail de l'utilisateur
      * @param password le mot de passe de l'utilisateur
      */
-    public User(String mail, String username, String password) {
+    public User(String username, String mail, String password) {
         this.username = username;
         this.mail = mail;
         this.password = password;

@@ -50,7 +50,7 @@ public class UserController {
         User user;
 
         try {
-            user = userService.addEntity(mail, username, password);
+            user = userService.addEntity(username, mail, password);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
