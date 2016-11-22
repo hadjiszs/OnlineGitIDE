@@ -19,7 +19,7 @@ public class Compile {
     public Compile() {
     }
 
-    public String executeCompilation(Long idProject, Long idCurrentUser) throws InterruptedException, IOException, DataException {
+    public String executeCompilation(Long idProject, Long idCurrentUser,String branch) throws InterruptedException, IOException, DataException {
 
         /*
         params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
@@ -114,15 +114,18 @@ public class Compile {
         String fileExt = "";
 
 
+
         for (int i = 0; i < temporaryFileList.size(); i++) {
+
+            filePath = temporaryFileList.get(i).getPath();
+            fileName = "test"; // to up
+            fileExt = "java"; // to up
+
             // 1) creation du fichier
             createFile(temporaryFileList.get(i));
             // 2) remplir le fichier - content
             setContentFile(temporaryFileList.get(i), temporaryFileList.get(i).getContent());
             // 3) deplacer le fichier
-            filePath = temporaryFileList.get(i).getPath();
-            fileName = "test"; // to up
-            fileExt = ".java"; // to up
             mvFilesToCloneRepo(fileName, fileExt, filePath, idCurrentUser.toString());
 
         }
@@ -162,7 +165,8 @@ public class Compile {
         Process p1;
         Runtime rt = Runtime.getRuntime();
 
-        p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " + fileExt + " " + CLONE_PATH + " " + idCurrentUser + " "
+        p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
+                fileExt + " " + CLONE_PATH + " " + idCurrentUser + " "
                 + filePath);
 
     }

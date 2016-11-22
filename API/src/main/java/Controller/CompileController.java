@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
  * Created by Mahmoud on 15/11/2016.
  */
 @RestController
-@RequestMapping("/compile")
+@RequestMapping("/compile/{branch}")
 public class CompileController {
 
     private EntityManager entityManager;
@@ -20,13 +20,13 @@ public class CompileController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public
     @ResponseBody
-    ResponseEntity<String> compile(@RequestParam("idProject") long idProject,@RequestParam("idCurrentUser") Long idCurrentUser) {
+    ResponseEntity<String> compile(@RequestParam("idProject") long idProject,@RequestParam("idCurrentUser") Long idCurrentUser,@PathVariable String branch) {
 
         System.out.println("compile");
         Compile compile=new Compile();
         String Resultat ="erreur";
         try {
-        Resultat   = compile.executeCompilation(idProject,idCurrentUser);
+        Resultat   = compile.executeCompilation(idProject,idCurrentUser,branch);
         } catch (Exception ex) {
             return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
