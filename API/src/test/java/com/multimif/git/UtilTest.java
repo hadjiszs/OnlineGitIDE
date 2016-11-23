@@ -136,7 +136,7 @@ public class UtilTest {
         List<TemporaryFile> files = new ArrayList<TemporaryFile>();
         TemporaryFile file;
         for (int i = 0; i< 5 ; i++) {
-            file = new TemporaryFile(commiter, "hashkey", "content" + i, project, Constantes.REPO_FULLPATH + USER + "/" + DIR_NAME + ".git/" + "src/testfile" + i);
+            file = new TemporaryFile(commiter, "content" + i, project, GitConstantes.REPO_FULLPATH + USER + "/" + DIR_NAME + ".git/" + "src/testfile" + i);
             files.add(file);
         }
         JsonObject res = Util.makeCommit(USER, DIR_NAME, "master", commiter, files, "MESSAGE DU COMMIT");
