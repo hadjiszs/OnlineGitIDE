@@ -23,6 +23,8 @@ public class Project implements Serializable {
 
     private String name;
 
+    private Long idCreator;
+
     @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
@@ -92,4 +94,8 @@ public class Project implements Serializable {
     public void setType(TypeProject type) {
         this.type = type;
     }
+
+    public void setIdCreator(Long id){ this.idCreator = id;}
+    
+    public Long getIdCreator(){ return idCreator;}
 }
