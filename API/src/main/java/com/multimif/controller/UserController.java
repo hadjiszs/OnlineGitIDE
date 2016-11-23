@@ -26,12 +26,12 @@ public class UserController {
 
     private UserService userService;
 
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
     @PostConstruct
     public void init() {
         userService = new UserServiceImpl();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     /**
      *

@@ -18,7 +18,8 @@ public final class Constantes {
     public static final String ENTITY_FACTORY = "pu-multimif";
 
     private Constantes() {
-        // On cache l'implementation du constructeur
+        /* On cache l'implementation du constructeur, parce qu'on ne veut pas
+           que cette classe soit instanciée */
     }
 
 

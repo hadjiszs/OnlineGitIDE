@@ -90,7 +90,6 @@
             <version>1.0.4</version>
         </dependency>
 
-
         <!-- SLF4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
