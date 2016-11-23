@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addEntity(String username, String mail, String hashkey) throws DataException {
-        User user = new User(username, mail, hashkey);
+    public User addEntity(String username, String mail, String password) throws DataException {
+        User user = new User(username, mail, password);
         return userDAO.addEntity(user);
     }
 

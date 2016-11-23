@@ -84,6 +84,10 @@ public class ProjectServiceImpl implements ProjectService {
             Project project = getEntityById(idProject);
             result = projectDAO.deleteEntity(project);
 
+            if (result){
+                Util.deleteRepository(admin.getUsername(), project.getName());
+            }
+
         } else {
             throw new DataException(Messages.PROJECT_DELETE_CONTROL);
         }

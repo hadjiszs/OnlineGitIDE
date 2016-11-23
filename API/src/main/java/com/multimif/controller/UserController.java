@@ -26,12 +26,12 @@ public class UserController {
 
     private UserService userService;
 
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
     @PostConstruct
     public void init() {
         userService = new UserServiceImpl();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     /**
      *
@@ -50,7 +50,7 @@ public class UserController {
         User user;
 
         try {
-            user = userService.addEntity(mail, username, password);
+            user = userService.addEntity(username, mail, password);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

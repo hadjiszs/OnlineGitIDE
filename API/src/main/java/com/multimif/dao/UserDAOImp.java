@@ -83,6 +83,7 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     @Override
     public User getEntityByMail(String mail) throws DataException {
+
         User user = null;
 
         TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByMail", User.class);

@@ -22,7 +22,21 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/19/16.
+ * Classe de test de ProjectController.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>Le status line du résponse</li>
+ *  <li>Le objet qui retourne correspond avec l'attendu.</li>
+ *  <li>L'absence des exceptions</li>
+ *  <li>L'action qui a fait le controleur.</li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/19/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })

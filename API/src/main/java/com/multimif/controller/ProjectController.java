@@ -61,7 +61,7 @@ public class ProjectController {
     }
 
     /**
-     * Créer un nouveau projet
+     * Mettre à jour un projet
      *
      * @param idProject  l'id du projet
      * @param project le projet qu'on va actualiser

@@ -25,8 +25,10 @@ public class TemporaryFile implements Serializable {
     @Column(length = 100, unique = true, nullable = false)
     private String hashKey;
 
+    @Transient
     private String name;
 
+    @Transient
     private String extension;
 
     @Lob
@@ -53,14 +55,14 @@ public class TemporaryFile implements Serializable {
      * @param path    dans le dépôt
      */
     public TemporaryFile(User user, String hashKey, String content, Project project,
-                         String path, String name, String extension) {
+                         String path) {
         this.content = content;
         this.hashKey = hashKey;
         this.user = user;
         this.project = project;
         this.path = path;
-        this.name = name;
-        this.extension = extension;
+        this.name = "";
+        this.extension = "";
     }
 
 
