@@ -1,21 +1,35 @@
 package com.multimif.git;
 
+import org.eclipse.jgit.api.Git;
+import org.gitective.core.CommitUtils;
 import org.junit.*;
 import org.junit.rules.TestName;
 
 import javax.json.JsonObject;
 
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by p1317074 on 15/11/16.
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 15/11/16.
  */
 public class UtilTest {
 
     private static final String REMOTE_URL = "https://github.com/hadjiszs/Interpolation.git";
     private static final String USER = "userTest";
     private static final String DIR_NAME = "TestGitRepository";
+    private static final String NEW_DIR_NAME = "Nouveau_repository";
+
 
     @Rule public TestName name = new TestName();
 
@@ -38,6 +52,7 @@ public class UtilTest {
     public static void end() throws Exception {
         System.out.println("# Suppression du dépôt ; fin tests #");
         Util.deleteRepository(USER, DIR_NAME);
+        Util.deleteRepository(USER, NEW_DIR_NAME);
     }
 
     @Test
@@ -80,8 +95,8 @@ public class UtilTest {
     @Test
     public void testCreateRepository() throws Exception {
         // Creation d'une branche
-        String nomCreator = "johndoe";
-        String nomRepository = "Nouveau_Repository";
+        String nomCreator = USER;
+        String nomRepository = NEW_DIR_NAME;
         GitStatus statusAttendu = GitStatus.REPOSITORY_CREATED;
 
         JsonObject content = Util.createRepository(nomCreator, nomRepository);
@@ -104,10 +119,60 @@ public class UtilTest {
 
     @Test
     public void testGetBranches() throws Exception {
-        //Recuperation du contenu d'un fichier pour une certaine révision
         JsonObject branches = Util.getBranches(USER, DIR_NAME);
 
         Assert.assertNotNull(branches);
         System.out.println(branches);
     }
+
+//    @Test
+//    public void testMerge() throws  Exception {
+//        Git git = Git.open(new File(Constantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
+//        //System.out.println(git.getRepository().getBranch());
+//        JsonObject res = Util.createBranch(USER, DIR_NAME, "newbranch");
+//        git.checkout().setCreateBranch(false)
+//                .setName("newbranch")
+//                .call();
+//        //System.out.println(git.getRepository().getBranch());
+//        Assert.assertNotNull(res);
+//        String path = "repositories/" + USER + "/" + DIR_NAME + ".git/";
+//        Charset utf8 = StandardCharsets.UTF_8;
+//        List<String> lines = Arrays.asList("1st line", "2nd line");
+//        Files.write(Paths.get(path + "src/testfile.c"), lines, utf8);
+//        git.add()
+//                .addFilepattern("src/testfile.c")
+//                .call();
+//
+//        System.out.println(git.status().call().getAdded().toString());
+//        //TODO Add method Util.MakeCommit instead of :
+//        git.commit()
+//                .setAll(true)
+//                .setAuthor("TEST", "test.test@test.fr")
+//                .setMessage("Ajout d'un fichier")
+//                .call();
+//
+//        git.checkout().setCreateBranch(false)
+//                .setName("master")
+//                .call();
+//        List<String> lines2 = Arrays.asList("1st lineBABABA", "2nd lineBABABA");
+//        Files.write(Paths.get(path + "src/testfile.c"), lines2, utf8);
+//        git.add()
+//                .addFilepattern("src/testfile.c")
+//                .call();
+//
+//        System.out.println(git.status().call().getAdded().toString());
+//        //TODO Add method Util.MakeCommit instead of :
+//        git.commit()
+//                .setAll(true)
+//                .setAuthor("TEST2", "test2.test@test.fr")
+//                .setMessage("Ajout d'un fichier")
+//                .call();
+//
+//
+//        //if (CommitUtils.getMaster(git.getRepository()) == CommitUtils.getHead(git.getRepository())) {System.out.println("NON !");}
+//        JsonObject res2 = Util.merge(USER, DIR_NAME, "newbranch", CommitUtils.getMaster(git.getRepository()).getName());
+//        Assert.assertNotNull(res2);
+//        System.out.println(res2.toString());
+//
+//    }
 }

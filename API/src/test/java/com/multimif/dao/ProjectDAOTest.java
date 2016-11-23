@@ -17,7 +17,20 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/16/16.
+ *
+ * Classe de test de ProjectDAO.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>L'absence des exceptions</li>
+ *  <li>L'action qui a fait la classe DAO.</li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/16/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
@@ -54,9 +67,7 @@ public class ProjectDAOTest extends TestUtil{
 
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
-        assertEquals(proj.getVersion(), project.getVersion());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     @Test
@@ -77,16 +88,14 @@ public class ProjectDAOTest extends TestUtil{
         try {
             proj = projectList.stream().filter(p -> p.getIdProject().equals(project.getIdProject()))
                     .findFirst().get();
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             exception = e;
         }
 
         assertNull(exception);
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
-        assertEquals(proj.getVersion(), project.getVersion());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     @Test
@@ -105,9 +114,7 @@ public class ProjectDAOTest extends TestUtil{
 
         /* On vérifie qu'il n'existe pas déjà */
 
-        List<Project> projectList = new ArrayList();
-        Project proj = null;
-
+        List<Project> projectList = new ArrayList<>();
         try {
             projectList = projectDAO.getEntityList();
         } catch (Exception e) {

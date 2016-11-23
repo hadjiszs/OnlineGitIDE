@@ -17,27 +17,13 @@ BODY{
     z-index:10;
 }
 
-@media (min-width: 1300px){
-    #panelGauche{
-        left:-20%;
-    }
-
-    #panelDroite{
-        right:-20%;
-    }
+#panelGauche{
+    left:-20%;
 }
 
-@media (max-width: 1299px){
-    #panelGauche{
-        left:-250px;
-    }
-
-    #panelDroite{
-        right:-250px;
-    }
+#panelDroite{
+    right:-20%;
 }
-
-
 
 #ancrePanelGauche, #ancrePanelDroite{
     position:fixed;
@@ -70,6 +56,7 @@ BODY{
 #editeurJava{
     margin-top:10px;
     margin-bottom:10px;
+    padding-right: 30px;
 }
 
 #secondeBarre{
@@ -82,6 +69,19 @@ BODY{
 
 #envoyerCommit{
     margin-left:20px;
+}
+
+#divCompilation{
+    margin-bottom:20px;
+}
+
+#contenuCompilation{
+    height:250px;
+    overflow-y : scroll;
+    background:#000;
+    color:#449d44;
+    padding:15px;
+    font-size: large;
 }
 
 

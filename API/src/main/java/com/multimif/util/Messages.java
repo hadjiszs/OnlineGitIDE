@@ -31,6 +31,7 @@ public class Messages {
 
 
     private Messages(){
-        /* On cache le constructeur */
+        /* On cache le constructeur
+        * parce qu'on ne veut pas que cette classe soit instanciée */
     }
 }

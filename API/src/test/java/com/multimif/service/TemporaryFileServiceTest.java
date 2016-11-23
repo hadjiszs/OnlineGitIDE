@@ -17,6 +17,17 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
+ *
+ * Classe de test de TemporaryFileService.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>L'absence des exceptions</li>
+ *  <li>La cohérence des données </li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/19/16.
@@ -38,11 +49,14 @@ public class TemporaryFileServiceTest extends TestUtil {
 
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
-            project = projectService.addEntity(project.getName(), project.getVersion(), project.getType(),
-                    project.getRoot(), user.getIdUser());
+            project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
 
-            temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getHashKey(), temporaryFile.getContent(),
-                    temporaryFile.getPath(), temporaryFile.getName(), temporaryFile.getExtensionType(), project.getIdProject());
+            /*
+            * addEntity(Long idUser, String hashKey, String content, String path,
+                            Long idProject)
+            * */
+            temporaryFile = temporaryFileService.addEntity(user.getIdUser(), temporaryFile.getHashKey(),
+                    temporaryFile.getContent(), temporaryFile.getPath(), project.getIdProject());
         }catch (Exception e){
             exception = e;
         }
@@ -60,7 +74,8 @@ public class TemporaryFileServiceTest extends TestUtil {
         TemporaryFile tmpFile = null;
 
         try {
-            tmpFile = temporaryFileService.getEntityByHashAndUser(user.getIdUser(), temporaryFile.getHashKey());
+            tmpFile = temporaryFileService.getEntityByHashAndUser(temporaryFile.getUser().getIdUser(),
+                    temporaryFile.getHashKey());
         }catch (DataException e){
             exception = e;
         }

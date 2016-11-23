@@ -7,9 +7,9 @@ import javax.persistence.EntityManager;
  * @version 1.0
  * @since 1.0 19/10/16.
  */
-public class DAO {
+class DAO {
 
-    protected EntityManager em;
+    private EntityManager em;
 
     /**
      * Cette méthode retourne une nouvelle instance de l'entity manager s'il n'y a pas
@@ -17,7 +17,7 @@ public class DAO {
      *
      * @return entity manager
      */
-    protected EntityManager getEntityManager(){
+    EntityManager getEntityManager(){
         if (em == null || !em.isOpen()){
             em = EntityFactoryManager.getEntityManagerFactory()
                     .createEntityManager();
@@ -29,7 +29,7 @@ public class DAO {
      * Cette méthode ferme l'entite manager.
      * Pour convention on ouvre et ferme l'entity manager dans méthode du DAO.
      */
-    protected void closeEntityManager(){
+    void closeEntityManager(){
         if (em.isOpen()){
             em.close();
         }

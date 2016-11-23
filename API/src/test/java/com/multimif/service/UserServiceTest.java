@@ -17,14 +17,27 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/20/16.
+ *
+ * Classe de test de UserService.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>L'absence des exceptions</li>
+ *  <li>La cohérence des données </li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/20/16.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserServiceTest  extends TestUtil{
-    UserService userService = new UserServiceImpl();
+    private UserService userService = new UserServiceImpl();
 
     @Test
     public void addEntityTest(){

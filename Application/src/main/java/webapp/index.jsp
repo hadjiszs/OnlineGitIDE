@@ -13,11 +13,13 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <script src="ressources/JS/api.js"></script>
     <script src="ressources/JS/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="ressources/img/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="ressources/img/favicon.png" rel="icon" type="image/x-icon" />
 </head>
 
 <body class="bodyIndex">
@@ -52,32 +54,6 @@
 
                     <!-- Lance le modal -->
                     <a data-toggle="modal" data-target="#oubliePassword" id="aOubliePassword">Mot de passe Oublié ?</a>
-
-                    <!-- Modal -->
-                    <div id="oubliePassword" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Besoin d'un nouveau mot de passe ?</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="oubliePassword.jsp" method="post">
-                                        <input type="email" placeholder="Adresse mail" name="mailPassword" id="mailPassword" required />
-                                        <input  class="btn btn-success" id="btnPassword" type="submit" value="Envoyer" />
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                </div>
-                            </div>
-                            <!-- Fin Modal Content -->
-
-                        </div>
-                    </div>
-                    <!-- Fin Modal -->
                 </section>
 
                 <section class="col-lg-6 col-xs-6" id="divInscription">
@@ -117,6 +93,32 @@
             Projet MULTIMIF - Groupe 1.
         </small>
     </main>
+
+    <!-- Modal Mot de Passe Oublié -->
+    <div id="oubliePassword" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Besoin d'un nouveau mot de passe ?</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="oubliePassword.jsp" method="post" id="formPassword">
+                        <input type="email" placeholder="Votre Adresse mail" name="mailPassword" id="mailPassword" required />
+                        <input  class="btn btn-success" id="btnPassword" type="submit" value="Envoyer" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+            <!-- Fin Modal Content -->
+
+        </div>
+    </div>
+    <!-- Fin Modal Mot de Passe Oublié -->
 </body>
 </html>
 

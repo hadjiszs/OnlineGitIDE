@@ -34,6 +34,9 @@ public class Message implements Serializable {
         this.date = date;
     }
 
+    public Message() {
+    }
+
     public Long getId() {
         return id;
     }

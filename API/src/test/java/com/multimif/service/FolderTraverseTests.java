@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 
 
 /**
- * Created by Alexis on 12/10/2016.
+ * @author Alexis
+ * @version 1.0
+ * @since 1.0 12/10/2016.
  */
 public class FolderTraverseTests {
 

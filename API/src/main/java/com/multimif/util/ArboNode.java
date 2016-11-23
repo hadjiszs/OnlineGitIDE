@@ -1,7 +1,7 @@
-package com.multimif.util;
-
-/**
- * Created by p1317074 on 16/11/16.
+package com.multimif.util; /**
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 16/11/16.
  */
 
 import javax.json.JsonArrayBuilder;

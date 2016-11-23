@@ -5,7 +5,9 @@ import com.multimif.model.*;
 import java.util.Date;
 
 /**
- * Created by amaia.nazabal on 11/19/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/19/16.
  */
 public abstract class TestUtil {
     protected static User user;
@@ -13,8 +15,8 @@ public abstract class TestUtil {
     protected static User developer;
     protected static Project project;
     protected static TemporaryFile temporaryFile;
-    protected static UserGrant userGrant1;
-    protected static UserGrant userGrant2;
+    private static UserGrant userGrant1;
+    private static UserGrant userGrant2;
 
     protected void newUser() {
         user = new User();
@@ -46,9 +48,7 @@ public abstract class TestUtil {
         project.setName("project-test");
         project.setCreationDate(new Date());
         project.setLastModification(new Date());
-        project.setVersion("1.0");
         project.setType(Project.TypeProject.JAVA);
-        project.setRoot("/home/project-test");
     }
 
     protected void newTemporaryFile(){

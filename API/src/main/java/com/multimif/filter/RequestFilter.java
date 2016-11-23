@@ -33,7 +33,7 @@ public class RequestFilter implements Filter{
 
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
-                if(cookies[i].getName().equals("hashkey")){
+                if(cookies[i].getName().equals("password")){
                     hashkey = cookies[i].getValue();
                 }
 
