@@ -62,4 +62,14 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
         return temporaryFileDAO.deleteEntity(idFileTemporary);
     }
 
+    @Override
+    public boolean deleteAllEntity(List<TemporaryFile> list) throws DataException {
+        boolean test = true;
+        for (TemporaryFile tempFile : list) {
+            test = test && deleteEntity(tempFile.getId());
+        }
+
+        return test;
+    }
+
 }

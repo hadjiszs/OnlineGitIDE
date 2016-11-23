@@ -1,5 +1,9 @@
 package com.multimif.git;
 
+import com.multimif.model.TemporaryFile;
+import com.multimif.model.User;
+import com.multimif.service.TemporaryFileService;
+import com.multimif.service.TemporaryFileServiceImpl;
 import com.multimif.util.ArboNode;
 import com.multimif.util.ArboTree;
 import org.eclipse.jgit.api.Git;
@@ -23,9 +27,7 @@ import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitUtils;
 
 import javax.json.*;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -506,5 +508,43 @@ public class Util {
         );
 
         return factory.createObjectBuilder().add("information", build).build();
+    }
+
+    public static JsonObject makeCommit(String author, String repository, String branch, User commiter, List<TemporaryFile> files, String message) throws Exception {
+        String pathRepo = Constantes.REPO_FULLPATH + author + "/" + repository + ".git";
+        Git git = Git.open(new File(pathRepo));
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        try {
+            git.checkout()
+                    .setCreateBranch(false)
+                    .setName(branch)
+                    .call();
+
+            PrintStream output;
+        int i =0;
+            for (TemporaryFile file : files) {
+                //File newFile = new File(file.getPath());
+                //newFile.createNewFile();
+                //System.out.println(file.getPath());
+                output = new PrintStream(new FileOutputStream(file.getPath()));
+                output.print(file.getContent());
+
+                //TODO : Remplacer le "src/testfile" par file.getRelativePath (en cours de dev)
+                git.add()
+                        .addFilepattern("src/testfile" + i)
+                        .call();
+                i++;
+            }
+            git.commit()
+                    .setAuthor(commiter.getUsername(), commiter.getMail())
+                    .setMessage(message)
+                    .call();
+            //System.out.println(CommitUtils.getHead(git.getRepository()).getFullMessage());
+            //System.out.println(getArborescence(author, repository, CommitUtils.getHead(git.getRepository()).getName()));
+
+            return factory.createObjectBuilder().add("result", GitStatus.COMMIT_DONE.toString()).build();
+        } catch (Exception e) {
+            return factory.createObjectBuilder().add("result", GitStatus.COMMIT_FAILED.toString()).build();
+        }
     }
 }

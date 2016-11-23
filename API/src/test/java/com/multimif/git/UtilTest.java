@@ -1,5 +1,8 @@
 package com.multimif.git;
 
+import com.multimif.model.Project;
+import com.multimif.model.TemporaryFile;
+import com.multimif.model.User;
 import org.eclipse.jgit.api.Git;
 import org.gitective.core.CommitUtils;
 import org.junit.*;
@@ -12,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,6 +127,21 @@ public class UtilTest {
 
         Assert.assertNotNull(branches);
         System.out.println(branches);
+    }
+
+    @Test
+    public void testMakeCommit() throws Exception {
+        User commiter = new User("42", "LeCommiter", "LeCommiter@testCommit.fr");
+        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA);
+        List<TemporaryFile> files = new ArrayList<TemporaryFile>();
+        TemporaryFile file;
+        for (int i = 0; i< 5 ; i++) {
+            file = new TemporaryFile(commiter, "hashkey", "content" + i, project, Constantes.REPO_FULLPATH + USER + "/" + DIR_NAME + ".git/" + "src/testfile" + i);
+            files.add(file);
+        }
+        JsonObject res = Util.makeCommit(USER, DIR_NAME, "master", commiter, files, "MESSAGE DU COMMIT");
+        Assert.assertNotNull(res);
+        System.out.println(res);
     }
 
 //    @Test

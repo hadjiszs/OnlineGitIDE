@@ -3,6 +3,7 @@ package com.multimif.controller;
 import com.multimif.git.Constantes;
 import com.multimif.git.Util;
 import com.multimif.model.Project;
+import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
 import com.multimif.service.*;
 import com.multimif.util.DataException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.json.JsonObject;
+import java.util.List;
 
 /**
  * Created by p1317074 on 16/11/16.
@@ -170,13 +172,40 @@ public class GitController {
 
 
     //Commit tout les fichiers modifiés pour une branche donnée
-    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/makeCommit/{branch}/{currentUser}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
                                           @PathVariable String idRepository,
-                                          @PathVariable String branch) {
-        //TODO
-        return null;
+                                          @PathVariable String branch,
+                                          @PathVariable String currentUser,
+                                          @RequestParam(value = "message") String message) {
+        TemporaryFileService fileService = new TemporaryFileServiceImpl();
+        UserService userService = new UserServiceImpl();
+
+        JsonObject ret = null;
+        String author = getUsernameById(idUser);
+        String repository = getNameRepositoryById(idRepository);
+        List<TemporaryFile> files = null;
+
+        try{
+            User commiter = userService.getEntityById(Long.parseLong(currentUser));
+            files = fileService.getEntityByUserProject(Long.parseLong(currentUser), Long.parseLong(idRepository));
+            ret = Util.makeCommit(author, repository, branch, commiter, files, message);
+            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+        }catch (Exception e){
+            try {
+                fileService.deleteAllEntity(files);
+            } catch (Exception ex) {
+                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            fileService.deleteAllEntity(files);
+        } catch (Exception e) {
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
     //diff entre le fichier en cours de modification et le dernier commit
