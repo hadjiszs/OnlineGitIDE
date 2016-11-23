@@ -110,14 +110,12 @@
                 </header>
                 <div class="col-lg-8" id="divCommit">
                     <div class="col-lg-12" id="divSelectCommit">
-                        <select class="form-group form-control" id="selectCommit">
-                            <option value="1"> Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3"> Option 3 </option>
+                        <select class="form-group form-control" id="selectBranch">
+                            <option></option>
                         </select>
                     </div>
                     <div class="col-lg-12" id="divAfficherCommit">
-                        <ul class="list-group">
+                        <ul class="list-group" id="listCommit">
                             <li class="list-group-item ligneCommit">Commit 1</li>
                             <li class="list-group-item ligneCommit">Commit 2</li>
                             <li class="list-group-item ligneCommit">Commit 3</li>
@@ -131,7 +129,7 @@
                         <h4> Ils sont sur le Projet</h4>
                     </header>
                     <div>
-                        <ul class="list-group">
+                        <ul class="list-group" id="listDev">
                             <li class="list-group-item">Nom 1</li>
                             <li class="list-group-item">Nom 2</li>
                             <li class="list-group-item">Nom 3</li>
@@ -159,13 +157,13 @@
                         <h4 class="modal-title">Parametre du projet </h4>
                     </div>
                     <div class="modal-body">
-                        <form action="creerProjet.jsp" method="post" id="formProjet">
+                        <form id="formProjet">
                             <label class="labelProjet"> Nom du projet </label>
-                            <input type="text" placeholder="Nom du projet" name="nomProjet" id="nomProjet" required />
+                            <input type="text" placeholder="Nom du projet" name="name" id="nomProjet" required />
                             <label class="labelProjet"> Langage </label>
-                            <select class="form-group form-control" id="selectProjet">
-                                <option value="java"> JAVA </option>
-                                <option value="c"> C++ </option>
+                            <select name="type" class="form-group form-control" id="selectProjet">
+                                <option value="JAVA"> JAVA </option>
+                                <option value="C++"> C++ </option>
                                 <option value="python"> Python </option>
                             </select>
                             <input  class="btn btn-success" id="btnProjet" type="submit" value="Envoyer" />
