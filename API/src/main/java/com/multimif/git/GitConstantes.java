@@ -6,7 +6,7 @@ package com.multimif.git;
  * @since 1.0 15/11/16.
  */
 
-public class Constantes {
+public class GitConstantes {
 
     public static final String REPOPATH = "repositories/";
 
