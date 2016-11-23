@@ -127,7 +127,7 @@ public class UtilTest {
 
 //    @Test
 //    public void testMerge() throws  Exception {
-//        Git git = Git.open(new File(Constantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
+//        Git git = Git.open(new File(GitConstantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
 //        //System.out.println(git.getRepository().getBranch());
 //        JsonObject res = Util.createBranch(USER, DIR_NAME, "newbranch");
 //        git.checkout().setCreateBranch(false)

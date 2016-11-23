@@ -24,7 +24,7 @@ public class FileEditController {
         try{
             user = userService.getEntityById(id);
         }catch(Exception ex){
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(GitConstantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -53,7 +53,7 @@ public class FileEditController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
-            return new ResponseEntity<String>(JsonUtil.convertToJson(new JsonUtil.Status(JsonUtil.Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<String>(JsonUtil.convertToJson(new JsonUtil.Status(JsonUtil.GitConstantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 

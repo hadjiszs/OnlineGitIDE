@@ -54,7 +54,7 @@ public class Util {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
-            String path = Constantes.REPO_FULLPATH + creator + "/" + repository + ".git";
+            String path = GitConstantes.REPO_FULLPATH + creator + "/" + repository + ".git";
             System.out.println("CHEMIN:" + path);
             Git git = Git.open(new File(path));
 
@@ -127,7 +127,7 @@ public class Util {
      */
     public static boolean deleteRepository(String creator,
                                            String repository) {
-        String path = Constantes.REPO_FULLPATH + creator + "/" + repository + ".git";
+        String path = GitConstantes.REPO_FULLPATH + creator + "/" + repository + ".git";
         System.out.println("CHEMIN:" + path);
 
         File dir = new File(path);
@@ -152,7 +152,7 @@ public class Util {
         }
 
         // prepare a new folder for the cloned repository
-        String path = Constantes.REPO_FULLPATH + creator + "/" + newRepo + ".git";
+        String path = GitConstantes.REPO_FULLPATH + creator + "/" + newRepo + ".git";
         System.out.println("CHEMIN:" + path);
 
         File localPath = new File(path);
@@ -179,7 +179,7 @@ public class Util {
                                         String repo,
                                         String revision,
                                         String path) throws Exception {
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
 
@@ -208,7 +208,7 @@ public class Util {
         GitStatus status;
 
         // Ouverture du depot
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
 
@@ -254,7 +254,7 @@ public class Util {
         GitStatus status = GitStatus.REPOSITORY_NOT_CREATED;
 
         // Chemin vers le nouveau repository
-        String path = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String path = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + path);
         File localPath = new File(path);
 
@@ -304,7 +304,7 @@ public class Util {
         DiffFormatter formatter = new DiffFormatter(baos);
 
         // Ouverture du depot
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
         Repository repository = git.getRepository();
@@ -369,7 +369,7 @@ public class Util {
      */
     public static  JsonObject getBranches(String creator,
                                           String repo) throws Exception {
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -396,7 +396,7 @@ public class Util {
     public static JsonObject getCommits(String creator,
                                         String repo,
                                         String branch) throws  Exception {
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -423,7 +423,7 @@ public class Util {
     }
 
     public static JsonObject merge(String creator, String repo, String nomBranch1, String branch2) throws Exception {
-        Git git = Git.open(new File(Constantes.REPOPATH + creator + "/" + repo + ".git"));
+        Git git = Git.open(new File(GitConstantes.REPOPATH + creator + "/" + repo + ".git"));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
 
         // Recuperation du RevCommit associé au commit sujet
@@ -487,7 +487,7 @@ public class Util {
     }
 
     public static JsonObject getInfoCommit(String creator, String repo, String revision) throws IOException {
-        String pathRepo = Constantes.REPO_FULLPATH + creator + "/" + repo + ".git";
+        String pathRepo = GitConstantes.REPO_FULLPATH + creator + "/" + repo + ".git";
         System.out.println("CHEMIN:" + pathRepo);
         Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
