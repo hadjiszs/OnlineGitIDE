@@ -1,11 +1,14 @@
 package com.multimif.controller;
 
-import com.multimif.git.Constantes;
+import com.multimif.git.GitConstantes;
 import com.multimif.git.Util;
 import com.multimif.model.Project;
 import com.multimif.model.User;
 import com.multimif.service.*;
+import com.multimif.util.Constantes;
 import com.multimif.util.DataException;
+import com.multimif.util.JsonUtil;
+import com.multimif.util.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -74,9 +77,10 @@ public class GitController {
     }
 
     //Contenu d'un fichier
-    @RequestMapping(value = "/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
-    ResponseEntity<String> getFile(@PathVariable String idUser,
+    ResponseEntity<String> getFile(@PathVariable String currentUser,
+                                   @PathVariable String idUser,
                                    @PathVariable String idRepository,
                                    @PathVariable String revision,
                                    @RequestParam(value="path") String path) {
@@ -94,9 +98,10 @@ public class GitController {
     }
 
     //Arborescence d'un commit particulier
-    @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
-    ResponseEntity<String> getTree(@PathVariable String idUser,
+    ResponseEntity<String> getTree(@PathVariable String currentUser,
+                                   @PathVariable String idUser,
                                    @PathVariable String idRepository,
                                    @PathVariable String revision) {
         JsonObject ret = null;
@@ -113,9 +118,10 @@ public class GitController {
     }
 
     //liste des branches
-    @RequestMapping(value = "/branches", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/branches", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
-    ResponseEntity<String> getBranches(@PathVariable String idUser,
+    ResponseEntity<String> getBranches(@PathVariable String currentUser,
+                                       @PathVariable String idUser,
                                        @PathVariable String idRepository){
         JsonObject ret = null;
         String author = getUsernameById(idUser);
@@ -131,7 +137,7 @@ public class GitController {
     }
 
     //liste des branches
-    @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
                                          @PathVariable String idRepository,
@@ -149,10 +155,12 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
+
     //liste des commits d'une branche
-    @RequestMapping(value = "/listCommit/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/listCommit/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getListCommit(@PathVariable String idUser,
+                                         @PathVariable String currentUser,
                                          @PathVariable String idRepository,
                                          @PathVariable String branch) {
         JsonObject ret = null;
@@ -170,9 +178,10 @@ public class GitController {
 
 
     //Commit tout les fichiers modifiés pour une branche donnée
-    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
+                                          @PathVariable String currentUser,
                                           @PathVariable String idRepository,
                                           @PathVariable String branch) {
         //TODO
@@ -180,9 +189,10 @@ public class GitController {
     }
 
     //diff entre le fichier en cours de modification et le dernier commit
-    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
+                                         @PathVariable String currentUser,
                                          @PathVariable String idRepository,
                                          @PathVariable String branch,
                                          @PathVariable String path) {
@@ -191,9 +201,10 @@ public class GitController {
     }
 
     //diff concernant un commit en particulier
-    @RequestMapping(value = "/showCommit/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/showCommit/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getShowCommit(@PathVariable String idUser,
+                                         @PathVariable String currentUser,
                                          @PathVariable String idRepository,
                                          @PathVariable String revision) {
         JsonObject ret = null;
@@ -210,9 +221,10 @@ public class GitController {
     }
 
     //Téléchargement du dépot sous forme d'archive
-    @RequestMapping(value = "/archive/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/archive/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getArchive(@PathVariable String idUser,
+                                      @PathVariable String currentUser,
                                       @PathVariable String idRepository,
                                       @PathVariable String branch) {
         //TODO
@@ -220,9 +232,10 @@ public class GitController {
     }
 
     //Clone un repo distant
-    @RequestMapping(value = "/clone/{url}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/clone/{url}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postClone(@PathVariable String idUser,
+                                     @PathVariable String currentUser,
                                      @PathVariable String idRepository,
                                      @PathVariable String url) {
         //TODO
@@ -230,9 +243,10 @@ public class GitController {
     }
 
     //Creation branche
-    @RequestMapping(value = "/create/branch/{newBranch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/create/branch/{newBranch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postCreateBranch(@PathVariable String idUser,
+                                            @PathVariable String currentUser,
                                             @PathVariable String idRepository,
                                             @PathVariable String newBranch) {
         JsonObject ret = null;
@@ -249,13 +263,51 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 
+    // TODO: requete pour savoir si oui ou non il y a des fichiers temporaires lié
+    // à un user et à un projet
+
     //Creation fichier
-    @RequestMapping(value = "/create/file/{branch}/{path}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    /// SALUT bonjour
+    /**
+     *
+     * @param idUser       le créateur du projet
+     * @param currentUser  l'utilisateur courant, celui qui fait la requete
+     * @param idRepository l'id du repository courant
+     * @param path         le chemin du nouveau fichier
+     * @return
+     */
+    @RequestMapping(value = "/create/file", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postCreateFile(@PathVariable String idUser,
+                                          @PathVariable String currentUser,
                                           @PathVariable String idRepository,
                                           @PathVariable String branch,
-                                          @PathVariable String path) {
+                                          @RequestParam(value="path") String path) {
+        Long idrepo = Long.valueOf(idRepository);
+
+        // Ajout du temporary file, vide
+        try {
+            if(temporaryFileService.addEntity(Long.valueOf(currentUser), "", path, idrepo) == null)
+                return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+                        Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
+        } catch (DataException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+                    Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
+        }
+
+        return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
+                Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
+    }
+
+    //Merge
+    @RequestMapping(value = "/merge/{branchname}/{revision}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    public @ResponseBody
+    ResponseEntity<String> postMerge(@PathVariable String author,
+                                     @PathVariable String currentUser,
+                                     @PathVariable String repository,
+                                     @PathVariable String branchname,
+                                     @PathVariable String revision){
         JsonObject ret = null;
 //        Long id = Long.valueOf(idUser);
 //        String author = getUsernameById(idUser);

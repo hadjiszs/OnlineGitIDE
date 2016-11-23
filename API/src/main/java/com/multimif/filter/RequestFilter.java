@@ -44,6 +44,7 @@ public class RequestFilter implements Filter{
         }
 
         System.out.println("[API] [FILTER] hashkey: " + hashkey);
+        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
 
         chain.doFilter(req,res);
         /*if(request.getRequestURI().contains("/auth/connect")){
