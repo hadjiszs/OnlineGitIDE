@@ -132,7 +132,7 @@ public class UtilTest {
     @Test
     public void testMakeCommit() throws Exception {
         User commiter = new User("42", "LeCommiter", "LeCommiter@testCommit.fr");
-        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA);
+        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA, commiter.getIdUser());
         List<TemporaryFile> files = new ArrayList<TemporaryFile>();
         TemporaryFile file;
         for (int i = 0; i< 5 ; i++) {

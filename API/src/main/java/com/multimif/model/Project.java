@@ -48,11 +48,12 @@ public class Project implements Serializable {
      * @param name le nom du projet
      * @param type le type du code
      */
-    public Project(String name, TypeProject type) {
+    public Project(String name, TypeProject type, Long idCreator) {
         this.name = name;
         this.type = type;
         this.creationDate = new Date();
         this.lastModification = new Date();
+        this.idCreator = idCreator;
     }
 
     public Long getIdProject() {
@@ -96,6 +97,6 @@ public class Project implements Serializable {
     }
 
     public void setIdCreator(Long id){ this.idCreator = id;}
-    
+
     public Long getIdCreator(){ return idCreator;}
 }

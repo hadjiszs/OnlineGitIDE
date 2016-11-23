@@ -24,7 +24,9 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/git/{idUser}/{idRepository}")
+// currentUser = celui qui a la session
+// idUser = l'id du creator du projet
+@RequestMapping("/git/{currentUser}/{idUser}/{idRepository}")
 public class GitController {
 
     /**

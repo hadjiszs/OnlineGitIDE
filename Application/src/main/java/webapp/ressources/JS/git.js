@@ -1,6 +1,6 @@
 /* Liste les branches d'un projet*/
-function listBranch(idProject){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/branches";
+function listBranch(idProject,idCreator, idUser){
+    var url = "/api/git/"+  idUser + "/" + idCreator + "/" + idProject + "/branches";
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -15,15 +15,15 @@ function listBranch(idProject){
             $('#selectBranch').empty();
 
             $.each(json["branches"], function(index, element) {
-                $('#selectBranch').append('<option value="'+ idProject+'">' + element.name.substr(element.name.lastIndexOf('/') + 1) + '</option>');
+                $('#selectBranch').append('<option project="'+ idProject+'" creator="'+ idCreator +'">' + element.name.substr(element.name.lastIndexOf('/') + 1) + '</option>');
             });
         }
     });
 }
 
 /* Liste des commits */
-function listCommit(idProject,branch){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/listCommit/" + branch;
+function listCommit(idProject,idCreator, idUser,branch){
+    var url = "/api/git/" +  idUser + "/" + idCreator + "/" + idProject + "/listCommit/" + branch;
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -51,8 +51,8 @@ function listCommit(idProject,branch){
 }
 
 /* Récupère le contenu d'un fichier */
-function getFile(idProject,revision,path){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/" + revision +"?path=" + path;
+function getFile(idProject,idCreator, idUser,revision,path){
+    var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/" + revision +"?path=" + path;
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -70,8 +70,8 @@ function getFile(idProject,revision,path){
 }
 
 /* Récupère l'arborescence du commit courant */
-function getArborescence(idProject,revision){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/tree/" + revision;
+function getArborescence(idProject,idCreator, idUser,revision){
+    var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/tree/" + revision;
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -114,8 +114,8 @@ function createDir(){
 
 }
 
-function createBranch(branch){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + Cookies.get('project') + "/create/branch/" + branch;
+function createBranch(branch, idProject, idCreator, idUser){
+    var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/create/branch/" + branch;
     ApiRequest('POST',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -134,6 +134,26 @@ function createBranch(branch){
                 closable: true,
                 draggable: true
             });
+        }
+    });
+}
+function changeBranch(idProject, idCreator, idUser, branch){
+    var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/listCommit/" + branch;
+    ApiRequest('GET',url,"",function(json){
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Commits',
+                message: 'Impossible de récupérer le dernier commit de ' + branch,
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Dernier commit de "+branch+ ": " + json["commits"][0].id);
+            Cookies.set('project', idProject);
+            Cookies.set('branch', branch);
+            Cookies.set('revision', json["commits"][0].id);
+            refreshPage();
         }
     });
 }

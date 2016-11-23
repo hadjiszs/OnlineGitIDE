@@ -49,9 +49,10 @@ $(document).ready(function() {
     // Si on click sur un projet, on récupère ses informations
     $(".userProject-list").on("click", function (e) {
         e.preventDefault();
-        var idProject = $(this).attr("value");
-        listBranch(idProject);
-        listCommit(idProject,"master");
+        var idProject = $(this).attr("project");
+        var idCreator = $(this).attr("creator");
+        listBranch(idProject,idCreator,Cookies.get('idUser'));
+        listCommit(idProject,idCreator,Cookies.get('idUser'),"master");
         listDeveloppers(idProject);
     });
 
@@ -64,9 +65,11 @@ $(document).ready(function() {
     //SI on ouvre un projet
     $(".userProject-list-open").on("click", function(e){
         e.preventDefault();
-        var idProject = $(this).attr("value");
-        openProject(idProject);
+        var idProject = $(this).attr("project");
+        var idCreator = $(this).attr("creator");
+        openProject(idProject, idCreator);
     });
+
 
     ////////// Collaboration /////////////
 
@@ -91,9 +94,14 @@ $(document).ready(function() {
     $('#selectBranch').on("change", function (e) {
         e.preventDefault();
         //console.log($('#listBranch option:selected').val() + " " + $('#listBranch option:selected').text());
-        listCommit($('#selectBranch option:selected').val(), $('#selectBranch option:selected').text());
+        var idProject = $('#selectBranch option:selected').attr("project");
+        var idCreator = $('#selectBranch option:selected').attr("creator");
+        var idUser = Cookies.get('idUser');
+        var branch = $('#selectBranch option:selected').text();
+        listCommit(idProject,idCreator, idUser,branch);
     });
 
+    /*
     // SI on click sur un commit
     $(".ligneCommit").on("click",function(e){
         e.preventDefault();
@@ -101,14 +109,14 @@ $(document).ready(function() {
         var branch = $(this).attr("branch");
         var revision = $(this).attr("revision");
         openCommit(idProject,branch,revision);
-    });
+    });*/
 
 });
 
 /* Actualise la page */
 function refreshPage(){
     listProject();
-    listCollarborations();
+    listCollaborations();
     listUser();
 }
 
@@ -131,11 +139,12 @@ function listProject(){
             $.each(json, function(index, element) {
                 $('#listeProjets').append(
                     '<div class="btn-group col-lg-12 ligneListeProjet"> \
-                        <button type="button" class="btn btn-default nomListeProjets userProject-list" value="' + element.idProject +'">' + element.name +'</button> \
-                        <button type="button" class="btn btn-default userProject-list-open" value="' + element.idProject +'">\
+                        <button type="button" class="btn btn-default nomListeProjets userProject-list"\
+                            project="' + element.idProject +'" creator="'+ element.idCreator + '">' + element.name +'</button> \
+                        <button type="button" class="btn btn-default userProject-list-open" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
                             <span class="glyphicon glyphicon-pencil"></span>\
                         </button> \
-                        <button type="button" class="btn btn-default userProject-list-delete" value="' + element.idProject +'">\
+                        <button type="button" class="btn btn-default userProject-list-delete" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
                             <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
                         </button> \
                     </div>'
@@ -146,7 +155,7 @@ function listProject(){
 }
 
 /* Liste les collaborations d'un utilisateur */
-function listCollarborations(){
+function listCollaborations(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/developers";
     ApiRequest('GET',url,"",function (json){
         if(json == null){
@@ -164,8 +173,8 @@ function listCollarborations(){
             $.each(json, function(index, element) {
                 $('#listeCollaborations').append(
                 '<div class="btn-group col-lg-12 ligneListeCollaborations"> \
-                    <button type="button" class="btn btn-default nomListeCollaborations userCollaboration-list" value="'+ element.idProject +'">' + element.name +'</button> \
-                    <button type="button" class="btn btn-default userCollaboration-list-delete" value="'+ element.idProject +'">\
+                    <button type="button" class="btn btn-default nomListeCollaborations userCollaboration-list" project="'+ element.idProject +'" creator="'+ element.idCreator + '">' + element.name +'</button> \
+                    <button type="button" class="btn btn-default userCollaboration-list-delete" project="'+ element.idProject +'" creator="'+ element.idCreator + '">\
                         <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
                     </button> \
                 </div>'
@@ -206,6 +215,7 @@ function listDeveloppers(idProject){
     });
 }
 
+/* Liste les développeur de l'application */
 function listUser() {
     var url = "/api/user/";
     ApiRequest('GET',url,"",function(json){
@@ -223,10 +233,11 @@ function listUser() {
     });
 }
 
-function openProject(idProject){
+/* Ouvre un projet */
+function openProject(idProject, idCreator){
 
     // On récupère le dernier commit de la branche master
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/listCommit/master";
+    var url = "/api/git/" + Cookies.get('idUser') + "/" + idCreator + "/" + idProject + "/listCommit/master";
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({
@@ -239,6 +250,7 @@ function openProject(idProject){
         }else{
             console.log("Dernier commit de master: " + json["commits"][0].id);
             Cookies.set('project', idProject);
+            Cookies.set('creator', idCreator);
             Cookies.set('branch', "master");
             Cookies.set('revision', json["commits"][0].id);
             window.location.href = "/JSP/edit.jsp";
@@ -246,8 +258,9 @@ function openProject(idProject){
     });
 }
 
-function openCommit(idProject, branch, revision) {
+function openCommit(idProject, idCreator, branch, revision) {
     Cookies.set('project', idProject);
+    Cookies.set('creator', idCreator);
     Cookies.set('branch', branch);
     Cookies.set('revision', revision);
     window.location.href = "/JSP/viewer.jsp";

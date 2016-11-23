@@ -2,15 +2,20 @@ $(document).ready(function() {
     refreshPage();
     $("#selectBranch").on("change",function(e){
         e.preventDefault();
-        var idProject = $('#selectBranch option:selected').val();
+        var idProject = $('#selectBranch option:selected').attr("project");
+        var idCreator = $('#selectBranch option:selected').attr("creator");
         var branch = $('#selectBranch option:selected').text();
-        changeBranch(idProject,branch);
+        var idUser = Cookies.get('idUser');
+        changeBranch(idProject, idCreator, idUser, branch);
     });
 
     //Créer un nouvelle branche
     $("#createBranch-button").on("click", function(e){
         e.preventDefault();
-        createBranch($("#nomBranche").val());
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        createBranch($("#nomBranche").val(), idProject, idCreator, idUser);
     });
 
 
@@ -22,23 +27,3 @@ function refreshPage(){
     listBranch(Cookies.get('project'));
 }
 
-function changeBranch(idProject,branch){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/listCommit/" + branch;
-    ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commits',
-                message: 'Impossible de récupérer le dernier commit de ' + branch,
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
-            console.log("Dernier commit de "+branch+ ": " + json["commits"][0].id);
-            Cookies.set('project', idProject);
-            Cookies.set('branch', branch);
-            Cookies.set('revision', json["commits"][0].id);
-            refreshPage();
-        }
-    });
-}
