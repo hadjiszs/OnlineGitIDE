@@ -16,15 +16,13 @@ public class SplitPath {
 
     }
 
-    public static  String  getFilePath(String path){
-
+    public static String getFilePath(String path) {
 
 
         String[] nameAndext = path.split("/");
-        String filepath=new String();
-        for(int i=1;i<nameAndext.length-1;i++)
-        {
-            filepath += "/"+nameAndext[i].toString();
+        String filepath = new String();
+        for (int i = 1; i < nameAndext.length - 1; i++) {
+            filepath += "/" + nameAndext[i].toString();
         }
 
         return filepath;
@@ -43,8 +41,6 @@ public class SplitPath {
         String[] split = nameExt.split("\\.");
         return split[0];
     }
-
-
 
 
 }

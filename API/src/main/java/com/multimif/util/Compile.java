@@ -23,7 +23,6 @@ public class Compile {
     UserService userService = new UserServiceImpl();
 
 
-
     public Compile() {
     }
 
@@ -35,8 +34,6 @@ public class Compile {
         */
 
 
-
-
         // On récupère le prop
         User prop = userGrantService.getAdminByEntity(idProject);
         // On récupère le project
@@ -45,18 +42,16 @@ public class Compile {
         User currentUser = userService.getEntityById(idCurrentUser);
 
 
-
-
         // 1 - CLONE
-        this.executeAction(CLONE_ACTION, prop.getUsername(), currentProject.getName(),currentUser.getUsername());
+        this.executeAction(CLONE_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername());
         // 2 - update Project Files (temp)
-       this.updateCloneRepo(currentProject.getIdProject(), currentUser.getIdUser());
+        this.updateCloneRepo(currentProject.getIdProject(), currentUser.getIdUser());
         // 3 - COMPILATION
         this.executeAction(COMPILE_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername());
         // 4 - GET RESULT
-       String result = this.getCompilationResult(currentUser.getUsername());
+        String result = this.getCompilationResult(currentUser.getUsername());
         // 5 - clean
-       this.executeAction(CLEAN_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername()); //CLEAN
+        this.executeAction(CLEAN_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername()); //CLEAN
         //Resultat de la compilation
         return result;
     }
@@ -66,7 +61,7 @@ public class Compile {
         String line = new String();
         BufferedReader in;
 
-        in = new BufferedReader(new FileReader(RESULTS_PATH +"/" + userName + ".txt"));
+        in = new BufferedReader(new FileReader(RESULTS_PATH + "/" + userName + ".txt"));
         result = in.readLine();
         line = "";
         result = "";
@@ -90,10 +85,10 @@ public class Compile {
         Runtime rt = Runtime.getRuntime();
 
         if (action.toString().equals(COMPILE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser + " " + idProject+".git");
+            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser + " " + idProject + ".git");
         }
         if (action.toString().equals(CLONE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + propId + " " + idProject+".git" + " " + idCurrentUser);
+            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + propId + " " + idProject + ".git" + " " + idCurrentUser);
         }
         if (action.toString().equals(CLEAN_ACTION)) {
             p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser);
@@ -125,7 +120,6 @@ public class Compile {
         User currentUser = userService.getEntityById(idCurrentUser);
 
 
-
         String filePath;
         String fileName;
         String fileExt;
@@ -142,7 +136,7 @@ public class Compile {
             // 2) remplir le fichier - content
             setContentFile(temporaryFileList.get(i), temporaryFileList.get(i).getContent());
             // 3) deplacer le fichier
-           mvFilesToCloneRepo(fileName, fileExt, filePath, currentUser.getUsername(),currentProject.getName());
+            mvFilesToCloneRepo(fileName, fileExt, filePath, currentUser.getUsername(), currentProject.getName());
 
         }
 
@@ -178,16 +172,15 @@ public class Compile {
     }
 
     public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath, String currentUserName
-            ,String projectName) throws IOException, InterruptedException {
+            , String projectName) throws IOException, InterruptedException {
 
         Process p1;
         Runtime rt = Runtime.getRuntime();
         String pathMkdir = SplitPath.getFilePath(filePath);
 
 
-
         p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
-                fileExt + " " + CLONE_PATH + " " + currentUserName + " "+ projectName +" "+ filePath +" "+ pathMkdir);
+                fileExt + " " + CLONE_PATH + " " + currentUserName + " " + projectName + " " + filePath + " " + pathMkdir);
         p1.waitFor();
 
     }

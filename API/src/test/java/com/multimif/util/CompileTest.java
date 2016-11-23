@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static com.multimif.util.TestUtil.project;
-import static com.multimif.util.TestUtil.user;
 import static org.junit.Assert.*;
 
 /**
@@ -20,8 +18,8 @@ import static org.junit.Assert.*;
  * @since 1.0 23/11/2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
-public class CompileTest  extends TestUtil{
+@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/api-servlet.xml"})
+public class CompileTest extends TestUtil {
 
     private ProjectService projectService = new ProjectServiceImpl();
     private UserService userService = new UserServiceImpl();
@@ -31,28 +29,22 @@ public class CompileTest  extends TestUtil{
     public void executeCompilation() throws Exception {
 
 
-
-
-
-        Compile c= new Compile();
-        String result = c.executeCompilation((long)1 , (long)1,"sdhjqd");
+        Compile c = new Compile();
+        String result = c.executeCompilation((long) 1, (long) 1, "sdhjqd");
         System.out.println(result);
-
-
-
 
 
     }
 
 
     @Test
-    public void suppressEntityTest(){
+    public void suppressEntityTest() {
         boolean result = false;
         Exception exception = null;
 
         try {
             result = projectService.deleteEntity(project.getIdProject(), user.getIdUser());
-        }catch (Exception e){
+        } catch (Exception e) {
             exception = e;
         }
 
@@ -61,9 +53,9 @@ public class CompileTest  extends TestUtil{
 
         Project proj = null;
 
-        try{
+        try {
             proj = projectService.getEntityById(project.getIdProject());
-        }catch (DataException e){
+        } catch (DataException e) {
             exception = e;
         }
 
@@ -74,15 +66,13 @@ public class CompileTest  extends TestUtil{
 
         try {
             result = userService.deleteEntity(user.getIdUser());
-        }catch (DataException e){
+        } catch (DataException e) {
             exception = e;
         }
 
         assertNull(exception);
         assertTrue(result);
     }
-
-
 
 
 }
