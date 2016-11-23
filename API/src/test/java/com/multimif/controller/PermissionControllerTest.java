@@ -24,7 +24,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * Created by amaia.nazabal on 11/19/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/19/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
@@ -57,8 +59,7 @@ public class PermissionControllerTest extends TestUtil{
 
             /* Quand on cree le project implicitament il cree le rapport entre projet et admin */
             newProject();
-            projectResponseEntity = projectController.add(project.getName(), project.getVersion(), project.getRoot(),
-                    project.getType(), admin.getIdUser());
+            projectResponseEntity = projectController.add(project.getName(), project.getType(), admin.getIdUser());
 
             JsonUtil<StatusOK> jsonUtil = new JsonUtil<>();
             statusOK = jsonUtil.convertToObjectJSON(projectResponseEntity.getBody(), StatusOK.class);
@@ -162,8 +163,6 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getVersion(), project.getVersion());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     /* TODO traiter reponse body permission true ou faux */

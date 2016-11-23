@@ -23,7 +23,7 @@
         <!-- Script perso -->
         <script src="../ressources/JS/api.js"></script>
         <script src="../ressources/JS/git.js"></script>
-        <script src="../ressources/JS/home.js"></script>
+
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../ressources/CSS/home.css">
@@ -157,13 +157,13 @@
                         <h4 class="modal-title">Parametre du projet </h4>
                     </div>
                     <div class="modal-body">
-                        <form action="creerProjet.jsp" method="post" id="formProjet">
+                        <form id="formProjet">
                             <label class="labelProjet"> Nom du projet </label>
-                            <input type="text" placeholder="Nom du projet" name="nomProjet" id="nomProjet" required />
+                            <input type="text" placeholder="Nom du projet" name="name" id="nomProjet" required />
                             <label class="labelProjet"> Langage </label>
-                            <select class="form-group form-control" id="selectProjet">
-                                <option value="java"> JAVA </option>
-                                <option value="c"> C++ </option>
+                            <select name="type" class="form-group form-control" id="selectProjet">
+                                <option value="JAVA"> JAVA </option>
+                                <option value="C++"> C++ </option>
                                 <option value="python"> Python </option>
                             </select>
                             <input  class="btn btn-success" id="btnProjet" type="submit" value="Envoyer" />
@@ -205,5 +205,7 @@
             </div>
         </div>
         <!-- Fin Modal Ajout de Collaborateur -->
+
+        <script src="../ressources/JS/home.js"></script>
     </body>
 </html>

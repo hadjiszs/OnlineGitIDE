@@ -78,7 +78,8 @@
                         <select class="form-control" id="changerTheme">
                             <option value="dracula">Dracula</option>
                             <option value="night">Night</option>
-                            <option value="solarized">Soalrized</option>
+                            <option value="rubyblue">RubyBlue</option>
+                            <option value="solarized">Solarized</option>
                         </select>
                     </div>
                     <div class="btn-group">
@@ -91,20 +92,15 @@
                         </select>
                     </div>
                     <div class="btn-group">
-                        <select id="listBranch">
-                            <option value="">Branche:</option>
+                        <select class="form-control" id="selectBranch">
+                            <option value="">Branche</option>
                       
                         </select>
                     </div>
-                    <div class="btn-group">
-                        <select id="listCommit">
-                            <option value="">Commit:</option>
-                        </select>
-                    </div>
-                    <div class="btn-group">
 
-                        <button type="button" class="btn btn-default" id="autoIndent">Tout Indenter</button>
-                        <button type="button" class="btn btn-default" id="createBranch">Créer une branche</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" id="btnAutoIndent">Tout Indenter</button>
+                        <button type="button" class="btn btn-default" id="createBranch" data-toggle="modal" data-target="#fenetreBranche">Créer une branche</button>
                         <button type="button" class="btn btn-default" id="createFile">Créer un fichier</button>
                         <button type="button" class="btn btn-default" id="createDir">Créer un dossier</button>
                         <input  type="button" class="btn btn-default" id="commitBtn"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
@@ -143,7 +139,7 @@ return member;
 
             <!-- Sortie de compilation -->
             <section class="row">
-                <div class="col-lg-8 col-lg-offset-2" id="divCompilation">
+                <div class="col-lg-10 col-lg-offset-1" id="divCompilation">
                     <div id="contenuCompilation">
                         <p> Sortie du compilateur</p>
                     </div>
@@ -183,7 +179,7 @@ return member;
                         <h4 class="modal-title">Ajouter un message pour votre Commit</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="fenetreCommit.jsp" method="post">
+                        <form>
                             <input type="text" placeholder="Votre message de commit .." name="messageCommit" id="messageCommit"/>
                             <input  class="btn btn-success" id="envoyerCommit" type="submit" value="Envoyer" />
                         </form>
@@ -193,7 +189,29 @@ return member;
                     </div>
                 </div>
                 <!-- Fin Modal Content -->
+            </div>
+        </div>
+        <!-- Modal -->
+        <div id="fenetreBranche" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer une nouvelle branche</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createBranch-modal">
+                            <input type="text" placeholder="nom de la branche" name="newBranch" id="nomBranche"/>
+                            <input  class="btn btn-success" id="createBranch-button" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
             </div>
         </div>
         <!-- Fin Modal -->

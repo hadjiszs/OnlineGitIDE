@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * Controleur pour la gestion des utilisateurs
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -31,6 +33,15 @@ public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
+    /**
+     *
+     * Cette méthode crée un nouveau utilisateur
+     *
+     * @param username le pseudo de l'utilisateur
+     * @param mail le mail de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
+     * @return l'entité de User.
+     */
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<User> add(@RequestParam(value = "username") String username,
@@ -39,7 +50,7 @@ public class UserController {
         User user;
 
         try {
-            user = userService.addEntity(mail, username, password);
+            user = userService.addEntity(username, mail, password);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,6 +62,14 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * Cette méthode actualise l'entité de l'utilisateur
+     *
+     * @param idUser l'id de la utilisateur dans le path
+     * @param user les donnés de l'utilisateur dans le corps de la rêquete
+     * @return Status de la transaction
+     */
     @RequestMapping(value = "/{idUser}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Status> modify(@PathVariable(value = "idUser") Long idUser,
@@ -73,7 +92,14 @@ public class UserController {
     }
 
 
-    /* TODO the request method have to be par path ? */
+    /**
+     *
+     * Cette méthode vérifié l'authentification de l'utilisateur
+     *
+     * @param username le pseudo de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
+     * @return l'entité user ou bien le status NOT_
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<User> getByMail(@RequestParam(value = "username") String username,
@@ -91,6 +117,13 @@ public class UserController {
     }
 
 
+    /**
+     *
+     * Cette méthode retourne l'entité de l'utilisateur par son id.
+     *
+     * @param idUser l'id de l'utilisateur
+     * @return l'entité de l'utilisateur
+     */
     @RequestMapping(value = "/{idUser}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> getById(@PathVariable(value = "idUser") Long idUser) {
@@ -111,6 +144,13 @@ public class UserController {
         return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.OK);
     }
 
+    /**
+     *
+     * Cette méthode retourne l'entité de l'utilisateur par son mail.
+     *
+     * @param mail le mail de l'utilisateur
+     * @return l'entité de l'utilisateur
+     */
     /* On ajout .+ étant donné que Spring par défaut ne reconnait pas le point */
     @RequestMapping(value = "/mail/{mail:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -133,6 +173,12 @@ public class UserController {
     }
 
 
+    /**
+     *
+     * Cette méthode retourne tous les utilisateurs
+     *
+     * @return Liste d'utilisateurs
+     */
     @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
     @ResponseBody
@@ -152,6 +198,13 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /**
+     *
+     * Cette méthode supprime l'utilisateur
+     *
+     * @param idUser l'id de l'utilisateur
+     * @return status de la transaction
+     */
     @RequestMapping(value = "/{idUser}", produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.DELETE)
     @ResponseBody

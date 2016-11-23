@@ -1,18 +1,18 @@
 package com.multimif.filter;
 
-import com.multimif.service.UserGrantService;
-
 import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Alexis on 16/11/2016.
+ * @author Alexis
+ * @version 1.0
+ * @since 1.0 16/11/2016.
  */
 
 public class RequestFilter implements Filter{
 
     FilterConfig config;
-    private UserGrantService userGrantService;
 
     public void setFilterConfig(FilterConfig config) {
         this.config = config;
@@ -26,8 +26,6 @@ public class RequestFilter implements Filter{
             throws java.io.IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) req;
-        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
-
 
         Cookie[] cookies = request.getCookies();
 
@@ -46,6 +44,7 @@ public class RequestFilter implements Filter{
         }
 
         System.out.println("[API] [FILTER] hashkey: " + hashkey);
+        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
 
         chain.doFilter(req,res);
         /*if(request.getRequestURI().contains("/auth/connect")){

@@ -22,7 +22,9 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by amaia.nazabal on 11/19/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/19/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
@@ -46,8 +48,7 @@ public class ProjectControllerTest extends TestUtil{
             user.setIdUser(userResponseEntity.getBody().getIdUser());
 
             newProject();
-            responseEntity = projectController.add(project.getName(), project.getVersion(), project.getRoot(),
-                    project.getType(), user.getIdUser());
+            responseEntity = projectController.add(project.getName(), project.getType(), user.getIdUser());
 
             JsonUtil<StatusOK> jsonUtil = new JsonUtil<>();
             statusOK = jsonUtil.convertToObjectJSON(responseEntity.getBody(), StatusOK.class);
@@ -82,8 +83,6 @@ public class ProjectControllerTest extends TestUtil{
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getVersion(), project.getVersion());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
     @Test
@@ -116,8 +115,6 @@ public class ProjectControllerTest extends TestUtil{
         assertEquals(proj.getIdProject(), project.getIdProject());
         assertEquals(proj.getName(), project.getName());
         assertEquals(proj.getType(), project.getType());
-        assertEquals(proj.getVersion(), project.getVersion());
-        assertEquals(proj.getRoot(), project.getRoot());
     }
 
 

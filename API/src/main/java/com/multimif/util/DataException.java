@@ -1,7 +1,9 @@
 package com.multimif.util;
 
 /**
- * Created by amaia.nazabal on 10/21/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/21/16.
  */
 public class DataException extends Exception {
 

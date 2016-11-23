@@ -5,9 +5,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by amaia.nazabal on 10/21/16.
+ * Classe pour la définition du projet.
  *
- * Attention: Le nom de l'id du project doit être differente à 'id'
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/21/16.
  */
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
@@ -16,6 +18,7 @@ public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /* Attention: Le nom de l'id du project doit être differente à 'id' */
     private Long idProject;
 
     private String name;
@@ -28,24 +31,24 @@ public class Project implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModification;
 
-    private String version;
-
-    private String root;
-
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('JAVA', 'MAVEN', 'C', 'CPP')")
     private TypeProject type;
 
     public Project(){
-
+        /* On ajoute le constructeur par défaut pour pouvoir instancier des listes*/
     }
 
-
-    public Project(String name, String version, TypeProject type, String root) {
+    /**
+     *
+     * Constructeur du projet
+     *
+     * @param name le nom du projet
+     * @param type le type du code
+     */
+    public Project(String name, TypeProject type) {
         this.name = name;
-        this.version = version;
         this.type = type;
-        this.root = root;
         this.creationDate = new Date();
         this.lastModification = new Date();
     }
@@ -80,18 +83,6 @@ public class Project implements Serializable {
 
     public void setLastModification(Date lastModification) {
         this.lastModification = lastModification;
-    }
-
-    public String getRoot() { return root; }
-
-    public void setRoot(String root) {this.root = root; }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public TypeProject getType() {

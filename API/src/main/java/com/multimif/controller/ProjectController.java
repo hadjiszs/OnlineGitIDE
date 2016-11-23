@@ -25,24 +25,12 @@ public class ProjectController {
     /**
      * Service des projets
      */
-    ProjectService projectService;
-
-    /**
-     * Service des user
-     */
-    UserService userService;
-
-    /**
-     * Service de gestion de droit
-     */
-    UserGrantService userGrantService;
+    private ProjectService projectService;
 
     /**
      * Créer un nouveau projet
      *
      * @param name    le nom du projet
-     * @param version version du projet
-     * @param root    le dossier du projet
      * @param type    le language utilisé
      * @param idUser  l'id de l'user qui crée le projet
      * @return l'id du projet créer
@@ -50,14 +38,12 @@ public class ProjectController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> add(@RequestParam(value = "name") String name,
-                                      @RequestParam(value = "version") String version,
-                                      @RequestParam(value = "root") String root,
                                       @RequestParam(value = "type") Project.TypeProject type,
                                       @RequestParam(value = "idUser") Long idUser) {
 
-        Project project = new Project(name, version, type, root);
+        Project project;
         try {
-            projectService.addEntity(project, idUser);
+            project = projectService.addEntity(name, type, idUser);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),
@@ -144,9 +130,6 @@ public class ProjectController {
 
         try {
             projects = projectService.getEntityList();
-        } catch (DataException ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -188,7 +171,5 @@ public class ProjectController {
     @PostConstruct
     public void init() {
         projectService = new ProjectServiceImpl();
-        userService = new UserServiceImpl();
-        userGrantService = new UserGrantServiceImpl();
     }
 }

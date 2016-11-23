@@ -92,8 +92,8 @@ window.setInterval(function(){
 
 $("#TODO").click(setEditeur);
 
-function setEditeur(){
-    editeur.setValue("COUCOU");
+function setEditeur(content){
+    editeur.setValue(content);
 }
 
 function indenterEditeur(){

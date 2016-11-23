@@ -42,7 +42,7 @@ $(document).ready(function() {
     // Créer un nouveau projet
     $('#btnProjet').on("click", function (e) {
         e.preventDefault();
-        var url = "/api/project/?"+ $("#createProjectForm").serialize() +"&idUser="+ Cookies.get('idUser');
+        var url = "/api/project/?"+ $("#formProjet").serialize() +"&idUser="+ Cookies.get('idUser');
         ApiRequest('POST',url,"",addProject);
     });
 
@@ -56,9 +56,16 @@ $(document).ready(function() {
     });
 
     // Si on supprime un projet
-    $('.userProject-list-delete').on('click', function(e){
+    $(".userProject-list-delete").on("click", function(e){
         e.preventDefault();
         alert("delete projet TODO");
+    });
+
+    //SI on ouvre un projet
+    $(".userProject-list-open").on("click", function(e){
+        e.preventDefault();
+        var idProject = $(this).attr("value");
+        openProject(idProject);
     });
 
     ////////// Collaboration /////////////
@@ -75,11 +82,7 @@ $(document).ready(function() {
         alert("delete collabab TODO");
     });
 
-    //SI on ouvre un projet
-    $('.userProject-list-open').on('click', function(e){
-       e.preventDefault();
-        alert("open file TODO");
-    });
+
 
 
     ////////// Information projet /////////////
@@ -91,14 +94,15 @@ $(document).ready(function() {
         listCommit($('#selectBranch option:selected').val(), $('#selectBranch option:selected').text());
     });
 
-
-
-    //Si on change de commit
-    /*$('#listCommit').on("change",function(e){
+    // SI on click sur un commit
+    $(".ligneCommit").on("click",function(e){
         e.preventDefault();
-        //console.log($('#listCommit option:selected').val() + " " + $('#listCommit option:selected').text());
-        getArborescence($('#listCommit option:selected').val(),$('#listCommit option:selected').text());
-    });*/
+        var idProject = $(this).attr("project");
+        var branch = $(this).attr("branch");
+        var revision = $(this).attr("revision");
+        openCommit(idProject,branch,revision);
+    });
+
 });
 
 /* Actualise la page */
@@ -219,10 +223,34 @@ function listUser() {
     });
 }
 
-function openProject(idProject,revision){
-    /*Cookies.set('mail', json["mail"]);
-    Cookies.set('username', json["username"]);
-    window.location.href = "/JSP/home.jsp";*/
+function openProject(idProject){
+
+    // On récupère le dernier commit de la branche master
+    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/listCommit/master";
+    ApiRequest('GET',url,"",function(json){
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Commits',
+                message: 'Impossible de récupérer le dernier commit de master',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Dernier commit de master: " + json["commits"][0].id);
+            Cookies.set('project', idProject);
+            Cookies.set('branch', "master");
+            Cookies.set('revision', json["commits"][0].id);
+            window.location.href = "/JSP/edit.jsp";
+        }
+    });
+}
+
+function openCommit(idProject, branch, revision) {
+    Cookies.set('project', idProject);
+    Cookies.set('branch', branch);
+    Cookies.set('revision', revision);
+    window.location.href = "/JSP/viewer.jsp";
 }
 
 

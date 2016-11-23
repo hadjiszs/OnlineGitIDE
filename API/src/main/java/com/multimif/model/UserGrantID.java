@@ -4,7 +4,9 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * Created by amaia.nazabal on 10/20/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 10/20/16.
  */
 public class UserGrantID implements Serializable {
     @Id

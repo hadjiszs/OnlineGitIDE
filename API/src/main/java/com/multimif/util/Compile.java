@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by Mahmoud on 15/11/2016.
+ * @author Mahmoud
+ * @version 1.0
+ * @since 1.0 15/11/2016.
  */
 public class Compile {
 
