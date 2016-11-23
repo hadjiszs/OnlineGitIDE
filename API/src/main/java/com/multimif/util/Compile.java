@@ -18,6 +18,11 @@ import static com.multimif.util.Constantes.*;
  */
 public class Compile {
 
+    UserGrantService userGrantService = new UserGrantServiceImpl();
+    ProjectService projectService = new ProjectServiceImpl();
+    UserService userService = new UserServiceImpl();
+
+
 
     public Compile() {
     }
@@ -30,9 +35,7 @@ public class Compile {
         */
 
 
-        UserGrantService userGrantService = new UserGrantServiceImpl();
-        ProjectService projectService = new ProjectServiceImpl();
-        UserService userService = new UserServiceImpl();
+
 
         // On récupère le prop
         User prop = userGrantService.getAdminByEntity(idProject);
@@ -42,16 +45,18 @@ public class Compile {
         User currentUser = userService.getEntityById(idCurrentUser);
 
 
+
+
         // 1 - CLONE
-        this.executeAction(CLONE_ACTION, prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString());
+        this.executeAction(CLONE_ACTION, prop.getUsername(), currentProject.getName(),currentUser.getUsername());
         // 2 - update Project Files (temp)
-        this.updateCloneRepo(currentProject.getIdProject(), currentUser.getIdUser());
+       this.updateCloneRepo(currentProject.getIdProject(), currentUser.getIdUser());
         // 3 - COMPILATION
-        this.executeAction(COMPILE_ACTION, prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString());
+        this.executeAction(COMPILE_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername());
         // 4 - GET RESULT
-        String result = this.getCompilationResult(currentUser.getIdUser().toString());
+       String result = this.getCompilationResult(currentUser.getUsername());
         // 5 - clean
-        this.executeAction(CLEAN_ACTION, prop.getIdUser().toString(), currentProject.getIdProject().toString(), currentUser.getIdUser().toString()); //CLEAN
+       this.executeAction(CLEAN_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername()); //CLEAN
         //Resultat de la compilation
         return result;
     }
@@ -61,7 +66,7 @@ public class Compile {
         String line = new String();
         BufferedReader in;
 
-        in = new BufferedReader(new FileReader(RESULTS_PATH + userName + ".txt"));
+        in = new BufferedReader(new FileReader(RESULTS_PATH +"/" + userName + ".txt"));
         result = in.readLine();
         line = "";
         result = "";
@@ -80,15 +85,15 @@ public class Compile {
     }
 
 
-    public void executeAction(String action, String propId, String idProject, String idCurrentUser) throws IOException {
-        Process p1;
+    public void executeAction(String action, String propId, String idProject, String idCurrentUser) throws IOException, InterruptedException {
+        Process p1 = null;
         Runtime rt = Runtime.getRuntime();
 
         if (action.toString().equals(COMPILE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser + " " + idProject);
+            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser + " " + idProject+".git");
         }
         if (action.toString().equals(CLONE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + propId + " " + idProject + " " + idCurrentUser);
+            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + propId + " " + idProject+".git" + " " + idCurrentUser);
         }
         if (action.toString().equals(CLEAN_ACTION)) {
             p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser);
@@ -101,15 +106,24 @@ public class Compile {
 
         }
 
+        p1.waitFor();
+
+
     }
 
 
-    public void updateCloneRepo(Long idCurrentProject, Long idCurrentUser) throws DataException, IOException {
+    public void updateCloneRepo(Long idCurrentProject, Long idCurrentUser) throws DataException, IOException, InterruptedException {
 
 
         // 1) on récupère la liste des TempFiles
         List<TemporaryFile> temporaryFileList = getTempFiles(idCurrentProject, idCurrentUser);
         // 2) Creation des tempFiles + remplissage + deplacement
+
+        // On récupère le project
+
+        Project currentProject = projectService.getEntityById(idCurrentProject);
+        User currentUser = userService.getEntityById(idCurrentUser);
+
 
 
         String filePath;
@@ -128,7 +142,7 @@ public class Compile {
             // 2) remplir le fichier - content
             setContentFile(temporaryFileList.get(i), temporaryFileList.get(i).getContent());
             // 3) deplacer le fichier
-            mvFilesToCloneRepo(fileName, fileExt, filePath, idCurrentUser.toString());
+           mvFilesToCloneRepo(fileName, fileExt, filePath, currentUser.getUsername(),currentProject.getName());
 
         }
 
@@ -163,13 +177,18 @@ public class Compile {
         bw.close();
     }
 
-    public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath, String idCurrentUser) throws IOException {
+    public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath, String currentUserName
+            ,String projectName) throws IOException, InterruptedException {
+
         Process p1;
         Runtime rt = Runtime.getRuntime();
+        String pathMkdir = SplitPath.getFilePath(filePath);
+
+
 
         p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
-                fileExt + " " + CLONE_PATH + " " + idCurrentUser + " "
-                + filePath);
+                fileExt + " " + CLONE_PATH + " " + currentUserName + " "+ projectName +" "+ filePath +" "+ pathMkdir);
+        p1.waitFor();
 
     }
 
