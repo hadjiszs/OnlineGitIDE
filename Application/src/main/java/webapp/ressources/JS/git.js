@@ -103,11 +103,11 @@ function getArborescence(idProject,idCreator, idUser,revision){
 }
 
 function createFile(){
-
+//    /create/file
 }
 
 function makeCommit(){
-
+// /makeCommit/{branch}/{currentUser}
 }
 
 function createDir(){

@@ -18,12 +18,16 @@ $(document).ready(function() {
         createBranch($("#nomBranche").val(), idProject, idCreator, idUser);
     });
 
+    // Créer un fichier
+    $("#createFile").on("click", function(e){
+        e.preventDefault();
 
+    });
 });
 
 /* Actualise la page */
 function refreshPage(){
-    getArborescence(Cookies.get('project'),Cookies.get('revision'));
-    listBranch(Cookies.get('project'));
+    getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
+    listBranch(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'));
 }
 
