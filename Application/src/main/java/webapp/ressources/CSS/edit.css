@@ -59,18 +59,6 @@ BODY{
     padding-right: 30px;
 }
 
-#secondeBarre{
-    margin-top:5px;
-}
-
-#messageCommit{
-    width:60%;
-}
-
-#envoyerCommit{
-    margin-left:20px;
-}
-
 #divCompilation{
     margin-bottom:20px;
 }
@@ -86,6 +74,20 @@ BODY{
 
 .ligneBtnCreer{
     cursor: pointer;
+}
+
+#messageCommit{
+    width:60%;
+    display:block;
+    margin:auto;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+#formCommit{
+    width:100%;
+    margin:auto;
+    text-align:center;
 }
 
 

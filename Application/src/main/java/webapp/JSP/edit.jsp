@@ -74,7 +74,7 @@
         </header>
         <main class="container-fluid">
             <aside class="row">
-                <div class="col-lg-10 col-lg-offset-1" id="premiereBarre">
+                <div class="col-lg-10 col-lg-offset-1" id="barreBtn">
                     <div class="btn-group">
                         <select class="form-control" id="listBranch">
                             <option value="">Branche</option>
@@ -117,7 +117,7 @@
                                 <li class="ligneBtnCreer" id="btnCreerDossier"><a>Créer un Dossier</a></li>
                             </ul>
                         </div>
-                        <input  type="button" class="btn btn-default" id="commitBtn"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                        <input  type="button" class="btn btn-default" id="btnCommit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
                         <button type="button" class="btn btn-default" id="btnCompiler">Compiler</button>
                     </div>
                 </div>
@@ -180,7 +180,7 @@ return member;
             </section>
         </main>
 
-        <!-- Modal -->
+        <!-- Modal Commit -->
         <div id="fenetreCommit" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -191,7 +191,7 @@ return member;
                         <h4 class="modal-title">Ajouter un message pour votre Commit</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="fenetreCommit.jsp" method="post">
+                        <form action="fenetreCommit.jsp" method="post" id="formCommit">
                             <input type="text" placeholder="Votre message de commit .." name="messageCommit" id="messageCommit"/>
                             <input  class="btn btn-success" id="envoyerCommit" type="submit" value="Envoyer" />
                         </form>
@@ -203,7 +203,7 @@ return member;
                 <!-- Fin Modal Content -->
             </div>
         </div>
-        <!-- Fin Modal -->
+        <!-- Fin Modal Commit -->
         <script src="../ressources/JS/edit.js"></script>
     </body>
 </html>
