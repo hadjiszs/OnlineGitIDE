@@ -19,10 +19,26 @@ $(document).ready(function() {
     });
 
     // Créer un fichier
-    $("#createFile").on("click", function(e){
+    $("#createFile-button").on("click", function(e){
         e.preventDefault();
-
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var path = Cookies.get('path') + $("#nomFichier").val();
+        createFile(idProject,idCreator, idUser,path);
     });
+
+    // Faire un commit
+    $("#envoyerCommit").on("click", function(e){
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var branch = Cookies.get('branch');
+        var message = $("#messageCommit").val();
+        makeCommit(idProject,idCreator, idUser,branch,message)
+    });
+
 });
 
 /* Actualise la page */
@@ -31,3 +47,9 @@ function refreshPage(){
     listBranch(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'));
 }
 
+function edit(idProject,idUser,idCreator,branch,path,content){
+
+    var url = "/api/file/{idCurrentUser}/{idUser}/{idRepository}/{branch}/edit?path=&content=";
+
+    'POST'
+}

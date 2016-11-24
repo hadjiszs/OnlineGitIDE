@@ -76,17 +76,6 @@
             <aside class="row">
                 <div class="col-lg-10 col-lg-offset-1" id="barreBtn">
                     <div class="btn-group">
-                        <select class="form-control" id="listBranch">
-                            <option value="">Branche</option>
-
-                        </select>
-                    </div>
-                    <div class="btn-group">
-                        <select class="form-control" id="listCommit">
-                            <option value="">Commit</option>
-                        </select>
-                    </div>
-                    <div class="btn-group">
                         <select class="form-control" id="changerTheme">
                             <option value="dracula">Dracula</option>
                             <option value="night">Night</option>
@@ -118,8 +107,8 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="ligneBtnCreer" id="btnCreerBranche"><a>Créer une Branche</a></li>
-                                <li class="ligneBtnCreer" id="btnCreerFichier"><a>Créer un Fichier</a></li>
+                                <li class="ligneBtnCreer" id="btnCreerBranche" data-toggle="modal" data-target="#fenetreBranche"><a>Créer une Branche</a></li>
+                                <li class="ligneBtnCreer" id="btnCreerFichier" data-toggle="modal" data-target="#fenetreFichier"><a>Créer un Fichier</a></li>
                                 <li class="ligneBtnCreer" id="btnCreerDossier"><a>Créer un Dossier</a></li>
                             </ul>
                         </div>
@@ -233,6 +222,28 @@ return member;
             </div>
         </div>
         <!-- Fin Modal Commit -->
+        <div id="fenetreFichier" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer un nouveau fichier</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createFile-modal">
+                            <input type="text" placeholder="nom de la branche" name="newBranch" id="nomFichier"/>
+                            <input  class="btn btn-success" id="createFile-button" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+            </div>
+        </div>
         <script src="../ressources/JS/edit.js"></script>
     </body>
 </html>

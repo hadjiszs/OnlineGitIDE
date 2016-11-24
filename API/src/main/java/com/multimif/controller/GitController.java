@@ -312,7 +312,6 @@ public class GitController {
     ResponseEntity<String> postCreateFile(@PathVariable String idUser,
                                           @PathVariable String currentUser,
                                           @PathVariable String idRepository,
-                                          @PathVariable String branch,
                                           @RequestParam(value="path") String path) {
         Long idrepo = Long.valueOf(idRepository);
 
