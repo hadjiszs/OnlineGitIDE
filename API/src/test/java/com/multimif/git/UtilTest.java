@@ -1,19 +1,11 @@
 package com.multimif.git;
 
-import org.eclipse.jgit.api.Git;
-import org.gitective.core.CommitUtils;
+import com.multimif.util.ZipUtil;
 import org.junit.*;
 import org.junit.rules.TestName;
+import org.junit.runners.MethodSorters;
 
 import javax.json.JsonObject;
-
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -23,12 +15,15 @@ import static org.junit.Assert.assertNotNull;
  * @version 1.0
  * @since 1.0 15/11/16.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UtilTest {
 
     private static final String REMOTE_URL = "https://github.com/hadjiszs/Interpolation.git";
     private static final String USER = "userTest";
     private static final String DIR_NAME = "TestGitRepository";
     private static final String NEW_DIR_NAME = "Nouveau_repository";
+
+    private static String ZIP_FILE;
 
 
     @Rule public TestName name = new TestName();
@@ -50,9 +45,12 @@ public class UtilTest {
 
     @AfterClass
     public static void end() throws Exception {
-        System.out.println("# Suppression du dépôt ; fin tests #");
+        System.out.println("# Suppression du dépôt");
         Util.deleteRepository(USER, DIR_NAME);
         Util.deleteRepository(USER, NEW_DIR_NAME);
+
+        System.out.println("# Suppression du fichier zip; fin tests #");
+        ZipUtil.deleteZipFile(Constantes.ZIP_DIRECTORY + ZIP_FILE);
     }
 
     @Test
@@ -79,7 +77,7 @@ public class UtilTest {
     }
 
     @Test
-    public void testCreateBranch() throws Exception {
+    public void btestCreateBranch() throws Exception {
         // Creation d'une branche
         String nomBranche = "nouvelle_branche";
         GitStatus statusAttendu = GitStatus.BRANCH_CREATED;
@@ -93,7 +91,7 @@ public class UtilTest {
     }
 
     @Test
-    public void testCreateRepository() throws Exception {
+    public void atestCreateRepository() throws Exception {
         // Creation d'une branche
         String nomCreator = USER;
         String nomRepository = NEW_DIR_NAME;
@@ -123,6 +121,14 @@ public class UtilTest {
 
         Assert.assertNotNull(branches);
         System.out.println(branches);
+    }
+
+    @Test
+    public void ztestGetArchive() throws Exception {
+        JsonObject result = Util.getArchive(USER, DIR_NAME, "nouvelle_branche");
+        Assert.assertNotNull(result);
+        ZIP_FILE = result.get("file").toString().replace("\"","");
+        /* TODO verifier que le fichier existe*/
     }
 
 //    @Test

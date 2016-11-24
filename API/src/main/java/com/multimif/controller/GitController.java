@@ -13,44 +13,45 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.json.JsonObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Created by p1317074 on 16/11/16.
+ * @author p1317074
+ * @version 1.0
+ * @since 1.0 16/11/16.
  */
 
 @Controller
 @RequestMapping("/git/{idUser}/{idRepository}")
 public class GitController {
 
+    private static final Logger LOGGER = Logger.getLogger(GitController.class.getName());
+
     /**
      * Service de fichier temporaire
      */
-    TemporaryFileService temporaryFileService;
+    private TemporaryFileService temporaryFileService;
 
     /*
      * Service de gestion de droit
      */
-    UserService userService;
+    private UserService userService;
 
     /**
      * Service de gestion de droit
      */
-    ProjectService projectService;
+    private ProjectService projectService;
 
     /**
      * Methode interne pour recuperer le pseudo d'un user à partir de son id
      *
-     * @param idUser id de l'user
-     * @return son pseudo
+     * @param idUser l'id de l'utilisateur
+     * @return une chaîne de characteres en format json son pseudo
      */
-    public String getUsernameById(String idUser) {
+    private String getUsernameById(String idUser) throws DataException {
         Long id = Long.valueOf(idUser);
-        User user = null;
-        try {
-            user = userService.getEntityById(id);
-        } catch (DataException e) {
-            e.printStackTrace();
-        }
+        User user = userService.getEntityById(id);
 
         return user.getUsername();
     }
@@ -58,201 +59,359 @@ public class GitController {
     /**
      * Methode interne pour recuperer le nom de repository par l'id
      *
-     * @param idRepository id de l'user
-     * @return nom du repository
+     * @param idRepository l'id du dépôt
+     * @return une chaîne de characteres en format json nom du repository
      */
-    public String getNameRepositoryById(String idRepository) {
+    private String getNameRepositoryById(String idRepository) throws DataException {
         Long id = Long.valueOf(idRepository);
-        Project project = null;
-        try {
-            project = projectService.getEntityById(id);
-        } catch (DataException e) {
-            e.printStackTrace();
-        }
+        Project project = projectService.getEntityById(id);
 
         return project.getName();
     }
 
-    //Contenu d'un fichier
+    /**
+     *
+     * Contenu d'un fichier
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param revision la revision spéficiée
+     * @param path l'addresse du fichier
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getFile(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> getFile(@PathVariable String idUser,
                                    @PathVariable String idRepository,
                                    @PathVariable String revision,
-                                   @RequestParam(value="path") String path) {
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
+                                   @RequestParam(value = "path") String path) {
+        JsonObject ret;
 
-        try{
+
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
             ret = Util.getContent(author, repository, revision, path);
-            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    //Arborescence d'un commit particulier
+    /**
+     * Cette méthode récupére l'arborescence d'un commit particulier
+     *
+     * @param idUser l'id de l'utilisateur 
+     * @param idRepository l'id du dépôt
+     * @param revision la revision spéficiée
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getTree(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> getTree(@PathVariable String idUser,
                                    @PathVariable String idRepository,
                                    @PathVariable String revision) {
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
+        JsonObject ret;
 
         try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
             ret = Util.getArborescence(author, repository, revision);
-            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    //liste des branches
+    /**
+     *
+     * Cette méthode liste les branches
+     *
+     * @param idUser l'id de l'utilisateur 
+     * @param idRepository l'id du dépôt
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/branches", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getBranches(@PathVariable String idUser,
-                                       @PathVariable String idRepository){
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
+    @ResponseBody
+    public ResponseEntity<String> getBranches(@PathVariable String idUser,
+                                       @PathVariable String idRepository) {
+        JsonObject ret;
 
-        try{
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
             ret = Util.getBranches(author, repository);
-            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    //liste des branches
+    /**
+     *
+     * Retourne la liste des branches de la revision spécifiée
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param revision la revision spéficiée
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
-                                         @PathVariable String idRepository,
-                                         @PathVariable String revision){
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
-
-        try{
-            ret = Util.getInfoCommit(author, repository, revision);
-            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
-    }
-
-    //liste des commits d'une branche
-    @RequestMapping(value = "/listCommit/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getListCommit(@PathVariable String idUser,
-                                         @PathVariable String idRepository,
-                                         @PathVariable String branch) {
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
-
-        try{
-            ret = Util.getCommits(author, repository, branch);
-            if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
-    }
-
-
-    //Commit tout les fichiers modifiés pour une branche donnée
-    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
-                                          @PathVariable String idRepository,
-                                          @PathVariable String branch) {
-        //TODO
-        return null;
-    }
-
-    //diff entre le fichier en cours de modification et le dernier commit
-    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
-                                         @PathVariable String idRepository,
-                                         @PathVariable String branch,
-                                         @PathVariable String path) {
-        //TODO
-        return null;
-    }
-
-    //diff concernant un commit en particulier
-    @RequestMapping(value = "/showCommit/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getShowCommit(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
                                          @PathVariable String idRepository,
                                          @PathVariable String revision) {
-        JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
+        JsonObject ret;
 
         try {
-            ret = Util.showCommit(author, repository, revision);
-            if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.getInfoCommit(author, repository, revision);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    //Téléchargement du dépot sous forme d'archive
-    @RequestMapping(value = "/archive/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> getArchive(@PathVariable String idUser,
-                                      @PathVariable String idRepository,
-                                      @PathVariable String branch) {
-        //TODO
+    /**
+     *
+     * Retourne la liste des commits d'une branche
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param branch le nom de la branche
+     * @return une chaîne de characteres en format json
+     */
+    @RequestMapping(value = "/listCommit/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> getListCommit(@PathVariable String idUser,
+                                         @PathVariable String idRepository,
+                                         @PathVariable String branch) {
+        JsonObject ret;
+
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.getCommits(author, repository, branch);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+    }
+
+
+    /**
+     *
+     * Commit tout les fichiers modifiés pour une branche donnée
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param branch le nom de la branche
+     * @return une chaîne de characteres en format json
+     */
+    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
+                                          @PathVariable String idRepository,
+                                          @PathVariable String branch) {
+        //TODO post make commit
         return null;
     }
 
-    //Clone un repo distant
+    /**
+     *
+     * diff entre le fichier en cours de modification et le dernier commit
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param branch le nom de la branche
+     * @param path l'addresse du fichier
+     * @return une chaîne de characteres en format json
+     */
+    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
+                                                @PathVariable String idRepository,
+                                                @PathVariable String branch,
+                                                @PathVariable String path) {
+        //TODO diff branch
+        return null;
+    }
+
+    /**
+     *
+     * diff concernant un commit en particulier
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param revision la revision spéficiée
+     * @return une chaîne de characteres en format json
+     */
+    @RequestMapping(value = "/showCommit/{revision}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> getShowCommit(@PathVariable String idUser,
+                                                @PathVariable String idRepository,
+                                                @PathVariable String revision) {
+        JsonObject ret;
+
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.showCommit(author, repository, revision);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+    }
+
+    /**
+     *
+     * Téléchargement du dépot sous forme d'archive
+     *
+     * @param idUser l'id de l'utilisateur 
+     * @param idRepository l'id du dépôt
+     * @param branch le nom de la branche le nom de la branche
+     * @return une chaîne de characteres en format json chaîne de characteres en format json avec le nom du fichier zip
+     */
+    @RequestMapping(value = "/archive/{branch}", method = RequestMethod.GET, produces = Constantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> getArchive(@PathVariable String idUser,
+                                             @PathVariable String idRepository,
+                                             @PathVariable String branch) {
+        JsonObject ret;
+
+        try{
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.getArchive(author, repository, branch);
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+    }
+
+    /**
+     *
+     * Clone un repo distant
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param url l'addresse 
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/clone/{url}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> postClone(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> postClone(@PathVariable String idUser,
                                      @PathVariable String idRepository,
                                      @PathVariable String url) {
-        //TODO
+        //TODO clone
         return null;
     }
 
-    //Creation branche
+
+    /**
+     *
+     * Creation branche
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param newBranch
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/create/branch/{newBranch}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> postCreateBranch(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> postCreateBranch(@PathVariable String idUser,
                                             @PathVariable String idRepository,
                                             @PathVariable String newBranch) {
         JsonObject ret = null;
-        String author = getUsernameById(idUser);
-        String repository = getNameRepositoryById(idRepository);
 
         try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
             ret = Util.createBranch(author, repository, newBranch);
-            if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        } catch (Exception e) {
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    //Creation fichier
+
+    /**
+     *
+     * Creation fichier
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param idRepository l'id du dépôt
+     * @param branch le nom de la branche
+     * @param path l'addresse du fichier
+     * @return une chaîne de characteres en format json
+     */
     @RequestMapping(value = "/create/file/{branch}/{path}", method = RequestMethod.POST, produces = Constantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
-    ResponseEntity<String> postCreateFile(@PathVariable String idUser,
+    @ResponseBody
+    public ResponseEntity<String> postCreateFile(@PathVariable String idUser,
                                           @PathVariable String idRepository,
                                           @PathVariable String branch,
                                           @PathVariable String path) {
@@ -271,7 +430,7 @@ public class GitController {
 //            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 
-        return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
     /**

@@ -165,7 +165,6 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(proj.getType(), project.getType());
     }
 
-    /* TODO traiter reponse body permission true ou faux */
     @Test
     public void hasTest(){
         Exception exception = null;

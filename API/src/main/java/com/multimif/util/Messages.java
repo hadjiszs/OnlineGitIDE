@@ -29,6 +29,20 @@ public class Messages {
 
     public static final String PROJECT_DELETE_CONTROL = "Only the admin has permissions for remove the project";
 
+    public static final String GIT_REPOSITORY_NOT_EXISTS = "Le dépôt n'existe pas";
+
+    public static final String GIT_CANT_OPEN_REPOSITORY = "The repository could not be opened";
+
+    public static final String GIT_CANT_LIST_BRANCH = "The branch list could not be retrieved.";
+
+    public static final String GIT_BRANCH_CANT_CREATED = "The branch could not be created";
+
+    public static final String GIT_CANT_CLONE_REPOSITORY = "The repository could not be cloned";
+
+    public static final String GIT_LOG_ERROR = "Failed to get log repository";
+
+    public static final String ZIP_MOVE_ERROR = "Le dossier n'existe pas";
+
 
     private Messages(){
         /* On cache le constructeur */

@@ -78,6 +78,9 @@ public class UserDAOImp extends DAO implements UserDAO {
         if (user == null) {
             throw new DataException(Messages.USER_NOT_EXISTS);
         }
+
+        hiddePassword(user);
+
         return user;
     }
 
@@ -101,6 +104,9 @@ public class UserDAOImp extends DAO implements UserDAO {
             throw new DataException(Messages.USER_NOT_EXISTS);
         }
 
+        /*On cache le password*/
+        hiddePassword(user);
+
         return user;
     }
 
@@ -111,6 +117,9 @@ public class UserDAOImp extends DAO implements UserDAO {
         TypedQuery<User> query = getEntityManager().createNamedQuery("User.findAll", User.class);
         userList = query.getResultList();
         closeEntityManager();
+
+        /* On cache le password */
+        userList.forEach(this::hiddePassword);
 
         return userList;
     }
@@ -144,5 +153,9 @@ public class UserDAOImp extends DAO implements UserDAO {
             }
             return user;
         }
+    }
+
+    private void hiddePassword(User user){
+        user.setPassword("");
     }
 }
