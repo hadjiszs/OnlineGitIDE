@@ -1,5 +1,6 @@
 package com.multimif.util;
 
+import com.multimif.compilation.Compile;
 import com.multimif.model.Project;
 import com.multimif.service.ProjectService;
 import com.multimif.service.ProjectServiceImpl;

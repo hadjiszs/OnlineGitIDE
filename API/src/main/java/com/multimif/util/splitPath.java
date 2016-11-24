@@ -43,4 +43,11 @@ public class SplitPath {
     }
 
 
+    public static String getAfterProjectName(String path) {
+        String[] nameAndext = path.split(".git");
+        return nameAndext[nameAndext.length - 1];
+
+    }
+
+
 }
