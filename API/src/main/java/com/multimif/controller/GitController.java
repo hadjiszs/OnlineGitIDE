@@ -140,7 +140,7 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
-    //liste des branches
+    //Info d'un commit
     @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
