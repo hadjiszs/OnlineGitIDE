@@ -92,10 +92,10 @@ public class GitController {
         String author = getUsernameById(idUser);
         String repository = getNameRepositoryById(idRepository);
 
-        try{
+        try {
             ret = Util.getContent(author, repository, revision, path);
             if (ret == null) {return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
@@ -183,7 +183,7 @@ public class GitController {
 
     //Commit tout les fichiers modifiés pour une branche donnée
 
-    @RequestMapping(value = "/makeCommit/{branch}/{currentUser}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
                                           @PathVariable String currentUser,
