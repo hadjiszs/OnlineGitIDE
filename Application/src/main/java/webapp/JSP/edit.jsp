@@ -167,8 +167,6 @@ return member;
 
             <section id="panelDroite">
                 <div id="arborescence"></div>
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
             </section>
 
             <a id="ancrePanelGauche" aria-label="Panel deroulant">

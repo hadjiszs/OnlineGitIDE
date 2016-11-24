@@ -3,37 +3,11 @@
  */
 
 /* Vaut true si le panel est visible à l'écran */
-var deroulerDroite = false;
 var deroulerGauche = false;
 var inputChangerTheme = document.getElementById("changerTheme");
 
-$("#ancrePanelDroite").click(deroulerPanelDroite);
 $("#ancrePanelGauche").click(deroulerPanelGauche);
 $("#changerTheme").change(changerTheme);
-
-function deroulerPanelDroite() {
-    if (!deroulerDroite) {
-        $("#panelDroite").animate({
-            right: "0px",
-        }, 1000);
-        $("#ancrePanelDroite").animate({
-            right: "20%",
-        }, 1000);
-        deroulerDroite = true;
-        $("#chevronAncreDroite").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
-    }
-    else {
-        $("#panelDroite").animate({
-            right: "-20%",
-        }, 1000);
-        $("#ancrePanelDroite").animate({
-            right: "0px",
-        }, 1000);
-        deroulerDroite = false;
-        $("#chevronAncreDroite").toggleClass('glyphicon-chevron-left glyphicon-chevron-right');
-    }
-
-}
 
 function deroulerPanelGauche() {
 

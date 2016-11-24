@@ -103,16 +103,6 @@
                 </div>
             </section>
 
-            <a id="ancrePanelDroite" aria-label="Panel deroulant">
-                <span class="glyphicon glyphicon-chevron-left" id="chevronAncreDroite" aria-hidden="true"></span>
-            </a>
-
-            <section id="panelDroite">
-                <div id="arborescence"></div>
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
-            </section>
-
             <a id="ancrePanelGauche" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-right" id="chevronAncreGauche" aria-hidden="true"></span>
             </a>

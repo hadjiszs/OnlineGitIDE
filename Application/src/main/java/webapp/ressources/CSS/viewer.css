@@ -6,7 +6,7 @@ BODY{
 
 /* Gestion des panels */
 
-#panelDroite, #panelGauche{
+#panelGauche{
     position:fixed;
     background-color:#449d44;
     color:#fff;
@@ -15,41 +15,24 @@ BODY{
     top:51px;
     width:20%;
     z-index:10;
-}
-
-#panelGauche{
     left:-20%;
 }
 
-#panelDroite{
-    right:-20%;
-}
-
-#ancrePanelGauche, #ancrePanelDroite{
-    position:fixed;
-    padding:25px;
-    font-size:x-large;
-    background-color:#449d44;
-    color:#fff;
-    cursor:pointer;
-    top: 43vh;
-    z-index:10;
-}
-
-#ancrePanelDroite{
-    border-radius: 200px 10px 10px 200px;
-    margin-right:-10px;
-    right:0;
-
-}
-
 #ancrePanelGauche{
+    position: fixed;
+    padding: 25px;
+    font-size: x-large;
+    background-color: #449d44;
+    color: #fff;
+    cursor: pointer;
+    top: 43vh;
+    z-index: 10;
     border-radius: 10px 200px 200px 10px;
     margin-left:-10px;
     left:0;
 }
 
-#chevronAncreDroite, #chevronAncreGauche{
+#chevronAncreGauche{
     line-height:80px;
 }
 
@@ -57,9 +40,5 @@ BODY{
     margin-top:10px;
     margin-bottom:10px;
     padding-right: 30px;
-}
-
-#secondeBarre{
-    margin-top:5px;
 }
 
