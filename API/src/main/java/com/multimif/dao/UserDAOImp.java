@@ -152,17 +152,24 @@ public class UserDAOImp extends DAO implements UserDAO {
         TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
         query.setParameter("username", username);
 
-        user = query.getSingleResult();
-        closeEntityManager();
+        try{
+            user = query.getSingleResult();
+        }catch (NoResultException e){
+            LOGGER.log(Level.OFF, e.toString(), e);
+            throw new DataException(Messages.USER_NOT_EXISTS);
+        }finally {
+            closeEntityManager();
+        }
 
         if (user == null) {
             throw new DataException(Messages.USER_NOT_EXISTS);
         } else {
             if (!user.getPassword().equals(hashGenerator(password))) {
-                throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
-            }
-            return user;
+            throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
         }
+
+        return user;
+    }
     }
 
     private void hiddePassword(User user){
