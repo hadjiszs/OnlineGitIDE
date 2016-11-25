@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getEntityList() {
         return userDAO.getEntityList();
+
     }
 
     @Override

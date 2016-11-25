@@ -185,10 +185,12 @@ public class UserDAOImp extends DAO implements UserDAO {
         byte[] digest = messageDigest.digest();
 
         BigInteger bigInt = new BigInteger(1, digest);
+        String hashtext = bigInt.toString(16);
+
         StringBuilder hash = new StringBuilder(bigInt.toString(16));
 
         /* Maintenant on doit mis à zero jusqu'à 32 characteres */
-        while(hash.toString().length() < 32 ) {
+        while(hashtext.length() < 32 ) {
             hash.insert(0, "0");
         }
 
