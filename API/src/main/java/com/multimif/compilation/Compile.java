@@ -53,12 +53,10 @@ public class Compile {
         // 4 - GET RESULT
         String result = this.getCompilationResult();
         // 5 - clean
-//        this.executeAction(CLEAN_ACTION); //CLEAN
+        this.executeAction(CLEAN_ACTION); //CLEAN
         //Resultat de la compilation
 
-        // TODO:
-        // mvn package
-        // mv .war
+
         return result;
     }
 
@@ -94,7 +92,16 @@ public class Compile {
         String execLine = SCRIPTS_PATH + "/";
         switch (action) {
             case COMPILE_ACTION:
-                execLine += SCRIPT_COMPILE_MAVEN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
+
+                if (currentProject.getType() == Project.TypeProject.JAVA) {
+                    execLine += SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
+                } else if (currentProject.getType() == Project.TypeProject.MAVEN) {
+                    execLine += SCRIPT_COMPILE_MAVEN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
+                    // TODO:
+                    // mvn package
+                    // mv .war
+                }
+
                 break;
             case CLONE_ACTION:
                 execLine += SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + creator.getUsername() + " " + currentProject.getName() + ".git" + " " + currentUser.getUsername();
@@ -107,18 +114,6 @@ public class Compile {
         process = rt.exec(execLine);
         process.waitFor();
 
-//        if (action.toString().equals(COMPILE_ACTION)) {
-//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git");
-//        }
-//        if (action.toString().equals(CLONE_ACTION)) {
-//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + creator.getUsername() + " " + currentProject.getName() + ".git" + " " + currentUser.getUsername());
-//        }
-//        if (action.toString().equals(CLEAN_ACTION)) {
-//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername());
-//        }
-//        if (action.equals(SCRIPT_MV_TEMP_FILE)) {
-//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername());
-//        }
     }
 
 
@@ -151,12 +146,8 @@ public class Compile {
         File file = new File(TEMPFILES_PATH + "/" + tempFile.getName() + "." + tempFile.getExtension());
 
         file.createNewFile();
+        System.out.println("File is created!");
 
-//        if (file.createNewFile()) {
-//            System.out.println("File is created!");
-//        } else {
-//            System.out.println("File already exists.");
-//        }
     }
 
     public void setContentFile(TemporaryFile tempFile, String content) throws IOException {
