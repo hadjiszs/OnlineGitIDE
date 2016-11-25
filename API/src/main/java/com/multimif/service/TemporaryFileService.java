@@ -72,6 +72,20 @@ public interface TemporaryFileService {
                             Long idProject) throws DataException;
 
     /**
+     * Mise à jour d'un temporary file
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param content le contenu du fichier
+     * @param path l'address du fichier
+     * @param idProject l'id du projet
+     * @return l'entité du fichier temporel
+     * @throws DataException si l'utilisateur ou le projet n'existe pas dans la base de
+     * données.
+     */
+    TemporaryFile updateEntity(Long idUser, String content, String path,
+                               Long idProject) throws DataException;
+
+    /**
      *
      * Cette méthode supprime le registrement du fichier temporel dans la base de données.
      *
