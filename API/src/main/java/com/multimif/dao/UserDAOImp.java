@@ -44,8 +44,6 @@ public class UserDAOImp extends DAO implements UserDAO {
 
             closeEntityManager();
 
-            hiddePassword(user);
-
         } else {
             throw new DataException(Messages.USER_ALREADY_EXISTS);
         }
@@ -146,7 +144,7 @@ public class UserDAOImp extends DAO implements UserDAO {
     }
 
     @Override
-    public User authEntity(String username, String password) throws DataException {
+    public User authEntity(String username, String password, Boolean hash) throws DataException {
         User user;
 
         TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
@@ -164,10 +162,16 @@ public class UserDAOImp extends DAO implements UserDAO {
         if (user == null) {
             throw new DataException(Messages.USER_NOT_EXISTS);
         } else {
-            if (!user.getPassword().equals(hashGenerator(password))) {
-            throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
-        }
-
+            // Si c'est un hash
+            if(hash){
+                if (!user.getPassword().equals(password)) {
+                    throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
+                }
+            }else{
+                if (!user.getPassword().equals(hashGenerator(password))) {
+                    throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
+                }
+            }
         return user;
     }
     }

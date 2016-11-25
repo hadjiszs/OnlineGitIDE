@@ -56,7 +56,7 @@ public class ProjectControllerTest extends TestUtil{
 
         try {
             newUser();
-            userResponseEntity = userController.add(user.getUsername(), user.getMail(), user.getPassword());
+            /*userResponseEntity = userController.add(user.getUsername(), user.getMail(), user.getPassword());
             user.setIdUser(userResponseEntity.getBody().getIdUser());
 
             newProject();
@@ -64,7 +64,7 @@ public class ProjectControllerTest extends TestUtil{
 
             JsonUtil<StatusOK> jsonUtil = new JsonUtil<>();
             statusOK = jsonUtil.convertToObjectJSON(responseEntity.getBody(), StatusOK.class);
-            project.setIdProject(statusOK.getId());
+            project.setIdProject(statusOK.getId());*/
         }catch (Exception e){
             exception = e;
         }

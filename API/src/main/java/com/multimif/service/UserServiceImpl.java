@@ -52,13 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User authEntity(String username, String password) throws DataException {
-        /*try {*/
-            return userDAO.authEntity(username,password);
-        /*} catch (DataException e) {
-            LOGGER.log( Level.OFF, e.toString(), e);
-            throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
-        }*/
+    public User authEntity(String username, String password, Boolean hash) throws DataException {
+        return userDAO.authEntity(username,password,hash);
     }
 
     @Override

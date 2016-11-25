@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.json.Json;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +45,7 @@ public class UserController {
      */
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<User> add(@RequestParam(value = "username") String username,
+    public ResponseEntity<String> add(@RequestParam(value = "username") String username,
                                     @RequestParam(value = "mail") String mail,
                                     @RequestParam(value = "password") String password) {
         User user;
@@ -53,13 +54,14 @@ public class UserController {
             user = userService.addEntity(username, mail, password);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,ex.getMessage())),
+                    HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+                    Constantes.OPERATION_MSG_RATE)),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(JsonUtil.convertToJson(user), HttpStatus.CREATED);
     }
 
     /**
@@ -108,7 +110,7 @@ public class UserController {
         User user;
 
         try {
-            user = userService.authEntity(username, password);
+            user = userService.authEntity(username, password, false);
         } catch (DataException ex){
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,ex.getMessage())),

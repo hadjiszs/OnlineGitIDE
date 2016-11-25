@@ -49,8 +49,13 @@ $(document).ready(function() {
     // Si on click sur un projet, on récupère ses informations
     $(".userProject-list").on("click", function (e) {
         e.preventDefault();
+
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
+
+        // On indique le projet des collaborateurs si ajouts
+        $("#select-collaborateur").attr("project",idProject);
+
         listBranch(idProject,idCreator,Cookies.get('idUser'));
         listCommit(idProject,idCreator,Cookies.get('idUser'),"master");
         listDeveloppers(idProject);
@@ -70,6 +75,13 @@ $(document).ready(function() {
         openProject(idProject, idCreator);
     });
 
+    // SI on ajoute un collaborateur au projet
+    $("#btnAjoutCollaborateur").on("click", function(e){
+        var idProject = $("#select-collaborateur").attr("project");
+        var idUser = $("#select-collaborateur option:selected").attr("idUser");
+        addCollaborateur(idProject,idUser);
+    });
+
 
     ////////// Collaboration /////////////
 
@@ -77,12 +89,14 @@ $(document).ready(function() {
     $(".userCollaboration-list").on("click", function (e) {
         e.preventDefault();
         alert("collaboration TODO");
+        // TODO
     });
 
     // Si on supprime une collaboration
     $('.userCollaboration-list-delete').on('click', function(e){
         e.preventDefault();
         alert("delete collabab TODO");
+        // TODO
     });
 
 
@@ -104,7 +118,6 @@ $(document).ready(function() {
     // SI on click sur un commit
     $("#divAfficherCommit").on("click",function(e){
         e.preventDefault();
-        alert("sadsds");
         var idProject = $(this).attr("project");
         var branch = $(this).attr("branch");
         var revision = $(this).attr("revision");
@@ -117,14 +130,14 @@ $(document).ready(function() {
 /* Actualise la page */
 function refreshPage(){
     listProject();
-    /*listCollaborations();
-    listUser();*/
+    listCollaborations();
+    listUser();
 }
 
 /* Liste les projets d'un utilisateur */
 function listProject(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/admin";
-    ApiRequest('GET',url,"",function (json){a
+    ApiRequest('GET',url,"",function (json){
         console.log("Liste projets: " + JSON.stringify(json));
         $("#listeProjets").empty();
 
@@ -190,19 +203,14 @@ function addProject(json){
 function listDeveloppers(idProject){
     var url = "/api/permissions/projects/"+ idProject +"/developers";
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Développeurs',
-                message: 'Impossible de récupérer la liste des développeurs du projet',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else {
-            $('#listDev').empty();
-            ///////////////////// TODO TEST//////////////////////////
-            console.log("List des devs du projets " + idProject + ": " + JSON.stringify(json));
-        }
+        console.log("List des devs du projets " + idProject + ": " + JSON.stringify(json));
+
+        $('#listDev').empty();
+        $.each(json, function(index, element) {
+            $('#listDev').append(
+                '<li class="list-group-item">' +element.username + '</li>'
+            );
+        });
     });
 }
 
@@ -210,17 +218,13 @@ function listDeveloppers(idProject){
 function listUser() {
     var url = "/api/user/";
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Utilisateur',
-                message: 'Impossible de récupérer la liste des utilisateurs de l\'appication',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else {
-            console.log("Liste des users: " + JSON.stringify(json));
-        }
+        console.log("Liste des users: " + JSON.stringify(json));
+        $("#select-collaborateur").empty();
+        $.each(json, function(index, element) {
+            $('#select-collaborateur').append(
+                '<option idUser="' + element.idUser +'">'+ element.username + '</option>'
+            );
+        });
     });
 }
 
@@ -259,6 +263,12 @@ function openCommit(idProject, idCreator, branch, revision) {
     window.location.href = "/JSP/viewer.jsp";
 }
 
-
-
+/* Ajoute un collaborateur au projet */
+function addCollaborateur(idProject,idUser){
+    var url = "/api/permissions?idProject=" + idProject + "&idUser=" + idUser;
+    ApiRequest('POST',url,"",function(json){
+        console.log("Ajout du collaborateur au projet: " + idProject + " idUser:  " + idUser + " : " + JSON.stringify(json));
+        listDeveloppers(idProject);
+    });
+}
 

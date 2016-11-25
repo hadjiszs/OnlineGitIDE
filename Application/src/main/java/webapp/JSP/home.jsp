@@ -190,10 +190,9 @@
                         <h4 class="modal-title">Ajouter un Collaborateur </h4>
                     </div>
                     <div class="modal-body">
-                        <form action="creerProjet.jsp" method="post" id="formAjoutCollaborateur">
-                            <label class="labelProjet"> Adresse mail du collaborateur </label>
-                            <input type="text" placeholder="Mail avec lequel il s'est inscrit" name="mailAjoutCollaborateur" id="mailAjoutCollaborateur" required />
-                            <input  class="btn btn-success" id="btnAjoutCollaborateur" type="submit" value="Envoyer" />
+                        <formid="formAjoutCollaborateur">
+                            <select id="select-collaborateur"></select>
+                            <input  class="btn btn-success" id="btnAjoutCollaborateur" type="submit" value="Ajouter" />
                         </form>
                     </div>
                     <div class="modal-footer">

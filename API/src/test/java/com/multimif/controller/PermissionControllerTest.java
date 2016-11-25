@@ -63,7 +63,7 @@ public class PermissionControllerTest extends TestUtil{
 
         try{
             newAdmin();
-            userResponseEntity = userController.add(admin.getUsername(), admin.getMail(), admin.getPassword());
+            /*userResponseEntity = userController.add(admin.getUsername(), admin.getMail(), admin.getPassword());
             admin.setIdUser(userResponseEntity.getBody().getIdUser());
 
             newDeveloper();

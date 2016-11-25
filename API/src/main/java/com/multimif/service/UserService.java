@@ -61,5 +61,5 @@ public interface UserService {
      * @throws DataException une exception si le password envoyé ne correspond pas
      * avec lequel qui est dans la base de données
      */
-    User authEntity(String username, String password) throws DataException;
+    User authEntity(String username, String password, Boolean hash) throws DataException;
 }

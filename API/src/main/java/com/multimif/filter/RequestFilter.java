@@ -61,7 +61,7 @@ public class RequestFilter implements Filter{
         HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
 
-        if(request.getRequestURI().equals("/api/user/login")){
+        if(request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/user/")){
             chain.doFilter(req,res);
         }else{
             if(cookies == null){
@@ -84,7 +84,7 @@ public class RequestFilter implements Filter{
                     try{
                         System.out.println("[API] [FILTER] url: " + request.getRequestURI());
                         System.out.println("[API] [FILTER] username: " + username + " password: " + password);
-                        userService.authEntity(username,password);
+                        userService.authEntity(username,password,true);
                         chain.doFilter(req,res);
                     }catch (Exception e){
                         unauthorized(response,"Mauvais identifiants.");

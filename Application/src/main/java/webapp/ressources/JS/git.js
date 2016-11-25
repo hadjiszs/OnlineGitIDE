@@ -103,8 +103,8 @@ function getArborescence(idProject,idCreator, idUser,revision){
 
 }
 
-function createFile(idProject,idCreator, idUser,path){
-    var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/create/file?path=" + path;
+function createFile(idProject,idCreator, idUser,path,branch){
+    var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/create/file/" + branch +"?path=" + path;
     ApiRequest('GET',url,"",function(json){
         if(json == null){
             BootstrapDialog.show({

@@ -48,7 +48,7 @@ public interface UserDAO {
      * @throws DataException retourne une exception si l'utilisateur n'existe
      * pas ou si le mot de passe n'est pas correct.
      */
-    User authEntity(String username, String password) throws DataException;
+    User authEntity(String username, String password, Boolean hash) throws DataException;
 
     /**
      *
