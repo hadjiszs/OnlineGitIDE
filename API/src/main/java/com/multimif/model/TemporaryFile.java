@@ -3,6 +3,9 @@ package com.multimif.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static com.multimif.util.SplitPath.getFileExtension;
+import static com.multimif.util.SplitPath.getFileName;
+
 
 /**
  * Cette classe c'est pour tous les fichiers d'un utilisateur par rapport un project
@@ -131,6 +134,10 @@ public class TemporaryFile implements Serializable {
     }
 
     public String getName() {
+
+        if (name == null) {
+            this.name = getFileName(this.path);
+        }
         return name;
     }
 
@@ -139,6 +146,13 @@ public class TemporaryFile implements Serializable {
     }
 
     public String getExtension() {
+
+        if (this.extension == null) {
+
+            this.extension = getFileExtension(this.path);
+        }
+
+
         return extension;
     }
 
@@ -146,11 +160,11 @@ public class TemporaryFile implements Serializable {
         this.extension = extension;
     }
 
-    public ExtensionType getExtensionType(){
+    public ExtensionType getExtensionType() {
         return ExtensionType.valueOf(getExtension());
     }
 
-    public void setExtensionType(ExtensionType extensionType){
+    public void setExtensionType(ExtensionType extensionType) {
         setExtension(extensionType.getExtension().toUpperCase());
     }
 }

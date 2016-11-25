@@ -2,9 +2,13 @@ package com.multimif.controller;
 
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.multimif.compilation.Compile;
+import com.multimif.util.Constantes;
+import com.multimif.util.Status;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.multimif.util.JsonUtil;
 import javax.persistence.EntityManager;
 
 /**
@@ -13,26 +17,25 @@ import javax.persistence.EntityManager;
 @RestController
 @RequestMapping("/compile/{branch}")
 public class CompileController {
+
     private EntityManager entityManager;
-/*
-    @RequestMapping(value = "/c", produces = "application/json; charset=utf-8")
-    public @ResponseBody
-    ResponseEntity<String> compile(@RequestParam("currentUser") String currentUser,
-                                   @RequestParam("projectName") String projectName  ){
 
-        // On récupère les params
-        //cp -rf repositories/nom_propri_project/projectName to compile/currentUser/
-        //compile compile/currentUser/projectName
-        // rm -rf compile/currentUser/projectName
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public
+    @ResponseBody
+    ResponseEntity<String> compile(@RequestParam("idProject") long idProject,@RequestParam("idCurrentUser") Long idCurrentUser,@PathVariable String branch) {
 
-        try{
-            System.out.println("compile");
-        }catch(Exception ex){
-            return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(GitConstantes.OPERATION_CODE_RATE,
+        System.out.println("compile");
+        Compile compile=new Compile();
+        String Resultat ="erreur";
+        try {
+        Resultat   = compile.executeCompilation(idProject,idCurrentUser,branch);
+        } catch (Exception ex) {
+            return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(JsonUtil.convertToJson("reponse"), HttpStatus.OK);
+        return new ResponseEntity<String>(JsonUtil.convertToJson(Resultat), HttpStatus.OK);
     }
-*/
+
 }
