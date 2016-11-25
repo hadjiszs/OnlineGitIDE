@@ -2,43 +2,54 @@ $(document).ready(function() {
     refreshPage();
     $("#selectBranch").on("change",function(e){
         e.preventDefault();
-        var idProject = $('#selectBranch option:selected').val();
+        var idProject = $('#selectBranch option:selected').attr("project");
+        var idCreator = $('#selectBranch option:selected').attr("creator");
         var branch = $('#selectBranch option:selected').text();
-        changeBranch(idProject,branch);
+        var idUser = Cookies.get('idUser');
+        changeBranch(idProject, idCreator, idUser, branch);
     });
 
     //Créer un nouvelle branche
     $("#createBranch-button").on("click", function(e){
         e.preventDefault();
-        createBranch($("#nomBranche").val());
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        createBranch($("#nomBranche").val(), idProject, idCreator, idUser);
     });
 
+    // Créer un fichier
+    $("#createFile-button").on("click", function(e){
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var path = Cookies.get('path') + $("#nomFichier").val();
+        createFile(idProject,idCreator, idUser,path);
+    });
+
+    // Faire un commit
+    $("#envoyerCommit").on("click", function(e){
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var branch = Cookies.get('branch');
+        var message = $("#messageCommit").val();
+        makeCommit(idProject,idCreator, idUser,branch,message)
+    });
 
 });
 
 /* Actualise la page */
 function refreshPage(){
-    getArborescence(Cookies.get('project'),Cookies.get('revision'));
-    listBranch(Cookies.get('project'));
+    getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
+    listBranch(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'));
 }
 
-function changeBranch(idProject,branch){
-    var url = "/api/git/"+ Cookies.get('idUser') + "/" + idProject + "/listCommit/" + branch;
-    ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commits',
-                message: 'Impossible de récupérer le dernier commit de ' + branch,
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
-            console.log("Dernier commit de "+branch+ ": " + json["commits"][0].id);
-            Cookies.set('project', idProject);
-            Cookies.set('branch', branch);
-            Cookies.set('revision', json["commits"][0].id);
-            refreshPage();
-        }
-    });
+function edit(idProject,idUser,idCreator,branch,path,content){
+
+    var url = "/api/file/{idCurrentUser}/{idUser}/{idRepository}/{branch}/edit?path=&content=";
+
+    'POST'
 }

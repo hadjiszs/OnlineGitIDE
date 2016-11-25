@@ -63,8 +63,7 @@ public class TemporaryFileServiceTest extends TestUtil {
         TemporaryFile tmpFile = null;
 
         try {
-            tmpFile = temporaryFileService.getEntityByHashAndUser(temporaryFile.getUser().getIdUser(),
-                    temporaryFile.getHashKey());
+            tmpFile = temporaryFileService.getEntityByHash(temporaryFile.getHashKey());
         }catch (DataException e){
             exception = e;
         }

@@ -25,6 +25,24 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
     private static final Logger LOGGER = Logger.getLogger(TemporaryFileDAOImpl.class.getName());
 
     @Override
+    public TemporaryFile getEntityByHashKey(String hashKey) throws DataException {
+
+        TemporaryFile file = null;
+        TypedQuery<TemporaryFile> query = getEntityManager().createNamedQuery("TemporaryFile.findByHashkey", TemporaryFile.class);
+        query.setParameter("hashKey", hashKey);
+
+        try {
+            file = query.getSingleResult();
+        } catch(NoResultException e) {
+            file = null;
+        } finally {
+            closeEntityManager();
+        }
+
+        return file;
+    }
+
+    @Override
     public TemporaryFile getEntityByHashKeyAndUser(User user, String hashKey) throws DataException {
         TemporaryFile file = null;
         TypedQuery<TemporaryFile> query = getEntityManager().createNamedQuery("TemporaryFile.findByIdAndUser",

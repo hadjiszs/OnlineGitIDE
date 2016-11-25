@@ -19,11 +19,9 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     private ProjectService projectService = new ProjectServiceImpl();
     private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
 
-
     @Override
-    public TemporaryFile getEntityByHashAndUser(Long idUser, String hashKey) throws DataException {
-        User user = userService.getEntityById(idUser);
-        return temporaryFileDAO.getEntityByHashKeyAndUser(user, hashKey);
+    public TemporaryFile getEntityByHash(String hashKey) throws DataException {
+        return temporaryFileDAO.getEntityByHashKey(hashKey);
     }
 
     @Override
@@ -71,5 +69,4 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
 
         return test;
     }
-
 }

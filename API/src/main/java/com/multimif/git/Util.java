@@ -372,7 +372,7 @@ public class Util {
             ZipUtil.moveZipFile(zip, zipName);
 
         } catch (IOException | GitAPIException e) {
-            LOGGER.log(Level.FINE, e.getMessage(), e);
+            LOGGER.log(Level.OFF, e.getMessage(), e);
             throw new DataException(Messages.GIT_REPOSITORY_NOT_EXISTS);
         }
 

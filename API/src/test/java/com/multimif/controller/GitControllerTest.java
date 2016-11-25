@@ -64,7 +64,7 @@ public class GitControllerTest {
         UserService userService = new UserServiceImpl();
         ProjectService projectService = new ProjectServiceImpl();
 
-        Project project = new Project("TestGitRepository", Project.TypeProject.JAVA);
+        Project project = new Project("TestGitRepository", Project.TypeProject.JAVA, USER.getIdUser());
 
         /*String name, Project.TypeProject type, Long idUser*/
         USER = userService.addEntity(USER_NAME, MAIL, "hashkey");

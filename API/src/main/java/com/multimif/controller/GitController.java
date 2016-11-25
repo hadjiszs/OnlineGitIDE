@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.json.JsonObject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +28,10 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0 16/11/16.
  */
-
 @Controller
-@RequestMapping("/git/{idUser}/{idRepository}/{currentUser}")
+// currentUser = celui qui a la session
+// idUser = l'id du creator du projet
+@RequestMapping("/git/{currentUser}/{idUser}/{idRepository}")
 public class GitController {
 
     private static final Logger LOGGER = Logger.getLogger(GitController.class.getName());
@@ -60,7 +62,6 @@ public class GitController {
      * @param idUser id de l'user
      * @return son pseudo
      */
-
     private String getUsernameById(String idUser) throws DataException {
         Long id = Long.valueOf(idUser);
         User user = userService.getEntityById(id);
@@ -74,7 +75,6 @@ public class GitController {
      * @param idRepository id de l'user
      * @return nom du repository
      */
-
     private String getNameRepositoryById(String idRepository) throws DataException {
         Long id = Long.valueOf(idRepository);
         Project project = projectService.getEntityById(id);
@@ -99,6 +99,7 @@ public class GitController {
                                           @RequestParam(value = "path") String path) {
         JsonObject ret;
 
+        // TODO: verifier que le fichier (path) n'existe pas deja dans TemporaryFile
 
         try {
             String author = getUsernameById(idUser);
@@ -183,7 +184,7 @@ public class GitController {
     }
 
     /**
-     * Retourne la liste des branches de la revision spécifiée
+     * Retourne les meta infos liées à un commit
      *
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
@@ -250,13 +251,14 @@ public class GitController {
 
 
     /**
-     * Commit tout les fichiers modifiés pour une branche donnée
+     * Commit tous les fichiers modifiés pour la branche courante de l'utilisateur
      *
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
      * @param branch       le nom de la branche
      * @return une chaîne de characteres en format json
      */
+    // TODO: renvoyer l'id de la revision
     @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
@@ -427,6 +429,7 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 
+    // TODO: get nom de branche à partir d'une revision de commit
 
     /**
      * Creation branche
@@ -467,28 +470,45 @@ public class GitController {
     // TODO: requete pour savoir si oui ou non il y a des fichiers temporaires lié
     // à un user et à un projet
 
-    //Creation fichier
-    /// SALUT bonjour
 
     /**
+     * Creation fichier
+     *
      * @param idUser       le créateur du projet
      * @param currentUser  l'utilisateur courant, celui qui fait la requete
+     * @param branch       la branche courante de l'utilisateur
      * @param idRepository l'id du repository courant
      * @param path         le chemin du nouveau fichier
      * @return
      */
-    @RequestMapping(value = "/create/file", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/create/file/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postCreateFile(@PathVariable String idUser,
-                                          @PathVariable Long currentUser,
-                                          @PathVariable String idRepository,
+                                          @PathVariable String currentUser,
                                           @PathVariable String branch,
-                                          @RequestParam(value = "path") String path) {
-        Long idrepo = Long.valueOf(idRepository);
+                                          @PathVariable String idRepository,
+                                          @RequestParam(value="path") String path) {
+        UserService userService = new UserServiceImpl();
 
-        // Ajout du temporary file, vide
+        JsonObject ret = null;
+        String author = null;
+        String repository = null;
+
         try {
-            if (temporaryFileService.addEntity(currentUser, "", path, idrepo) == null)
+            author = getUsernameById(idUser);
+            repository = getNameRepositoryById(idRepository);
+        } catch (DataException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Long idrepo = Long.valueOf(idRepository);
+        TemporaryFile newFile = null;
+
+        // Ajout du temporary file vide
+        try {
+            newFile = temporaryFileService.addEntity(Long.valueOf(currentUser), "", path, idrepo);
+            if(newFile == null)
                 return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                         Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         } catch (DataException e) {
@@ -496,6 +516,26 @@ public class GitController {
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         }
+
+        // commit du nouveau fichier pour qu'il soit accessible lors du get arborescence
+        User commiter = null;
+        try {
+            commiter = userService.getEntityById(Long.parseLong(currentUser));
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<TemporaryFile> file = new ArrayList<>();
+        file.add(newFile);
+
+        try {
+            ret = Util.makeCommit(author, repository, branch, commiter, file, "add new file: "+path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (ret == null)
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);

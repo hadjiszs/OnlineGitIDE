@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface TemporaryFileDAO {
 
+    TemporaryFile getEntityByHashKey(String hashKey) throws DataException;
+
     /**
      *
      * Cette méthode cherche l'entité de TemporaryFile selon l'utilisateur

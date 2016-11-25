@@ -155,7 +155,7 @@ public class UtilTest {
     @Test
     public void testMakeCommit() throws Exception {
         User commiter = new User("LeCommiter", "LeCommiter@testCommit.fr", "LeCommiter");
-        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA);
+        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA, commiter.getIdUser());
         List<TemporaryFile> files = new ArrayList<>();
         TemporaryFile file;
 
@@ -222,6 +222,5 @@ public class UtilTest {
         JsonObject res2 = Util.merge(USER, DIR_NAME, "newbranch", CommitUtils.getMaster(git.getRepository()).getName());
         Assert.assertNotNull(res2);
         System.out.println(res2.toString());
-
     }
 }
