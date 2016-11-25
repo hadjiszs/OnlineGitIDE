@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 
 
 // Implements Filter class
-public class ApiFilter implements Filter  {
+public class PageFilter implements Filter  {
 
     FilterConfig config;
 
@@ -20,12 +20,43 @@ public class ApiFilter implements Filter  {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws java.io.IOException, ServletException {
 
-        //ServletContext context = getFilterConfig().getServletContext();
 
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response;
-
+        HttpServletResponse response = (HttpServletResponse) res;
+        Cookie[] cookies = request.getCookies();
         System.out.println("[Application] [FILTER] url: " + request.getRequestURI());
+        if(request.getRequestURI().equals("/") || request.getRequestURI().contains("/ressources")){
+            chain.doFilter(req,res);
+        }else{
+            if(cookies == null){
+                unauthorized(response,"Vous n'êtes pas connecté.");
+            } else{
+                String password = null;
+                String username = null;
+
+                for (int i = 0; i < cookies.length; i++) {
+                    if(cookies[i].getName().equals("password")){
+                        password = cookies[i].getValue();
+                    }else if(cookies[i].getName().equals("username")){
+                        username = cookies[i].getValue();
+                    }
+                }
+
+                if(password == null || username == null){
+                    unauthorized(response,"Vous n'êtes pas connecté.");
+                }else{
+                    chain.doFilter(req,res);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
 
 /*
         final String urlWrapped = "/auth/connect"; //req.getRequestURI().replace("App","api");
@@ -55,7 +86,7 @@ public class ApiFilter implements Filter  {
 
 
         //chain.doFilter(requestModified,response);*/
-        chain.doFilter(req,res);
+        //chain.doFilter(req,res);
     }
 
     public void init(FilterConfig config) throws ServletException {
@@ -63,6 +94,12 @@ public class ApiFilter implements Filter  {
     }
 
     public void destroy() {
+    }
+
+    // Renvoi une erreur si pas connecté
+    private void unauthorized(HttpServletResponse response, String message) throws java.io.IOException {
+        System.out.println("[APPLICATION] [FILTER] [ERROR] user not connected.");
+        response.sendError(401, message);
     }
 
 
