@@ -2,14 +2,13 @@ syntax: glob
 target
 *.iml
 Application.iml
+.DS_Store
 Multimif.iml
 API.iml
-*.orig
 .idea
 .idea/*
 .classpath
 .project
-.DS_Store
 nb-configuration.xml	
 API/repositories
 sonar-project.properties

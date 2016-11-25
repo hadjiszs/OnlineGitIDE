@@ -509,34 +509,16 @@ public class GitController {
     /**
      * Creation fichier
      *
-     * @param idUser       le créateur du projet
      * @param currentUser  l'utilisateur courant, celui qui fait la requete
-     * @param branch       la branche courante de l'utilisateur
      * @param idRepository l'id du repository courant
      * @param path         le chemin du nouveau fichier
      * @return
      */
     @RequestMapping(value = "/create/file/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
-    public ResponseEntity<String> postCreateFile(@PathVariable String idUser,
-                                          @PathVariable String currentUser,
-                                          @PathVariable String branch,
-                                          @PathVariable String idRepository,
-                                          @RequestParam(value="path") String path) {
-        UserService userService = new UserServiceImpl();
-
-        JsonObject ret = null;
-        String author = null;
-        String repository = null;
-
-        try {
-            author = getUsernameById(idUser);
-            repository = getNameRepositoryById(idRepository);
-        } catch (DataException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+    public ResponseEntity<String> postCreateFile(@PathVariable String currentUser,
+                                                 @PathVariable String idRepository,
+                                                 @RequestParam(value="path") String path) {
         Long idrepo = Long.valueOf(idRepository);
         TemporaryFile newFile = null;
 
@@ -551,26 +533,6 @@ public class GitController {
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         }
-
-        // commit du nouveau fichier pour qu'il soit accessible lors du get arborescence
-        User commiter = null;
-        try {
-            commiter = userService.getEntityById(Long.parseLong(currentUser));
-        } catch (DataException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<TemporaryFile> file = new ArrayList<>();
-        file.add(newFile);
-
-        try {
-            ret = Util.makeCommit(author, repository, branch, commiter, file, "add new file: "+path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (ret == null)
-            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
@@ -601,7 +563,6 @@ public class GitController {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
 
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
