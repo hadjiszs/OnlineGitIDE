@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Created by hadjiszs on 21/10/16.
  */
 @RestController
-@RequestMapping("/file/{idCurrentUser}/{idUser}/{idRepository}")
+@RequestMapping("/file/{idCurrentUser}/{idUser}/{idRepository}/{branch}")
 public class FileController {
 
     /**
@@ -45,7 +45,7 @@ public class FileController {
     ResponseEntity<String> edit(@PathVariable String idUser,
                                 @PathVariable String idRepository,
                                 @PathVariable String idCurrentUser,
-                                @PathVariable String content,
+                                @RequestParam String content,
                                 @PathVariable String branch,
                                 @RequestParam(value="path") String path) {
         Long longIdRepository = Long.valueOf(idRepository);
@@ -88,6 +88,7 @@ public class FileController {
         } else {
             // sinon, on le modifie
             // TODO: updateEntity temporaryFile
+            System.out.println("Cas d'edition ok, mais pas encore prise en compte car il manque temporaryFile.updateEntity");
         }
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,

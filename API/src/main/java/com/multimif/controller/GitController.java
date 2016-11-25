@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.json.JsonObject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,7 +141,7 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(),HttpStatus.OK);
     }
 
-    //liste des branches
+    //Info d'un commit
     @RequestMapping(value = "/info/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> getInfoCommit(@PathVariable String idUser,
@@ -307,18 +308,25 @@ public class GitController {
      * @param path         le chemin du nouveau fichier
      * @return
      */
-    @RequestMapping(value = "/create/file", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/create/file/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     public @ResponseBody
     ResponseEntity<String> postCreateFile(@PathVariable String idUser,
                                           @PathVariable String currentUser,
-                                          @PathVariable String idRepository,
                                           @PathVariable String branch,
+                                          @PathVariable String idRepository,
                                           @RequestParam(value="path") String path) {
-        Long idrepo = Long.valueOf(idRepository);
+        UserService userService = new UserServiceImpl();
 
-        // Ajout du temporary file, vide
+        JsonObject ret = null;
+        String author = getUsernameById(idUser);
+        String repository = getNameRepositoryById(idRepository);
+        Long idrepo = Long.valueOf(idRepository);
+        TemporaryFile newFile = null;
+
+        // Ajout du temporary file vide
         try {
-            if(temporaryFileService.addEntity(Long.valueOf(currentUser), "", path, idrepo) == null)
+            newFile = temporaryFileService.addEntity(Long.valueOf(currentUser), "", path, idrepo);
+            if(newFile == null)
                 return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                         Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         } catch (DataException e) {
@@ -326,6 +334,26 @@ public class GitController {
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         }
+
+        // commit du nouveau fichier pour qu'il soit accessible lors du get arborescence
+        User commiter = null;
+        try {
+            commiter = userService.getEntityById(Long.parseLong(currentUser));
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<TemporaryFile> file = new ArrayList<>();
+        file.add(newFile);
+
+        try {
+            ret = Util.makeCommit(author, repository, branch, commiter, file, "add new file: "+path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (ret == null)
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);

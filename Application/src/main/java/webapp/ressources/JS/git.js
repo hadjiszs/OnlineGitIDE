@@ -1,4 +1,4 @@
-/* Liste les branches d'un projet*/
+/* Liste les branches d'un projet */
 function listBranch(idProject,idCreator, idUser){
     var url = "/api/git/"+  idUser + "/" + idCreator + "/" + idProject + "/branches";
     ApiRequest('GET',url,"",function(json){
@@ -38,7 +38,7 @@ function listCommit(idProject,idCreator, idUser,branch){
             $('#listCommit').empty();
             $.each(json["commits"], function(index, element) {
                 $('#listCommit').append(
-                    '<li class="list-group-item ligneCommit" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '"> \
+                    '<li class="list-group-item ligneCommit" creator="'+ idCreator + '" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '"> \
                         <span > ' + element.id + '</span> \
                         <span> ' + element.date + '</span> \
                         <span> ' + element.message + '</span> \
@@ -65,6 +65,7 @@ function getFile(idProject,idCreator, idUser,revision,path){
         }else{
             console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
             setEditeur(json["content"]);
+            Cookies.set('path',path);
         }
     });
 }
@@ -102,11 +103,38 @@ function getArborescence(idProject,idCreator, idUser,revision){
 
 }
 
-function createFile(){
-
+function createFile(idProject,idCreator, idUser,path){
+    var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/create/file?path=" + path;
+    ApiRequest('GET',url,"",function(json){
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Fichier',
+                message: 'Impossible de créer un fichier',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Fichier: " + JSON.stringify(json));
+        }
+    });
 }
 
-function makeCommit(){
+function makeCommit(idProject,idCreator, idUser,branch,message){
+    var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/makeCommit/" + branch +"?message=" + message;
+    ApiRequest('POST',url,"",function(json){
+        if(json == null){
+            BootstrapDialog.show({
+                title: 'Commit',
+                message: 'Impossible de faire le commit',
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true
+            });
+        }else{
+            console.log("Commit: " + JSON.stringify(json));
+        }
+    });
 
 }
 

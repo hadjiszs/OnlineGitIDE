@@ -34,6 +34,7 @@ function deconnexion(){
     Cookies.remove('creator');
     Cookies.remove('branch');
     Cookies.remove('revision');
+    Cookies.remove('path');
     window.location.href = "/";
 }
 

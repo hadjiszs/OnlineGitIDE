@@ -101,15 +101,16 @@ $(document).ready(function() {
         listCommit(idProject,idCreator, idUser,branch);
     });
 
-    /*
     // SI on click sur un commit
-    $(".ligneCommit").on("click",function(e){
+    $("#divAfficherCommit").on("click",function(e){
         e.preventDefault();
+        alert("sadsds");
         var idProject = $(this).attr("project");
         var branch = $(this).attr("branch");
         var revision = $(this).attr("revision");
-        openCommit(idProject,branch,revision);
-    });*/
+        var idCreator = $(this).attr("creator");
+        openCommit(idProject, idCreator, branch, revision);
+    });
 
 });
 
@@ -253,11 +254,13 @@ function openProject(idProject, idCreator){
             Cookies.set('creator', idCreator);
             Cookies.set('branch', "master");
             Cookies.set('revision', json["commits"][0].id);
+            Cookies.set('path', '/');
             window.location.href = "/JSP/edit.jsp";
         }
     });
 }
 
+/* Ouvre un commit afin de l'observer */
 function openCommit(idProject, idCreator, branch, revision) {
     Cookies.set('project', idProject);
     Cookies.set('creator', idCreator);
