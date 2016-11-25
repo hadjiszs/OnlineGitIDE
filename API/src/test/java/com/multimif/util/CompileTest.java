@@ -27,7 +27,7 @@ public class CompileTest extends TestUtil {
 
     @Test
     public void executeCompilation() throws Exception {
-        Compile c = new Compile((long) 1, (long) 1, "sdhjqd");
+        Compile c = new Compile((long) 4, (long) 4, "sdhjqd");
         JsonObject ret = c.execute();
         System.out.println(ret.toString());
     }

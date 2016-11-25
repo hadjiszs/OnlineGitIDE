@@ -76,6 +76,8 @@ public class Compile {
                     // TODO:
                     // mvn package
                     // mv .war
+                } else if (currentProject.getType() == Project.TypeProject.CMAKE) {
+                    execLine += SCRIPT_COMPILE_CMAKE + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
                 }
 
                 break;
@@ -91,7 +93,6 @@ public class Compile {
         if(action.equals(COMPILE_ACTION)) {
             JsonObjectBuilder jsonBuilder;
             jsonBuilder = Json.createBuilderFactory(null).createObjectBuilder();
-            // get the error stream of the process and print it
             InputStream stdout = process.getInputStream();
             InputStream stderr = process.getErrorStream();
             BufferedReader reader;

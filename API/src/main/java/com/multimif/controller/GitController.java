@@ -392,11 +392,8 @@ public class GitController {
             case "JAVA":
                 newType = Project.TypeProject.JAVA;
                 break;
-            case "C":
-                newType = Project.TypeProject.C;
-                break;
-            case "CPP":
-                newType = Project.TypeProject.CPP;
+            case "CMAKE":
+                newType = Project.TypeProject.CMAKE;
                 break;
             case "MAVEN":
                 newType = Project.TypeProject.MAVEN;
@@ -404,7 +401,6 @@ public class GitController {
             default:
                 newType = Project.TypeProject.JAVA;
         }
-
 
         try {
             Project project = projectService.addEntity(newname, newType, Long.parseLong(idUser));
