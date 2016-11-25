@@ -50,7 +50,7 @@ function ApiRequest(method,url,dataIn,callback) {
                 callback(data);
             },
             error: function(xhr, textStatus, errorThrown){
-                callback(null);
+                handleError(errorThrown,xhr.responseJSON.message);
             }
         });
     }else if(method === "POST"){
@@ -62,15 +62,25 @@ function ApiRequest(method,url,dataIn,callback) {
             timeout: 5000,
             success: function(data, textStatus ){
                 //alert('request successful');
+                alert("hello");
                 callback(data);
             },
             error: function(xhr, textStatus, errorThrown){
-                callback(null);
+                handleError(errorThrown,xhr.responseJSON.message);
             }
         });
     }
 }
 
+function handleError(title,message){
+    BootstrapDialog.show({
+        title: title,
+        message: message,
+        type: BootstrapDialog.TYPE_DANGER,
+        closable: true,
+        draggable: true
+    });
+}
 
 $(document).ready(function() {
     $("#deconnexion").on("click", function (e) {

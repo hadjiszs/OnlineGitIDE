@@ -4,6 +4,8 @@ import com.multimif.dao.UserDAO;
 import com.multimif.dao.UserDAOImp;
 import com.multimif.model.User;
 import com.multimif.util.DataException;
+import com.multimif.util.Messages;
+import com.mysql.cj.fabric.xmlrpc.base.Data;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -52,12 +54,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User authEntity(String username, String password) throws DataException {
-        try {
+        /*try {*/
             return userDAO.authEntity(username,password);
-        } catch (Exception e) {
-            LOGGER.log( Level.FINE, e.toString(), e);
-        }
-        return null;
+        /*} catch (DataException e) {
+            LOGGER.log( Level.OFF, e.toString(), e);
+            throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
+        }*/
     }
 
     @Override

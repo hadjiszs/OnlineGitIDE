@@ -25,7 +25,7 @@ public class PageFilter implements Filter  {
         HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
         System.out.println("[Application] [FILTER] url: " + request.getRequestURI());
-        if(request.getRequestURI().equals("/") || request.getRequestURI().contains("/ressources")){
+        if(request.getRequestURI().contains("/JSP/")){
             chain.doFilter(req,res);
         }else{
             if(cookies == null){
@@ -49,44 +49,6 @@ public class PageFilter implements Filter  {
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-/*
-        final String urlWrapped = "/auth/connect"; //req.getRequestURI().replace("App","api");
-        ServletRequest requestModified =
-                new HttpServletRequestWrapper((HttpServletRequest) request) {
-                    @Override
-                    public String getRequestURI(){
-                        return urlWrapped;
-                    }
-                };
-
-        ServletContext forwardContext = config.getServletContext().getContext("/API");
-        System.out.println(forwardContext.getContextPath());
-        System.out.println(forwardContext.getServletContextName());
-        System.out.println(forwardContext.getServerInfo());
-        System.out.println(forwardContext.getServletRegistration("/api"));
-        forwardContext.getRequestDispatcher("/api").forward(requestModified,res);
-
-        //((HttpServletResponse) res).sendRedirect(request.getRequestURI().replace("/App","/api"));
-
-
-
-        // Vérifié si l'utilsiateur est connecté
-
-
-
-
-
-        //chain.doFilter(requestModified,response);*/
-        //chain.doFilter(req,res);
     }
 
     public void init(FilterConfig config) throws ServletException {
@@ -101,6 +63,4 @@ public class PageFilter implements Filter  {
         System.out.println("[APPLICATION] [FILTER] [ERROR] user not connected.");
         response.sendError(401, message);
     }
-
-
 }
