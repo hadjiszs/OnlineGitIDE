@@ -13,7 +13,6 @@ import java.util.List;
  * @version 1.0
  * @since 1.0 11/18/16.
  */
-
 public interface TemporaryFileService {
 
     /**
@@ -85,4 +84,11 @@ public interface TemporaryFileService {
      * base de données
      */
     boolean deleteEntity(Long idFileTemporary) throws DataException;
+
+    /**
+     * Permet de supprimer une liste de TemporaryFile
+     * @param list Liste des objets à supprimer
+     * @throws Exception
+     */
+    boolean deleteAllEntity(List<TemporaryFile> list) throws DataException;
 }

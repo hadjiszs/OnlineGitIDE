@@ -31,6 +31,8 @@ function deconnexion(){
     Cookies.remove('mail');
     Cookies.remove('username');
     Cookies.remove('project');
+    Cookies.remove('branch');
+    Cookies.remove('revision');
     window.location.href = "/";
 }
 

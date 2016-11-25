@@ -1,7 +1,7 @@
 package com.multimif.util;
 
 import com.multimif.controller.UserController;
-import com.multimif.git.Constantes;
+import com.multimif.git.GitConstantes;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class ZipUtil {
      * @throws DataException retourne une exception si il'y a un error dans le deplacemment.
      */
     public static void moveZipFile(String sourcePath, String zipFile) throws DataException {
-        Path target = Paths.get(new StringBuilder().append(Constantes.ZIP_DIRECTORY)
+        Path target = Paths.get(new StringBuilder().append(GitConstantes.ZIP_DIRECTORY)
                 .append(File.separator).append(zipFile).toString());
         Path source = Paths.get(sourcePath);
 

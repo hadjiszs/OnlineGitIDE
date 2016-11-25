@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by hadjiszs on 21/10/16.
+ * @author hadjiszs
+ * @version 1.0
+ * @since 1.0 21/10/16.
  */
 @RestController
 @RequestMapping("/file")
@@ -24,7 +26,7 @@ public class FileEditController {
         try{
             user = userService.getEntityById(id);
         }catch(Exception ex){
-            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(GitConstantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
@@ -53,7 +55,7 @@ public class FileEditController {
         try{
             user = userService.getEntityByMail(mail);
         }catch(Exception ex){
-            return new ResponseEntity<String>(JsonUtil.convertToJson(new JsonUtil.Status(JsonUtil.Constantes.OPERATION_CODE_RATE,
+            return new ResponseEntity<String>(JsonUtil.convertToJson(new JsonUtil.Status(JsonUtil.GitConstantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 

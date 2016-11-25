@@ -19,11 +19,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
+ *
+ * Classe de test de PermissionController.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>Le status line du résponse</li>
+ *  <li>Le objet qui retourne correspond avec l'attendu.</li>
+ *  <li>L'absence des exceptions</li>
+ *  <li>L'action qui a fait le controleur.</li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/19/16.
@@ -36,6 +47,9 @@ public class PermissionControllerTest extends TestUtil{
     private UserController userController = new UserController();
     private ProjectController projectController = new ProjectController();
 
+    /**
+     * Vérifie la méthode add du controlleur.
+     */
     @Test
     public void addTest(){
         StatusOK statusOK;
@@ -77,6 +91,9 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
     }
 
+    /**
+     * Vérifié la méthode de lister les développeurs
+     */
     @Test
     public void getDevelopersTest(){
         Exception exception = null;
@@ -107,9 +124,12 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(user.getIdUser(), developer.getIdUser());
         assertEquals(user.getMail(), developer.getMail());
         assertEquals(user.getUsername(), developer.getUsername());
-        assertEquals(user.getPassword(), developer.getPassword());
+        assertNotEquals(user.getPassword(), developer.getPassword());
     }
 
+    /**
+     * Vérifié la fonction pour récupérer l'admin d'un projet
+     */
     @Test
     public void getAdminTest(){
         Exception exception = null;
@@ -129,9 +149,12 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(user.getIdUser(), admin.getIdUser());
         assertEquals(user.getMail(), admin.getMail());
         assertEquals(user.getUsername(), admin.getUsername());
-        assertEquals(user.getPassword(), admin.getPassword());
+        assertNotEquals(user.getPassword(), admin.getPassword());
     }
 
+    /**
+     * Vérifié le méthode qui retourne la liste de projets par utilisateur
+     */
     @Test
     public void getProjectsTest(){
         Exception exception = null;
@@ -165,6 +188,10 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(proj.getType(), project.getType());
     }
 
+
+    /**
+     * Vérifié que la fonction has retourne correctement l'existence de permis
+     */
     @Test
     public void hasTest(){
         Exception exception = null;
@@ -185,8 +212,6 @@ public class PermissionControllerTest extends TestUtil{
 
         try{
             responseEntity = permissionController.has(developer.getIdUser(), project.getIdProject());
-
-            System.out.print(responseEntity.getBody());
         }catch (Exception e){
             exception = e;
         }
@@ -195,6 +220,9 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
     }
 
+    /**
+     * Vérifie la méthode delete permis
+     */
     @Test
     public void removeTest(){
         Exception exception = null;
@@ -225,6 +253,8 @@ public class PermissionControllerTest extends TestUtil{
         assertNull(exception);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
         assertEquals(status.getCode(), -1);
+
+        /* On remove les objets qu'on a crée pour tester cette classe */
 
         try{
             projectController.init();

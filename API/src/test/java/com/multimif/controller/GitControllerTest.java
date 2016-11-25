@@ -10,6 +10,7 @@ import com.multimif.service.UserService;
 import com.multimif.service.UserServiceImpl;
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GitControllerTest {
 
     private static final String USER_NAME = "userTest";
@@ -56,7 +58,7 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testGetFile() throws Exception {
+    public void atestGetFile() throws Exception {
 
         // Service
         UserService userService = new UserServiceImpl();

@@ -18,6 +18,18 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
+ *
+ * Classe de test de TempoyraryFileDAO.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>L'absence des exceptions</li>
+ *  <li>L'action qui a fait la classe DAO.</li>
+ *  <li>La cohérence des données </li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/17/16.
@@ -156,7 +168,7 @@ public class UserGrantDAOTest extends TestUtil{
         assertEquals(adm.getIdUser(), admin.getIdUser());
         assertEquals(adm.getUsername(), admin.getUsername());
         assertEquals(adm.getMail(), admin.getMail());
-        assertEquals(adm.getPassword(), admin.getPassword());
+        assertNotEquals(adm.getPassword(), admin.getPassword());
 
     }
 

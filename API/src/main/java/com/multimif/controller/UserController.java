@@ -26,12 +26,12 @@ public class UserController {
 
     private UserService userService;
 
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
     @PostConstruct
     public void init() {
         userService = new UserServiceImpl();
     }
-
-    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
     /**
      *
@@ -102,8 +102,8 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<User> getByMail(@RequestParam(value = "username") String username,
-                                          @RequestParam(value = "password") String password) {
+    public ResponseEntity<User> login (@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "password") String password) {
 
         User user;
 
@@ -188,9 +188,6 @@ public class UserController {
 
         try {
             users = userService.getEntityList();
-        } catch (DataException ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

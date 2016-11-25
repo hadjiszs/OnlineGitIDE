@@ -23,7 +23,7 @@ public class APIController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<String> get(){
-        return new ResponseEntity<String>(JsonUtil.convertStringToJson("API","OK"), HttpStatus.OK);
+        return new ResponseEntity<>(JsonUtil.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
     /**
@@ -31,7 +31,6 @@ public class APIController {
      */
     @PostConstruct
     public void init() {
-        System.out.println("[API] [Controller] Init");
         EntityFactoryManager.persistance();
     }
 

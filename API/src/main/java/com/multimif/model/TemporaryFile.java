@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 @Entity
 @NamedQueries({
+        @NamedQuery(name = "TemporaryFile.findByHashkey", query = "SELECT f from TemporaryFile f WHERE f.hashKey = :hashKey"),
         @NamedQuery(name = "TemporaryFile.findByIdAndUser", query = "SELECT f from TemporaryFile f WHERE f.user = :user AND f.hashKey = :hashKey"),
         @NamedQuery(name = "TemporaryFile.findByUserAndProject", query = "SELECT t FROM TemporaryFile t WHERE t.user = :user AND t.project = :project")
 })
@@ -56,8 +57,12 @@ public class TemporaryFile implements Serializable {
      */
     public TemporaryFile(User user, String hashKey, String content, Project project,
                          String path) {
+        String raw = user.getIdUser().toString() +
+                project.getIdProject().toString() +
+                path;
+
         this.content = content;
-        this.hashKey = hashKey;
+        this.hashKey = String.valueOf(raw.hashCode());
         this.user = user;
         this.project = project;
         this.path = path;

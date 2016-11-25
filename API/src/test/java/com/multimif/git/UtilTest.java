@@ -1,11 +1,20 @@
 package com.multimif.git;
 
+import com.multimif.model.Project;
+import com.multimif.model.TemporaryFile;
+import com.multimif.model.User;
+import com.multimif.service.ProjectService;
+import com.multimif.service.ProjectServiceImpl;
+import com.multimif.service.UserService;
+import com.multimif.service.UserServiceImpl;
 import com.multimif.util.ZipUtil;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runners.MethodSorters;
 
 import javax.json.JsonObject;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -24,6 +33,8 @@ public class UtilTest {
     private static final String NEW_DIR_NAME = "Nouveau_repository";
 
     private static String ZIP_FILE;
+    private UserService userService;
+    private ProjectService projectService;
 
 
     @Rule public TestName name = new TestName();
@@ -31,6 +42,8 @@ public class UtilTest {
     @Before
     public void setUp() throws Exception {
         System.out.println("--- TEST : "+ name.getMethodName() +" ---");
+        userService = new UserServiceImpl();
+        projectService = new ProjectServiceImpl();
     }
 
     @After
@@ -50,7 +63,7 @@ public class UtilTest {
         Util.deleteRepository(USER, NEW_DIR_NAME);
 
         System.out.println("# Suppression du fichier zip; fin tests #");
-        ZipUtil.deleteZipFile(Constantes.ZIP_DIRECTORY + ZIP_FILE);
+        ZipUtil.deleteZipFile(GitConstantes.ZIP_DIRECTORY + ZIP_FILE);
     }
 
     @Test
@@ -77,7 +90,7 @@ public class UtilTest {
     }
 
     @Test
-    public void btestCreateBranch() throws Exception {
+    public void testCreateBranch() throws Exception {
         // Creation d'une branche
         String nomBranche = "nouvelle_branche";
         GitStatus statusAttendu = GitStatus.BRANCH_CREATED;
@@ -131,9 +144,33 @@ public class UtilTest {
         /* TODO verifier que le fichier existe*/
     }
 
+    @Test
+    public void testMakeCommit() throws Exception {
+        User commiter = new User("LeCommiter", "LeCommiter@testCommit.fr", "LeCommiter");
+        Project project = new Project(DIR_NAME, Project.TypeProject.JAVA);
+        List<TemporaryFile> files = new ArrayList<>();
+        TemporaryFile file;
+
+        /* TODO il faut ajouter l'utilisateur dans la BD puisque aiet id */
+
+        commiter = userService.addEntity(commiter.getUsername(), commiter.getMail(), commiter.getPassword());
+        project = projectService.addEntity(project.getName(), project.getType(), commiter.getIdUser());
+
+        for (int i = 0; i< 5 ; i++) {
+            file = new TemporaryFile(commiter, "", "content" + i, project, GitConstantes.REPO_FULLPATH + USER + "/" + DIR_NAME + ".git/" + "src/testfile" + i);
+            files.add(file);
+        }
+        JsonObject res = Util.makeCommit(USER, DIR_NAME, "master", commiter, files, "MESSAGE DU COMMIT");
+        Assert.assertNotNull(res);
+
+        projectService.deleteEntity(project.getIdProject(), commiter.getIdUser());
+        userService.deleteEntity(commiter.getIdUser());
+
+    }
+
 //    @Test
 //    public void testMerge() throws  Exception {
-//        Git git = Git.open(new File(Constantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
+//        Git git = Git.open(new File(GitConstantes.REPOPATH + USER + "/" + DIR_NAME + ".git"));
 //        //System.out.println(git.getRepository().getBranch());
 //        JsonObject res = Util.createBranch(USER, DIR_NAME, "newbranch");
 //        git.checkout().setCreateBranch(false)

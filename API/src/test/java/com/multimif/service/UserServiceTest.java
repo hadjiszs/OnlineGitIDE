@@ -17,6 +17,17 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
+ *
+ * Classe de test de UserService.
+ *
+ * On a appliqué de test pour vérifier:
+ * <ul>
+ *  <li>L'absence des exceptions</li>
+ *  <li>La cohérence des données </li>
+ * </ul>
+ *
+ * Ces test sont fait contre la base de données.
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/20/16.
@@ -34,7 +45,11 @@ public class UserServiceTest  extends TestUtil{
         newUser();
 
         try{
+            /* On garde le mot de passe pour tester après l'authentication */
+            String password = user.getPassword();
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
+
+            user.setPassword(password);
         }catch (DataException e){
             exception = e;
         }
@@ -60,7 +75,7 @@ public class UserServiceTest  extends TestUtil{
         assertEquals(usr.getIdUser(), user.getIdUser());
         assertEquals(usr.getMail(), user.getMail());
         assertEquals(usr.getUsername(), user.getUsername());
-        assertEquals(usr.getPassword(), user.getPassword());
+        assertNotEquals(usr.getPassword(), user.getPassword());
     }
 
     @Test
@@ -79,7 +94,7 @@ public class UserServiceTest  extends TestUtil{
         assertEquals(usr.getIdUser(), user.getIdUser());
         assertEquals(usr.getMail(), user.getMail());
         assertEquals(usr.getUsername(), user.getUsername());
-        assertEquals(usr.getPassword(), user.getPassword());
+        assertNotEquals(usr.getPassword(), user.getPassword());
     }
 
 
@@ -89,11 +104,8 @@ public class UserServiceTest  extends TestUtil{
         List<User> userList = new ArrayList<>();
         User usr = null;
 
-        try{
-            userList = userService.getEntityList();
-        }catch (DataException e){
-            exception = e;
-        }
+        userList = userService.getEntityList();
+
         assertNull(exception);
         assertTrue(userList.size() > 0);
 
@@ -109,7 +121,7 @@ public class UserServiceTest  extends TestUtil{
         assertEquals(usr.getIdUser(), user.getIdUser());
         assertEquals(usr.getMail(), user.getMail());
         assertEquals(usr.getUsername(), user.getUsername());
-        assertEquals(usr.getPassword(), user.getPassword());
+        assertNotEquals(usr.getPassword(), user.getPassword());
     }
 
     @Test
@@ -128,7 +140,7 @@ public class UserServiceTest  extends TestUtil{
         assertEquals(usr.getIdUser(), user.getIdUser());
         assertEquals(usr.getMail(), user.getMail());
         assertEquals(usr.getUsername(), user.getUsername());
-        assertEquals(usr.getPassword(), user.getPassword());
+        assertNotEquals(usr.getPassword(), user.getPassword());
 
         /* On va tester qu'un user avec un mot de passe incorrect ne peut pas entrer */
         usr = null;

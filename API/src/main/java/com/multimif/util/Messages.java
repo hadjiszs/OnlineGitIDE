@@ -21,6 +21,8 @@ public class Messages {
 
     public static final String USER_AUTHENTICATION_FAILED = "Incorrect password";
 
+    public static final String USER_CANT_CREATED = "User can't be created";
+
     public static final String PROJECT_UNSPECIFIED_ID = "Unspecified project identifier";
 
     public static final String PROJECT_NOT_EXISTS = "Project doesn't exists";
@@ -45,6 +47,7 @@ public class Messages {
 
 
     private Messages(){
-        /* On cache le constructeur */
+        /* On cache le constructeur
+        * parce qu'on ne veut pas que cette classe soit instanciée */
     }
 }

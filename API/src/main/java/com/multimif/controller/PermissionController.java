@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * Le controleur pour la gestion de permis
+ * Le controleur pour la gestion de permis entre les utilisateurs et les projets
  *
  * @author Amaia Nazábal
  * @version 1.0

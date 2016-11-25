@@ -11,7 +11,10 @@ public enum GitStatus {
     REPOSITORY_NOT_CREATED(8400, "Repository créé"),
     REPOSITORY_CREATED(8200, "Repository créé"),
     BRANCH_NOT_CREATED(9400, "Nom de branche déjà existant"),
-    BRANCH_CREATED(9200, "Branche créée");
+    BRANCH_CREATED(9200, "Branche créée"),
+    COMMIT_DONE(7200, "commit éffectué"),
+    COMMIT_FAILED(7400, "échec du commit");
+
 
 
     public final int value;

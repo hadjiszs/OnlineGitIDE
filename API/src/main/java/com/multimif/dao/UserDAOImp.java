@@ -6,6 +6,9 @@ import com.multimif.util.Messages;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,11 +37,14 @@ public class UserDAOImp extends DAO implements UserDAO {
 
         if (usr == null) {
 
+            user.setPassword(hashGenerator(user.getPassword()));
             getEntityManager().getTransaction().begin();
             getEntityManager().persist(user);
             getEntityManager().getTransaction().commit();
 
             closeEntityManager();
+
+            hiddePassword(user);
 
         } else {
             throw new DataException(Messages.USER_ALREADY_EXISTS);
@@ -52,11 +58,15 @@ public class UserDAOImp extends DAO implements UserDAO {
         User usr = getEntityById(user.getIdUser());
 
         if (usr != null) {
+            user.setPassword(hashGenerator(user.getPassword()));
+
             getEntityManager().getTransaction().begin();
             getEntityManager().merge(user);
             getEntityManager().getTransaction().commit();
 
             closeEntityManager();
+            hiddePassword(user);
+
         } else {
             throw new DataException(Messages.USER_NOT_EXISTS);
         }
@@ -148,7 +158,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         if (user == null) {
             throw new DataException(Messages.USER_NOT_EXISTS);
         } else {
-            if (!user.getPassword().equals(password)) {
+            if (!user.getPassword().equals(hashGenerator(password))) {
                 throw new DataException(Messages.USER_AUTHENTICATION_FAILED);
             }
             return user;
@@ -157,5 +167,31 @@ public class UserDAOImp extends DAO implements UserDAO {
 
     private void hiddePassword(User user){
         user.setPassword("");
+    }
+
+    private String hashGenerator (String plaintext) throws DataException {
+        MessageDigest messageDigest;
+
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            throw new DataException(Messages.USER_CANT_CREATED);
+        }
+
+        messageDigest.reset();
+        messageDigest.update(plaintext.getBytes());
+
+        byte[] digest = messageDigest.digest();
+
+        BigInteger bigInt = new BigInteger(1, digest);
+        StringBuilder hash = new StringBuilder(bigInt.toString(16));
+
+        /* Maintenant on doit mis à zero jusqu'à 32 characteres */
+        while(hash.toString().length() < 32 ) {
+            hash.insert(0, "0");
+        }
+
+        return hash.toString();
     }
 }
