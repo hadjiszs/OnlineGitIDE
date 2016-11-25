@@ -1,8 +1,12 @@
 package com.multimif.filter;
 
+import com.multimif.service.UserService;
+import com.multimif.service.UserServiceImpl;
+
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Alexis
@@ -10,50 +14,84 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0 16/11/2016.
  */
 
+/**
+ * Filtre les requêtes entrantes et vérifie que l'utilisateur est connecté.
+ */
 public class RequestFilter implements Filter{
 
+    /**
+     * Configuration de la servlet
+     */
     FilterConfig config;
 
+    /**
+     * Le service permettant de vérifier si l'utilisateur est connecté
+     */
+    UserService userService;
+
+    /**
+     * Définit la configuraiton du filter
+     * @param config
+     */
     public void setFilterConfig(FilterConfig config) {
         this.config = config;
     }
 
+    /**
+     * Renvoi la configuration du filter
+     * @return
+     */
     public FilterConfig getFilterConfig() {
         return config;
     }
 
+    /**
+     * Execute le filter
+     * @param req
+     * @param res
+     * @param chain
+     * @throws java.io.IOException
+     * @throws ServletException
+     */
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-            throws java.io.IOException, ServletException {
+                                    throws java.io.IOException, ServletException {
+
 
         HttpServletRequest request = (HttpServletRequest) req;
-
+        HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
 
-        String hashkey = null;
+        if(request.getRequestURI().equals("/api/user/login")){
+            chain.doFilter(req,res);
+        }else{
+            if(cookies == null){
+                unauthorized(response,"Vous n'êtes pas connecté.");
+            } else{
+                String password = null;
+                String username = null;
 
-        if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-                if(cookies[i].getName().equals("password")){
-                    hashkey = cookies[i].getValue();
+                for (int i = 0; i < cookies.length; i++) {
+                    if(cookies[i].getName().equals("password")){
+                        password = cookies[i].getValue();
+                    }else if(cookies[i].getName().equals("username")){
+                        username = cookies[i].getValue();
+                    }
                 }
 
-                String name = cookies[i].getName();
-                String value = cookies[i].getValue();
-                System.out.println(name + " " + value);
+                if(password == null || username == null){
+                    unauthorized(response,"Vous n'êtes pas connecté.");
+                }else{
+                    try{
+                        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
+                        System.out.println("[API] [FILTER] username: " + username + " password: " + password);
+                        userService.authEntity(username,password);
+                        chain.doFilter(req,res);
+                    }catch (Exception e){
+                        unauthorized(response,"Mauvais identifiants.");
+                    }
+                }
             }
         }
-
-        System.out.println("[API] [FILTER] hashkey: " + hashkey);
-        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
-
-        chain.doFilter(req,res);
-        /*if(request.getRequestURI().contains("/auth/connect")){
-            chain.doFilter(req,res);
-        }
-        // On vérifie que l'utilisateur est connecté
-        if(request.getSession() != null){
-            chain.doFilter(req,res);
-        }*/
 
 
 
@@ -73,8 +111,15 @@ public class RequestFilter implements Filter{
 
     public void init(FilterConfig config) throws ServletException {
         this.config = config;
+        userService = new UserServiceImpl();
     }
 
     public void destroy() {
+    }
+
+    // Renvoi une erreur si pas connecté
+    private void unauthorized(HttpServletResponse response, String message) throws java.io.IOException {
+        System.out.println("[API] [FILTER] [ERROR] user not connected.");
+        response.sendError(401, message);
     }
 }
