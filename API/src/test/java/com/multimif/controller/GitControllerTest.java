@@ -59,22 +59,18 @@ public class GitControllerTest {
 
     @Test
     public void atestGetFile() throws Exception {
-
-        // Service
         UserService userService = new UserServiceImpl();
         ProjectService projectService = new ProjectServiceImpl();
 
         Project project = new Project("TestGitRepository", Project.TypeProject.JAVA);
 
-        /*String name, Project.TypeProject type, Long idUser*/
         USER = userService.addEntity(USER_NAME, MAIL, "hashkey");
         PROJECT = projectService.addEntity(project.getName(), project.getType(), USER.getIdUser());
 
-        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject() + "/" + "70ad3b45d04d53ad77f0444a3cc9e33e657e9779" + "?path=src/CMakeLists.txt"))
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject() + "/" + USER.getIdUser() +  "/70ad3b45d04d53ad77f0444a3cc9e33e657e9779" + "?path=src/CMakeLists.txt"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(Util.getContent(USER_NAME, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779", "src/CMakeLists.txt").toString()));
-
     }
 
     @Test
@@ -92,7 +88,6 @@ public class GitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(Util.getBranches(USER_NAME, DIR_NAME).toString()));
-
     }
 
     @Test
@@ -105,6 +100,7 @@ public class GitControllerTest {
 
     @Test
     public void testPostMakeCommit() throws Exception {
+
 
     }
 
@@ -120,6 +116,11 @@ public class GitControllerTest {
 
     @Test
     public void testGetArchive() throws Exception {
+        /* archive/{branch} */
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject() + "/archive/" + ""))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(Util.getCommits(USER_NAME, DIR_NAME, "6973050f16380117b412aef271bf7993a16694cf").toString()));
 
     }
 

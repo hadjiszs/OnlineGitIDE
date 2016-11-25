@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.json.JsonObject;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,17 +36,17 @@ public class GitController {
     /**
      * Service de fichier temporaire
      */
-    private TemporaryFileService temporaryFileService;
+    private TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl();
 
     /**
      * Service de gestion des utilisateurs
      */
-    private UserService userService;
+    private UserService userService = new UserServiceImpl();
 
     /**
      * Service de gestion des projets
      */
-    private ProjectService projectService;
+    private ProjectService projectService = new ProjectServiceImpl();
 
     /**
      * Service de gestion des autorisations
@@ -260,10 +259,10 @@ public class GitController {
     @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
-                                          @PathVariable String currentUser,
-                                          @PathVariable String idRepository,
-                                          @PathVariable String branch,
-                                          @RequestParam(value = "message") String message) {
+                                                 @PathVariable String currentUser,
+                                                 @PathVariable String idRepository,
+                                                 @PathVariable String branch,
+                                                 @RequestParam(value = "message") String message) {
 
         JsonObject ret;
         List<TemporaryFile> files = null;
@@ -306,10 +305,10 @@ public class GitController {
     @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
-                                         @PathVariable String currentUser,
-                                         @PathVariable String idRepository,
-                                         @PathVariable String branch,
-                                         @PathVariable String path) {
+                                                @PathVariable String currentUser,
+                                                @PathVariable String idRepository,
+                                                @PathVariable String branch,
+                                                @PathVariable String path) {
         //TODO
         return null;
     }
@@ -325,9 +324,9 @@ public class GitController {
     @RequestMapping(value = "/showCommit/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> getShowCommit(@PathVariable String idUser,
-                                         @PathVariable String currentUser,
-                                         @PathVariable String idRepository,
-                                         @PathVariable String revision) {
+                                                @PathVariable String currentUser,
+                                                @PathVariable String idRepository,
+                                                @PathVariable String revision) {
         JsonObject ret;
 
         try {
@@ -386,7 +385,8 @@ public class GitController {
     //ATENTION : pour cette requête : idUser = L'utilisateur en cours. En effet, on créé un nouveau dépot. C'est le current user qui est donc creator
     //La variable idRepository est inutile
     @RequestMapping(value = "/clone/{url}/{newname}/{type}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
-    public @ResponseBody
+    public
+    @ResponseBody
     ResponseEntity<String> postClone(@PathVariable String idUser,
                                      @PathVariable String idRepository,
                                      @PathVariable String url,
@@ -412,14 +412,15 @@ public class GitController {
         }
 
 
-
         try {
             Project project = projectService.addEntity(newname, newType, Long.parseLong(idUser));
             userGrantService.addEntity(Long.parseLong(idUser), project.getIdProject(), UserGrant.PermissionType.ADMIN);
             String author = getUsernameById(idUser);
             String repository = getNameRepositoryById(idRepository);
             ret = Util.cloneRemoteRepo(author, repository, url);
-            if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+            if (ret == null) {
+                return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -431,10 +432,10 @@ public class GitController {
     /**
      * Creation branche
      *
-     * @param idUser l'id de l'utilisateur
+     * @param idUser       l'id de l'utilisateur
      * @param currentUser  le proprietaire du dépôt
      * @param idRepository l'id du dépôt
-     * @param newBranch le nom de la branche
+     * @param newBranch    le nom de la branche
      * @return une chaîne de characteres en format json
      */
     @RequestMapping(value = "/create/branch/{newBranch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
@@ -480,10 +481,10 @@ public class GitController {
     @RequestMapping(value = "/create/file", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postCreateFile(@PathVariable String idUser,
-                                          @PathVariable Long currentUser,
-                                          @PathVariable String idRepository,
-                                          @PathVariable String branch,
-                                          @RequestParam(value = "path") String path) {
+                                                 @PathVariable Long currentUser,
+                                                 @PathVariable String idRepository,
+                                                 @PathVariable String branch,
+                                                 @RequestParam(value = "path") String path) {
         Long idrepo = Long.valueOf(idRepository);
 
         // Ajout du temporary file, vide
@@ -503,39 +504,31 @@ public class GitController {
 
     //Merge
     @RequestMapping(value = "/merge/{branchname}/{revision}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> postMerge(@PathVariable String idUser,
+                                            @PathVariable String currentUser,
+                                            @PathVariable String idRepository,
+                                            @PathVariable String branchname,
+                                            @PathVariable String revision) {
+        JsonObject ret;
 
-    public @ResponseBody
-    ResponseEntity<String> postMerge(@PathVariable String idUser,
-                                     @PathVariable String currentUser,
-                                     @PathVariable String idRepository,
-                                     @PathVariable String branchname,
-                                     @PathVariable String revision) {
-        JsonObject ret = null;
-        Long id = Long.valueOf(idUser);
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+            ret = Util.merge(author, repository, branchname, revision);
 
-      try {
-          try {
-              String author = getUsernameById(idUser);
-              String repository = getNameRepositoryById(idRepository);
-              ret = Util.merge(author, repository, branchname, revision);
-          }catch (DataException ex) {
-              return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-          }
-          if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+            if (ret == null) {
+                throw new DataException("");
+            }
+        } catch (DataException ex) {
+            LOGGER.log(Level.FINE, ex.getMessage(), ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
-    }
 
-    /**
-     * Initialise les services utilisés par la classe
-     */
-    @PostConstruct
-    public void init() {
-        temporaryFileService = new TemporaryFileServiceImpl();
-        userService = new UserServiceImpl();
-        projectService = new ProjectServiceImpl();
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 }
