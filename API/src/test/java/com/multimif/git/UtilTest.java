@@ -223,4 +223,11 @@ public class UtilTest {
         Assert.assertNotNull(res2);
         System.out.println(res2.toString());
     }
+
+    @Test
+    public void testGetBranch() throws Exception {
+        JsonObject res = Util.getBranch(USER, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779");
+        Assert.assertNotNull(res);
+        System.out.println(res.toString());
+    }
 }
