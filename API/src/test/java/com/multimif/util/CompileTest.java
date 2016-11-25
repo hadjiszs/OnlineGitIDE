@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.json.JsonObject;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -26,7 +28,7 @@ public class CompileTest extends TestUtil {
     @Test
     public void executeCompilation() throws Exception {
         Compile c = new Compile((long) 1, (long) 1, "sdhjqd");
-        String result = c.execute();
-        System.out.println(result);
+        JsonObject ret = c.execute();
+        System.out.println(ret.toString());
     }
 }

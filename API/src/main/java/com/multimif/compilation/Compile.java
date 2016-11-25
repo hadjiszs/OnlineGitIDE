@@ -7,6 +7,9 @@ import com.multimif.service.*;
 import com.multimif.util.DataException;
 import com.multimif.util.SplitPath;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import java.io.*;
 import java.util.List;
 
@@ -29,6 +32,8 @@ public class Compile {
     User currentUser;
     Project currentProject;
 
+    JsonObject jsonObject;
+
     public Compile(Long idProject, Long idCurrentUser, String branch) throws DataException {
         /*
             params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
@@ -43,47 +48,19 @@ public class Compile {
         this.currentUser = userService.getEntityById(idCurrentUser);
     }
 
-    public String execute() throws InterruptedException, IOException, DataException {
+    public JsonObject execute() throws InterruptedException, IOException, DataException {
         // 1 - CLONE
         this.executeAction(CLONE_ACTION);
         // 2 - update Project Files (temp)
 //        this.updateCloneRepo();
         // 3 - COMPILATION
         this.executeAction(COMPILE_ACTION);
-        // 4 - GET RESULT
-        String result = this.getCompilationResult();
         // 5 - clean
         this.executeAction(CLEAN_ACTION); //CLEAN
         //Resultat de la compilation
 
-
-        return result;
+        return jsonObject;
     }
-
-    public String getCompilationResult() throws FileNotFoundException, IOException {
-
-        String result = new String();
-        String line = new String();
-        BufferedReader in;
-
-        in = new BufferedReader(new FileReader(RESULTS_PATH + "/" + currentUser.getUsername() + ".txt"));
-        result = in.readLine();
-        line = "";
-        result = "";
-        while (true) {
-
-            line = in.readLine();
-            if (line == null) break;
-            result += line;
-            result += " \n";
-
-        }
-
-        //System.out.println("result : " + result);
-
-        return result;
-    }
-
 
     public void executeAction(String action) throws IOException, InterruptedException {
         Process process = null;
@@ -92,7 +69,6 @@ public class Compile {
         String execLine = SCRIPTS_PATH + "/";
         switch (action) {
             case COMPILE_ACTION:
-
                 if (currentProject.getType() == Project.TypeProject.JAVA) {
                     execLine += SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
                 } else if (currentProject.getType() == Project.TypeProject.MAVEN) {
@@ -112,10 +88,34 @@ public class Compile {
         }
 
         process = rt.exec(execLine);
+        if(action.equals(COMPILE_ACTION)) {
+            JsonObjectBuilder jsonBuilder;
+            jsonBuilder = Json.createBuilderFactory(null).createObjectBuilder();
+            // get the error stream of the process and print it
+            InputStream stdout = process.getInputStream();
+            InputStream stderr = process.getErrorStream();
+            BufferedReader reader;
+            String line;
+            String out = "";
+            String err = "";
+
+            // STDOUT
+            reader = new BufferedReader(new InputStreamReader(stdout));
+            while ((line = reader.readLine ()) != null)
+                out += line + "\n";
+
+            // STDERR
+            reader = new BufferedReader(new InputStreamReader(stderr));
+            while ((line = reader.readLine ()) != null)
+                err += line + "\n";
+
+            jsonObject = jsonBuilder.add("stdout", out)
+                    .add("stderr", err)
+                    .build();
+        }
+
         process.waitFor();
-
     }
-
 
     public void updateCloneRepo() throws DataException, IOException, InterruptedException {
         // 1) on récupère la liste des TempFiles
@@ -147,7 +147,6 @@ public class Compile {
 
         file.createNewFile();
         System.out.println("File is created!");
-
     }
 
     public void setContentFile(TemporaryFile tempFile, String content) throws IOException {

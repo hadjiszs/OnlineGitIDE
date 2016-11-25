@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.json.JsonObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,16 +42,16 @@ public class CompileController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        String resultat = "erreur";
+        JsonObject ret;
 
         // Execution du process
         try {
-            resultat = compile.execute();
+            ret = compile.execute();
         } catch (Exception ex) {
             return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(JsonUtil.convertToJson(resultat), HttpStatus.OK);
+        return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 }
