@@ -96,7 +96,8 @@ public class TemporaryFileDAOTest extends TestUtil{
         TemporaryFile tmpFile = null;
 
         try{
-            tmpFile = temporaryFileDAO.getEntityByHashKeyAndUser(user,temporaryFile.getHashKey());
+            tmpFile = temporaryFileDAO.getEntityByHashKey(temporaryFile.getHashKey());
+//            tmpFile = temporaryFileDAO.getEntityByHashKeyAndUser(user,temporaryFile.getHashKey());
         }catch (Exception e){
             exception = e;
         }

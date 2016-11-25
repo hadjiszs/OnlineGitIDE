@@ -10,7 +10,6 @@ public class GitConstantes {
 
     public static final String REPOPATH = "repositories/";
 
-
     public static final String REPO_FULLPATH = System.getProperty("user.dir") + "/" + REPOPATH;
 
     public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";

@@ -2,6 +2,7 @@ syntax: glob
 target
 *.iml
 Application.iml
+.DS_Store
 Multimif.iml
 API.iml
 .idea
