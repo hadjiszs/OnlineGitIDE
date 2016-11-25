@@ -10,14 +10,14 @@ import com.multimif.util.DataException;
 import java.util.List;
 
 /**
- * Created by amaia.nazabal on 11/18/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/18/16.
  */
 public class TemporaryFileServiceImpl implements TemporaryFileService {
-    UserService userService = new UserServiceImpl();
-    ProjectService projectService = new ProjectServiceImpl();
-
-    TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
-
+    private UserService userService = new UserServiceImpl();
+    private ProjectService projectService = new ProjectServiceImpl();
+    private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
 
     @Override
     public TemporaryFile getEntityByHash(String hashKey) throws DataException {
@@ -25,7 +25,7 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public List getEntityByUserProject(Long idUser, Long idProject) throws DataException {
+    public List<TemporaryFile> getEntityByUserProject(Long idUser, Long idProject) throws DataException {
         User user;
         Project project;
 
@@ -46,12 +46,13 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public TemporaryFile addEntity(Long idUser, String content, String path, Long idProject) throws DataException {
+    public TemporaryFile addEntity(Long idUser, String content, String path,
+                                   Long idProject) throws DataException {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
 
         TemporaryFile temporaryFile = new TemporaryFile(user, content, project, path);
-        return temporaryFileDAO.add(temporaryFile);
+        return temporaryFileDAO.addEntity(temporaryFile);
     }
 
     @Override
@@ -68,5 +69,4 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
 
         return test;
     }
-
 }

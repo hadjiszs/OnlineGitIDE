@@ -10,7 +10,7 @@ public class Status {
 	private String message;
 
 	public Status(){
-		/*
+		/**
 		 * On ajout le constructeur par défaut pour le mapping de jackson
 		 */
 	}

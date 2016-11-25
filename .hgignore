@@ -4,6 +4,7 @@ target
 Application.iml
 Multimif.iml
 API.iml
+*.orig
 .idea
 .idea/*
 .classpath
@@ -12,3 +13,4 @@ API.iml
 nb-configuration.xml	
 API/repositories
 sonar-project.properties
+API/src/main/webapp/zipFiles/*.zip

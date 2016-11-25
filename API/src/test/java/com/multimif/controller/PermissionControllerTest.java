@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -126,7 +124,7 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(user.getIdUser(), developer.getIdUser());
         assertEquals(user.getMail(), developer.getMail());
         assertEquals(user.getUsername(), developer.getUsername());
-        assertEquals(user.getPassword(), developer.getPassword());
+        assertNotEquals(user.getPassword(), developer.getPassword());
     }
 
     /**
@@ -151,7 +149,7 @@ public class PermissionControllerTest extends TestUtil{
         assertEquals(user.getIdUser(), admin.getIdUser());
         assertEquals(user.getMail(), admin.getMail());
         assertEquals(user.getUsername(), admin.getUsername());
-        assertEquals(user.getPassword(), admin.getPassword());
+        assertNotEquals(user.getPassword(), admin.getPassword());
     }
 
     /**

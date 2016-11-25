@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -105,11 +106,13 @@ public class UserControllerTest extends TestUtil {
         assertEquals(user.getIdUser(), usr.getIdUser());
         assertEquals(user.getMail(), usr.getMail());
         assertEquals(user.getUsername(), usr.getUsername());
-        assertEquals(user.getPassword(), usr.getPassword());
+        assertNotEquals(user.getPassword(), usr.getPassword());
 
         assertNull(exception);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
     }
+
+
 
     @Test
     public void removeTest(){

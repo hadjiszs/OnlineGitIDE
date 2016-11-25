@@ -102,8 +102,8 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> login(@RequestParam(value = "username") String username,
-                                          @RequestParam(value = "password") String password) {
+    public ResponseEntity<User> login (@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "password") String password) {
 
         User user;
 
@@ -180,6 +180,7 @@ public class UserController {
 
     /**
      *
+     * TODO cacher les passwords
      * Cette méthode retourne tous les utilisateurs
      *
      * @return Liste d'utilisateurs
