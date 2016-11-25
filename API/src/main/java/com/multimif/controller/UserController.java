@@ -102,7 +102,7 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<User> login (@RequestParam(value = "username") String username,
+    public ResponseEntity<String> login (@RequestParam(value = "username") String username,
                                        @RequestParam(value = "password") String password) {
 
         User user;
@@ -193,9 +193,6 @@ public class UserController {
 
         try {
             users = userService.getEntityList();
-        } catch (DataException ex) {
-            LOGGER.log(Level.FINE, ex.toString(), ex);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
