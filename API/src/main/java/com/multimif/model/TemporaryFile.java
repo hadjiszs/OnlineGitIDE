@@ -50,12 +50,11 @@ public class TemporaryFile implements Serializable {
      * Constructeur du temporaryFile
      *
      * @param user    utilisateur proprietaire du fichier
-     * @param hashKey du fichier
      * @param content du fichier
      * @param project associé au fichier
      * @param path    dans le dépôt
      */
-    public TemporaryFile(User user, String hashKey, String content, Project project,
+    public TemporaryFile(User user, String content, Project project,
                          String path) {
         String raw = user.getIdUser().toString() +
                 project.getIdProject().toString() +

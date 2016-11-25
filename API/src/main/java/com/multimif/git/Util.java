@@ -139,7 +139,7 @@ public class Util {
      * @param remoteURL URL du repo distant
      * @throws Exception
      */
-    public static void cloneRemoteRepo(String creator,
+    public static JsonObject cloneRemoteRepo(String creator,
                                        String newRepo,
                                        String remoteURL) throws DataException {
 
@@ -150,11 +150,10 @@ public class Util {
         } else
             repository = newRepo;
 
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
         // prepare a new folder for the cloned repository
         String path = getGitRepo(creator, repository);
-
         File localPath = new File(path);
-
         // then clone
         try {
             Git.cloneRepository().setURI(remoteURL)
@@ -164,6 +163,7 @@ public class Util {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             throw new DataException(Messages.GIT_CANT_CLONE_REPOSITORY);
         }
+        return factory.createObjectBuilder().add("result", GitStatus.CLONE_SUCCESS.toString()).build();
     }
 
     /**
@@ -357,7 +357,7 @@ public class Util {
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         Git git;
         String pathRepository = getGitRepo(creator, repo);
-
+        System.out.println(pathRepository);
         String zipName = repo + GitConstantes.ZIP_EXTENSION;
 
         try {

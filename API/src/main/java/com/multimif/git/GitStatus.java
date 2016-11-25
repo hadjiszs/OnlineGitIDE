@@ -13,7 +13,9 @@ public enum GitStatus {
     BRANCH_NOT_CREATED(9400, "Nom de branche déjà existant"),
     BRANCH_CREATED(9200, "Branche créée"),
     COMMIT_DONE(7200, "commit éffectué"),
-    COMMIT_FAILED(7400, "échec du commit");
+    COMMIT_FAILED(7400, "échec du commit"),
+    CLONE_SUCCESS(6200, "Clone réussi"),
+    CLONE_FAILED(6400, "échec du clonage");
 
 
 

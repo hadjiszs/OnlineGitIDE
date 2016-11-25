@@ -5,6 +5,7 @@ import com.multimif.git.Util;
 import com.multimif.model.Project;
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
+import com.multimif.model.UserGrant;
 import com.multimif.service.*;
 import com.multimif.util.Constantes;
 import com.multimif.util.DataException;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
  */
 
 @Controller
-@RequestMapping("/git/{idUser}/{idRepository}")
+@RequestMapping("/git/{idUser}/{idRepository}/{currentUser}")
 public class GitController {
 
     private static final Logger LOGGER = Logger.getLogger(GitController.class.getName());
@@ -38,15 +39,20 @@ public class GitController {
      */
     private TemporaryFileService temporaryFileService;
 
-    /*
-     * Service de gestion de droit
+    /**
+     * Service de gestion des utilisateurs
      */
     private UserService userService;
 
     /**
-     * Service de gestion de droit
+     * Service de gestion des projets
      */
     private ProjectService projectService;
+
+    /**
+     * Service de gestion des autorisations
+     */
+    UserGrantService userGrantService;
 
     /**
      * Methode interne pour recuperer le pseudo d'un user à partir de son id
@@ -54,6 +60,7 @@ public class GitController {
      * @param idUser id de l'user
      * @return son pseudo
      */
+
     private String getUsernameById(String idUser) throws DataException {
         Long id = Long.valueOf(idUser);
         User user = userService.getEntityById(id);
@@ -67,6 +74,7 @@ public class GitController {
      * @param idRepository id de l'user
      * @return nom du repository
      */
+
     private String getNameRepositoryById(String idRepository) throws DataException {
         Long id = Long.valueOf(idRepository);
         Project project = projectService.getEntityById(id);
@@ -256,7 +264,6 @@ public class GitController {
                                           @PathVariable String idRepository,
                                           @PathVariable String branch,
                                           @RequestParam(value = "message") String message) {
-        TemporaryFileService fileService = new TemporaryFileServiceImpl();
 
         JsonObject ret;
         List<TemporaryFile> files = null;
@@ -266,21 +273,21 @@ public class GitController {
             String repository = getNameRepositoryById(idRepository);
 
             User commiter = userService.getEntityById(Long.parseLong(currentUser));
-            files = fileService.getEntityByUserProject(Long.parseLong(currentUser), Long.parseLong(idRepository));
+            files = temporaryFileService.getEntityByUserProject(Long.parseLong(currentUser), Long.parseLong(idRepository));
             ret = Util.makeCommit(author, repository, branch, commiter, files, message);
             if (ret == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             try {
-                fileService.deleteAllEntity(files);
+                temporaryFileService.deleteAllEntity(files);
             } catch (Exception ex) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
-            fileService.deleteAllEntity(files);
+            temporaryFileService.deleteAllEntity(files);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -376,14 +383,48 @@ public class GitController {
      * @param url          l'addresse
      * @return une chaîne de characteres en format json
      */
-    @RequestMapping(value = "/clone/{url}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
-    @ResponseBody
-    public ResponseEntity<String> postClone(@PathVariable String idUser,
-                                            @PathVariable String currentUser,
-                                            @PathVariable String idRepository,
-                                            @PathVariable String url) {
-        //TODO clone
-        return null;
+    //ATENTION : pour cette requête : idUser = L'utilisateur en cours. En effet, on créé un nouveau dépot. C'est le current user qui est donc creator
+    //La variable idRepository est inutile
+    @RequestMapping(value = "/clone/{url}/{newname}/{type}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    public @ResponseBody
+    ResponseEntity<String> postClone(@PathVariable String idUser,
+                                     @PathVariable String idRepository,
+                                     @PathVariable String url,
+                                     @PathVariable String newname,
+                                     @PathVariable String type) {
+        JsonObject ret = null;
+        Project.TypeProject newType;
+        switch (type) {
+            case "JAVA":
+                newType = Project.TypeProject.JAVA;
+                break;
+            case "C":
+                newType = Project.TypeProject.C;
+                break;
+            case "CPP":
+                newType = Project.TypeProject.CPP;
+                break;
+            case "MAVEN":
+                newType = Project.TypeProject.MAVEN;
+                break;
+            default:
+                newType = Project.TypeProject.JAVA;
+        }
+
+
+
+        try {
+            Project project = projectService.addEntity(newname, newType, Long.parseLong(idUser));
+            userGrantService.addEntity(Long.parseLong(idUser), project.getIdProject(), UserGrant.PermissionType.ADMIN);
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+            ret = Util.cloneRemoteRepo(author, repository, url);
+            if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 
 
@@ -447,7 +488,7 @@ public class GitController {
 
         // Ajout du temporary file, vide
         try {
-            if (temporaryFileService.addEntity(currentUser, "", "", path, idrepo) == null)
+            if (temporaryFileService.addEntity(currentUser, "", path, idrepo) == null)
                 return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                         Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         } catch (DataException e) {
@@ -462,26 +503,28 @@ public class GitController {
 
     //Merge
     @RequestMapping(value = "/merge/{branchname}/{revision}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
-    @ResponseBody
-    public ResponseEntity<String> postMerge(@PathVariable String author,
+
+    public @ResponseBody
+    ResponseEntity<String> postMerge(@PathVariable String idUser,
                                      @PathVariable String currentUser,
-                                     @PathVariable String repository,
+                                     @PathVariable String idRepository,
                                      @PathVariable String branchname,
                                      @PathVariable String revision) {
         JsonObject ret = null;
-//        Long id = Long.valueOf(idUser);
-//        String author = getUsernameById(idUser);
-//        String repository = getNameRepositoryById(idRepository);
-//
-//        // Ajout du temporary file
-//
-//        temporaryFileService.addEntity(idUser, "hashkey", "", path, idRepository);
-//
-//        try {
-//            if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
-//        } catch (Exception e) {
-//            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        Long id = Long.valueOf(idUser);
+
+      try {
+          try {
+              String author = getUsernameById(idUser);
+              String repository = getNameRepositoryById(idRepository);
+              ret = Util.merge(author, repository, branchname, revision);
+          }catch (DataException ex) {
+              return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+          }
+          if (ret == null) { return new ResponseEntity<String>(HttpStatus.NOT_FOUND); }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }

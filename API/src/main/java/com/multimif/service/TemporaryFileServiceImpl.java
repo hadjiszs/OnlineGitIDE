@@ -48,12 +48,12 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     }
 
     @Override
-    public TemporaryFile addEntity(Long idUser, String hashKey, String content, String path,
+    public TemporaryFile addEntity(Long idUser, String content, String path,
                                    Long idProject) throws DataException {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
 
-        TemporaryFile temporaryFile = new TemporaryFile(user, hashKey, content, project, path);
+        TemporaryFile temporaryFile = new TemporaryFile(user, content, project, path);
         return temporaryFileDAO.addEntity(temporaryFile);
     }
 

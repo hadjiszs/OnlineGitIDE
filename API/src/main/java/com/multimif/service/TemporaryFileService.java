@@ -71,7 +71,7 @@ public interface TemporaryFileService {
      * @throws DataException si l'utilisateur ou le projet n'existe pas dans la base de
      * données.
      */
-    TemporaryFile addEntity(Long idUser, String hashKey, String content, String path,
+    TemporaryFile addEntity(Long idUser, String content, String path,
                             Long idProject) throws DataException;
 
     /**
