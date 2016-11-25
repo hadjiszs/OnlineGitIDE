@@ -130,20 +130,27 @@ public class GitController {
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
      * @param revision     la revision spéficiée
+     * @param useTemporaryFiles si "true" : les temporaryFiles de l'utilisateur sont pris en compte pour construire l'arborescence
      * @return une chaîne de characteres en format json
      */
-    @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/tree/{revision}/{useTemporaryFiles}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> getTree(@PathVariable String idUser,
                                           @PathVariable String idRepository,
-                                          @PathVariable String revision) {
+                                          @PathVariable String revision,
+                                          @PathVariable String useTemporaryFiles) {
         JsonObject ret;
 
         try {
             String author = getUsernameById(idUser);
             String repository = getNameRepositoryById(idRepository);
-
-            ret = Util.getArborescence(author, repository, revision);
+            List<TemporaryFile> list = null;
+            if (useTemporaryFiles.equals("true")) {
+                list = temporaryFileService.getEntityByUserProject(Long.parseLong(idUser), Long.parseLong(idRepository));
+                ret = Util.getArborescence(author, repository, revision, list,  true);
+            } else {
+                ret = Util.getArborescence(author, repository, revision, list,  false);
+            }
             if (ret == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

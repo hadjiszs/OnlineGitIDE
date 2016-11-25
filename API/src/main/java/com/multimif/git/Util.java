@@ -2,6 +2,7 @@ package com.multimif.git;
 
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
+import com.multimif.service.TemporaryFileService;
 import com.multimif.util.*;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
@@ -56,7 +57,8 @@ public class Util {
      */
     public static JsonObject getArborescence(String creator,
                                              String repository,
-                                             String revision) {
+                                             String revision, List<TemporaryFile> list,
+                                             boolean usetemporaryFiles) {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
@@ -73,13 +75,20 @@ public class Util {
             treeWalk.addTree(tree);
             treeWalk.setRecursive(true);
 
-                    //On créé un objet ArboTree contenant l'arborescence voulue
-                    ArboTree arborescence = new ArboTree(new ArboNode("root", "root"));
-                    while (treeWalk.next()) {
-                        arborescence.addElement(treeWalk.getPathString());
+            //On créé un objet ArboTree contenant l'arborescence voulue
+            ArboTree arborescence = new ArboTree(new ArboNode("root", "root"));
+            while (treeWalk.next()) {
+                arborescence.addElement(treeWalk.getPathString());
+            }
+            if (usetemporaryFiles && list != null) {
+                for (TemporaryFile file : list) {
+                    if (!arborescence.existElement("root/" + file.getPath())) {
+                        arborescence.addElement(file.getPath());
                     }
-                    //On convertit cet objet en Json
-                    return arborescence.toJson();
+                }
+            }
+            //On convertit cet objet en Json
+            return arborescence.toJson();
 
         } catch (Exception e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
@@ -615,10 +624,8 @@ public class Util {
                 //System.out.println(file.getPath());
                 output = new PrintStream(new FileOutputStream(file.getPath()));
                 output.print(file.getContent());
-
-                //TODO : Remplacer le "src/testfile" par file.getRelativePath (en cours de dev)
                 git.add()
-                        .addFilepattern("src/testfile" + i)
+                        .addFilepattern(file.getPath())
                         .call();
                 i++;
             }
