@@ -103,7 +103,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
     @Override
     public TemporaryFile addEntity(TemporaryFile temporaryFile) throws DataException {
 
-        if (temporaryFile.getId() != null){
+        if (temporaryFile.getId() != null) {
             throw new DataException(Messages.FILE_ALREADY_EXISTS);
         }
 

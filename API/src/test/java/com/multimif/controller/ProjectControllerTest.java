@@ -81,11 +81,10 @@ public class ProjectControllerTest extends TestUtil{
         Project proj = null;
         projectController.init();
 
-        try{
+        try {
             responseEntity = projectController.get(project.getIdProject());
             proj = responseEntity.getBody();
-
-        }catch (Exception e){
+        } catch (Exception e){
             exception = e;
         }
 

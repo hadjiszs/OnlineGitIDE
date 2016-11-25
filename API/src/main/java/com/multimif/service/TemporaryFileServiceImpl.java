@@ -5,7 +5,12 @@ import com.multimif.dao.TemporaryFileDAOImpl;
 import com.multimif.model.Project;
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
+import com.multimif.util.Constantes;
 import com.multimif.util.DataException;
+import com.multimif.util.JsonUtil;
+import com.multimif.util.Status;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -53,6 +58,28 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
 
         TemporaryFile temporaryFile = new TemporaryFile(user, content, project, path);
         return temporaryFileDAO.addEntity(temporaryFile);
+    }
+
+    @Override
+    public TemporaryFile updateEntity(Long idUser, String content, String path,
+                                      Long idProject) throws DataException
+    {
+        User user = userService.getEntityById(idUser);
+        Project project = projectService.getEntityById(idProject);
+
+        TemporaryFile newTempFile = new TemporaryFile(user, content, project, path);
+
+        // recuperation du TemporaryFile éventuellement déjà présent dans la table
+        TemporaryFile oldTempFile = getEntityByHash(newTempFile.getHashKey());
+
+        // si le fichier n'existe pas encore dans la table TemporaryFile
+        // on l'ajoute avec le contenu temporaire
+        if(oldTempFile == null)
+            temporaryFileDAO.addEntity(newTempFile);
+        else
+            temporaryFileDAO.updateEntity(newTempFile);
+
+        return newTempFile;
     }
 
     @Override
