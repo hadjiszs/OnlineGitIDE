@@ -77,10 +77,10 @@ public class GitControllerTest {
 
     @Test
     public void testGetTree() throws Exception {
-        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject()  + "/tree/70ad3b45d04d53ad77f0444a3cc9e33e657e9779"))
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject()  + "/tree/70ad3b45d04d53ad77f0444a3cc9e33e657e9779/true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(Util.getArborescence(USER_NAME, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779").toString()));
+                .andExpect(content().string(Util.getArborescence(USER_NAME, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779", null, true).toString()));
 
     }
 
