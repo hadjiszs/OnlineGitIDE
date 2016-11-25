@@ -50,7 +50,7 @@ public abstract class TestUtil {
         project.setLastModification(new Date());
         project.setType(Project.TypeProject.JAVA);
     }
-/*
+
     protected void newTemporaryFile(){
         temporaryFile = new TemporaryFile();
         temporaryFile.setId(null);
@@ -61,7 +61,7 @@ public abstract class TestUtil {
         temporaryFile.setUser(null);
         temporaryFile.setName("file-temporary");
         temporaryFile.setExtensionType(ExtensionType.JAVA);
-    }*/
+    }
 
     protected void newUserGrant1(){
         userGrant1 = new UserGrant();

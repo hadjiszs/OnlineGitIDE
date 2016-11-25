@@ -44,13 +44,54 @@ public class UserDAOTest extends TestUtil{
         Exception exception = null;
         try {
             newAdmin();
+
+            /* On garde le pass pour l'utiliser dans le control d'authentication*/
+            String password = admin.getPassword();
+
             userDAO.addEntity(admin);
+
+            admin.setPassword(password);
+
         } catch (DataException e) {
             exception = e;
         }
 
         assertEquals(exception, null);
         assertNotNull(admin.getIdUser());
+    }
+
+
+    @Test
+    public void authEntityTest(){
+        Exception exception = null;
+        User usr = null;
+
+        /* Authentication OK*/
+        try {
+            usr = userDAO.authEntity(admin.getUsername(), admin.getPassword());
+        } catch (DataException e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+        assertNotNull(usr);
+        assertEquals(usr.getIdUser(), admin.getIdUser());
+        assertEquals(usr.getMail(), admin.getMail());
+        assertEquals(usr.getUsername(), admin.getUsername());
+        assertNotEquals(usr.getPassword(), admin.getPassword());
+
+
+        /* Authentication failed */
+        usr = null
+        ;
+        try {
+            usr = userDAO.authEntity(admin.getUsername(), "different-password");
+        } catch (DataException e) {
+            exception = e;
+        }
+
+        assertNotNull(exception);
+        assertNull(usr);
     }
 
     @Test
@@ -68,7 +109,7 @@ public class UserDAOTest extends TestUtil{
         assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
-        assertEquals(usr.getPassword(), admin.getPassword());
+        assertNotEquals(usr.getPassword(), admin.getPassword());
 
     }
 
@@ -87,7 +128,7 @@ public class UserDAOTest extends TestUtil{
         assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
-        assertEquals(usr.getPassword(), admin.getPassword());
+        assertNotEquals(usr.getPassword(), admin.getPassword());
 
     }
 
@@ -117,7 +158,7 @@ public class UserDAOTest extends TestUtil{
         assertEquals(usr.getIdUser(), admin.getIdUser());
         assertEquals(usr.getMail(), admin.getMail());
         assertEquals(usr.getUsername(), admin.getUsername());
-        assertEquals(usr.getPassword(), admin.getPassword());
+        assertNotEquals(usr.getPassword(), admin.getPassword());
 
     }
 

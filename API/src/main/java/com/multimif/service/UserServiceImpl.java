@@ -39,9 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getEntityList() throws DataException {
+    public List<User> getEntityList() {
         return userDAO.getEntityList();
-
     }
 
     @Override
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getEntityById(Long id) throws DataException{
-        return userDAO.getEntityById(id);
+    public User getEntityById(Long idUser) throws DataException{
+        return userDAO.getEntityById(idUser);
     }
 }

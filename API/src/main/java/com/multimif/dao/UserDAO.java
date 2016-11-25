@@ -73,8 +73,7 @@ public interface UserDAO {
 
     /**
      *
-     * Cette méthode retourne la liste d'utilisateurs
-     *
+     * Cette méthode retourne la liste d'utilisateurs qui sont dans la basse de données
      * @return liste d'utilisateurs
      */
     List<User> getEntityList();

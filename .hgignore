@@ -12,3 +12,4 @@ API.iml
 nb-configuration.xml	
 API/repositories
 sonar-project.properties
+API/src/main/webapp/zipFiles

@@ -18,6 +18,9 @@ import static org.junit.Assert.*;
 
 /**
  * Created by amaia.nazabal on 11/18/16.
+ * @author Amaia Nazábal
+ * @version 1.0
+ * @since 1.0 11/18/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/api-servlet.xml" })
@@ -26,7 +29,7 @@ public class TemporaryFileDAOTest extends TestUtil{
     private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
     private UserDAO userDAO = new UserDAOImp();
     private ProjectDAO projectDAO = new ProjectDAOImpl();
-/*
+
     @Test
     public void addTest(){
         Exception exception = null;
@@ -41,10 +44,9 @@ public class TemporaryFileDAOTest extends TestUtil{
             temporaryFile.setProject(project);
             temporaryFile.setUser(user);
 
-            temporaryFileDAO.add(temporaryFile);
+            temporaryFileDAO.addEntity(temporaryFile);
 
         }catch (Exception e){
-            e.printStackTrace();
             exception = e;
         }
 
@@ -94,7 +96,7 @@ public class TemporaryFileDAOTest extends TestUtil{
         TemporaryFile tmpFile = null;
 
         try{
-            tmpFile = temporaryFileDAO.getEntityByHashKey(temporaryFile.getHashKey());
+            tmpFile = temporaryFileDAO.getEntityByHashKeyAndUser(user,temporaryFile.getHashKey());
         }catch (Exception e){
             exception = e;
         }
@@ -143,7 +145,7 @@ public class TemporaryFileDAOTest extends TestUtil{
     }
 
     @Test
-    public void supprimeTest() {
+    public void suppressTest() {
         Exception exception = null;
         TemporaryFile tmpFile = null;
         try {
@@ -171,5 +173,5 @@ public class TemporaryFileDAOTest extends TestUtil{
         }
 
         assertNull(exception);
-    }*/
+    }
 }
