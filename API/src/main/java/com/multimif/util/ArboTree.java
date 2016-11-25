@@ -23,9 +23,14 @@ public class ArboTree {
     public void addElement(String elementValue) {
         String[] list = elementValue.split("/");
 
-        // latest element of the list is the filename.extrension
+        // latest element of the list is the filename.extension
         root.addElement(root.incrementalPath, list);
 
+    }
+
+    public boolean existElement(String path) {
+        String[] list = path.split("/");
+        return root.existElement(list, 0);
     }
 
     public void printTree() {

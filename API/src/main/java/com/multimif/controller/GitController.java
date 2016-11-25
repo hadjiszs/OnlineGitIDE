@@ -53,7 +53,7 @@ public class GitController {
     /**
      * Service de gestion des autorisations
      */
-    UserGrantService userGrantService;
+    UserGrantService userGrantService = new UserGrantServiceImpl();
 
     /**
      * Methode interne pour recuperer le pseudo d'un user à partir de son id
@@ -95,27 +95,33 @@ public class GitController {
     public ResponseEntity<String> getFile(@PathVariable String idUser,
                                           @PathVariable String idRepository,
                                           @PathVariable String revision,
+                                          @PathVariable String currentUser,
                                           @RequestParam(value = "path") String path) {
         JsonObject ret;
 
-        // TODO: verifier que le fichier (path) n'existe pas deja dans TemporaryFile
-
         try {
-            String author = getUsernameById(idUser);
-            String repository = getNameRepositoryById(idRepository);
+            String raw = idUser + idRepository + path;
+            temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
+        } catch (DataException ex) {
 
-            ret = Util.getContent(author, repository, revision, path);
-            if (ret == null) {
+            try {
+                String author = getUsernameById(idUser);
+                String repository = getNameRepositoryById(idRepository);
+
+                ret = Util.getContent(author, repository, revision, path);
+                if (ret == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+            } catch (DataException e) {
+                LOGGER.log(Level.FINE, e.getMessage(), e);
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, e.getMessage(), e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (DataException e) {
-            LOGGER.log(Level.FINE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            LOGGER.log(Level.FINE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
 
     /**
@@ -124,20 +130,27 @@ public class GitController {
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
      * @param revision     la revision spéficiée
+     * @param useTemporaryFiles si "true" : les temporaryFiles de l'utilisateur sont pris en compte pour construire l'arborescence
      * @return une chaîne de characteres en format json
      */
-    @RequestMapping(value = "/tree/{revision}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/tree/{revision}/{useTemporaryFiles}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> getTree(@PathVariable String idUser,
                                           @PathVariable String idRepository,
-                                          @PathVariable String revision) {
+                                          @PathVariable String revision,
+                                          @PathVariable String useTemporaryFiles) {
         JsonObject ret;
 
         try {
             String author = getUsernameById(idUser);
             String repository = getNameRepositoryById(idRepository);
-
-            ret = Util.getArborescence(author, repository, revision);
+            List<TemporaryFile> list = null;
+            if (useTemporaryFiles.equals("true")) {
+                list = temporaryFileService.getEntityByUserProject(Long.parseLong(idUser), Long.parseLong(idRepository));
+                ret = Util.getArborescence(author, repository, revision, list,  true);
+            } else {
+                ret = Util.getArborescence(author, repository, revision, list,  false);
+            }
             if (ret == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -255,9 +268,8 @@ public class GitController {
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
      * @param branch       le nom de la branche
-     * @return une chaîne de characteres en format json
+     * @return une chaîne de charactères en format json
      */
-    // TODO: renvoyer l'id de la revision
     @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
@@ -295,25 +307,6 @@ public class GitController {
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    /**
-     * diff entre le fichier en cours de modification et le dernier commit
-     *
-     * @param idUser       l'id de l'utilisateur
-     * @param idRepository l'id du dépôt
-     * @param branch       le nom de la branche
-     * @param path         l'addresse du fichier
-     * @return une chaîne de characteres en format json
-     */
-    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
-    @ResponseBody
-    public ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
-                                                @PathVariable String currentUser,
-                                                @PathVariable String idRepository,
-                                                @PathVariable String branch,
-                                                @PathVariable String path) {
-        //TODO
-        return null;
-    }
 
     /**
      * diff concernant un commit en particulier
@@ -429,7 +422,31 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 
-    // TODO: get nom de branche à partir d'une revision de commit
+    @RequestMapping(value = "/getbranch/{commitId}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> postGetBranch(@PathVariable String idUser,
+                                                   @PathVariable String currentUser,
+                                                   @PathVariable String idRepository,
+                                                   @PathVariable String commitId) {
+        JsonObject ret;
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.getBranch(author, repository, commitId);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+    }
 
     /**
      * Creation branche
@@ -467,41 +484,48 @@ public class GitController {
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    // TODO: requete pour savoir si oui ou non il y a des fichiers temporaires lié
-    // à un user et à un projet
+    /**
+     * Savoir si oui ou non il y a des fichiers temporaires lié à un user sur un projet
+     * afin de modérer le changement de branche côté client
+     *
+     * @param currentUser  l'utilisateur courant, celui qui fait la requete
+     * @param idUser       le créateur du projet
+     * @param idRepository l'id du repository courant
+     * @param path         le chemin du nouveau fichier
+     * @return boolean
+     */
+    @RequestMapping(value = "/haveTemporaryFile", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> haveTemporaryFile(@PathVariable String currentUser,
+                                                    @PathVariable String idUser,
+                                                    @PathVariable String idRepository,
+                                                    @RequestParam(value="path") String path) {
+        List<TemporaryFile> files = null;
+        try {
+            files = temporaryFileService.getEntityByUserProject(Long.parseLong(currentUser), Long.parseLong(idRepository));
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+        boolean haveTemporaryFile = files.size() == 0;
+
+        return new ResponseEntity<String>(JsonUtil.convertStringToJson("haveTemporaryFile", haveTemporaryFile? "true" : "false"), HttpStatus.ACCEPTED);
+    }
 
     /**
      * Creation fichier
      *
-     * @param idUser       le créateur du projet
      * @param currentUser  l'utilisateur courant, celui qui fait la requete
-     * @param branch       la branche courante de l'utilisateur
      * @param idRepository l'id du repository courant
      * @param path         le chemin du nouveau fichier
      * @return
      */
     @RequestMapping(value = "/create/file/{branch}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
-    public ResponseEntity<String> postCreateFile(@PathVariable String idUser,
-                                          @PathVariable String currentUser,
-                                          @PathVariable String branch,
-                                          @PathVariable String idRepository,
-                                          @RequestParam(value="path") String path) {
-        UserService userService = new UserServiceImpl();
-
-        JsonObject ret = null;
-        String author = null;
-        String repository = null;
-
-        try {
-            author = getUsernameById(idUser);
-            repository = getNameRepositoryById(idRepository);
-        } catch (DataException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+    public ResponseEntity<String> postCreateFile(@PathVariable String currentUser,
+                                                 @PathVariable String idRepository,
+                                                 @RequestParam(value="path") String path) {
         Long idrepo = Long.valueOf(idRepository);
         TemporaryFile newFile = null;
 
@@ -516,26 +540,6 @@ public class GitController {
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
         }
-
-        // commit du nouveau fichier pour qu'il soit accessible lors du get arborescence
-        User commiter = null;
-        try {
-            commiter = userService.getEntityById(Long.parseLong(currentUser));
-        } catch (DataException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<TemporaryFile> file = new ArrayList<>();
-        file.add(newFile);
-
-        try {
-            ret = Util.makeCommit(author, repository, branch, commiter, file, "add new file: "+path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (ret == null)
-            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,
                 Constantes.OPERATION_MSG_REUSSI)), HttpStatus.ACCEPTED);
@@ -566,7 +570,6 @@ public class GitController {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
 
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }

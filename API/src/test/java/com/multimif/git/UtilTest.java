@@ -80,7 +80,7 @@ public class UtilTest {
         // Recuperation de l'aborescence associé au commit de la revision suivante
         String revision = "70ad3b45d04d53ad77f0444a3cc9e33e657e9779";
 
-        JsonObject object = Util.getArborescence(USER, DIR_NAME, revision);
+        JsonObject object = Util.getArborescence(USER, DIR_NAME, revision, null, false);
         System.out.println(object.toString());
 
         assertNotNull("dsd", object);
@@ -222,5 +222,12 @@ public class UtilTest {
         JsonObject res2 = Util.merge(USER, DIR_NAME, "newbranch", CommitUtils.getMaster(git.getRepository()).getName());
         Assert.assertNotNull(res2);
         System.out.println(res2.toString());
+    }
+
+    @Test
+    public void testGetBranch() throws Exception {
+        JsonObject res = Util.getBranch(USER, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779");
+        Assert.assertNotNull(res);
+        System.out.println(res.toString());
     }
 }

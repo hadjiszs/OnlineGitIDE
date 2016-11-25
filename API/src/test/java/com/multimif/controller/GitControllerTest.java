@@ -38,6 +38,8 @@ public class GitControllerTest {
 
     private static User USER = null;
     private static Project PROJECT = null;
+    private static String BRANCH = "nouvellebranche";
+
     private MockMvc mockMvc;
     private static final String REMOTE_URL = "https://github.com/hadjiszs/Interpolation.git";
 
@@ -75,10 +77,10 @@ public class GitControllerTest {
 
     @Test
     public void testGetTree() throws Exception {
-        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject()  + "/tree/70ad3b45d04d53ad77f0444a3cc9e33e657e9779"))
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject()  + "/tree/70ad3b45d04d53ad77f0444a3cc9e33e657e9779/true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(Util.getArborescence(USER_NAME, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779").toString()));
+                .andExpect(content().string(Util.getArborescence(USER_NAME, DIR_NAME, "70ad3b45d04d53ad77f0444a3cc9e33e657e9779", null, true).toString()));
 
     }
 
@@ -115,9 +117,8 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testGetArchive() throws Exception {
-        /* archive/{branch} */
-        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject() + "/archive/" + ""))
+    public void etestGetArchive() throws Exception {
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/" + PROJECT.getIdProject() + "/archive/" + BRANCH))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(Util.getCommits(USER_NAME, DIR_NAME, "6973050f16380117b412aef271bf7993a16694cf").toString()));
@@ -130,8 +131,13 @@ public class GitControllerTest {
     }
 
     @Test
-    public void testPostCreateBranch() throws Exception {
-
+    public void dtestPostCreateBranch() throws Exception {
+        String path = "/git/" + USER.getIdUser() + "/"  + PROJECT.getIdProject() + "/" + USER.getIdUser() +  "/create/branch/" + BRANCH;
+        System.out.println(path);
+        mockMvc.perform(get("/git/" + USER.getIdUser() + "/"  + PROJECT.getIdProject() + "/" + USER.getIdUser() +  "/create/branch/" + BRANCH))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(TestControllerUtils.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(Util.createBranch(USER_NAME, DIR_NAME, BRANCH).toString()));
     }
 
     @Test

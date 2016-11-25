@@ -25,6 +25,27 @@ public class ArboNode {
         this. incrementalPath = incrementalPath;
     }
 
+    public boolean existElement(String[] list, int depth) {
+        //System.out.println(data + " != " + list[depth]);
+        //System.out.println((depth + 1) + " > " + list.length);
+        if (depth + 1 > list.length || !data.equals(list[depth])) {
+            //System.out.println("nope");
+            return false;
+        }
+        if (depth + 1 == list.length && data.equals(list[depth])) {
+            return true;
+        }
+        boolean ret = false;
+        for (ArboNode node : childs) {
+            ret = ret || node.existElement(list, depth +1);
+        }
+        for (ArboNode node : leafs) {
+            ret = ret || node.existElement(list, depth +1);
+        }
+
+        return ret;
+    }
+
     public boolean isLeaf() {
         return childs.isEmpty() && leafs.isEmpty();
     }

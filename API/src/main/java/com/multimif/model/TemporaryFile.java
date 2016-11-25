@@ -18,8 +18,6 @@ import static com.multimif.util.SplitPath.getFileName;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "TemporaryFile.findByHashkey", query = "SELECT f from TemporaryFile f WHERE f.hashKey = :hashKey"),
-        // FIXME: named query correct ? à supprimer ?
-        @NamedQuery(name = "TemporaryFile.findByIdAndUser", query = "SELECT f from TemporaryFile f WHERE f.user = :user AND f.hashKey = :hashKey"),
         @NamedQuery(name = "TemporaryFile.findByUserAndProject", query = "SELECT t FROM TemporaryFile t WHERE t.user = :user AND t.project = :project")
 })
 public class TemporaryFile implements Serializable {
