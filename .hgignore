@@ -6,7 +6,6 @@ Multimif.iml
 API.iml
 .idea
 .idea/*
-.DS_Store
 .classpath
 .project
 nb-configuration.xml	
