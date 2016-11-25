@@ -62,6 +62,7 @@
                         <ul class="nav navbar-nav">
                             <li><a href="home.jsp">Home</a></li>
                             <li class="active"><a href="edit.jsp">Edition</a></li>
+                            <li><a href="viewer.jsp">Viewer</a></li>
 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -73,7 +74,7 @@
         </header>
         <main class="container-fluid">
             <aside class="row">
-                <div class="col-lg-10 col-lg-offset-1" id="premiereBarre">
+                <div class="col-lg-10 col-lg-offset-1" id="barreBtn">
                     <div class="btn-group">
                         <select class="form-control" id="changerTheme">
                             <option value="dracula">Dracula</option>
@@ -100,10 +101,18 @@
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" id="btnAutoIndent">Tout Indenter</button>
-                        <button type="button" class="btn btn-default" id="createBranch" data-toggle="modal" data-target="#fenetreBranche">Créer une branche</button>
-                        <button type="button" class="btn btn-default" id="createFile">Créer un fichier</button>
-                        <button type="button" class="btn btn-default" id="createDir">Créer un dossier</button>
-                        <input  type="button" class="btn btn-default" id="commitBtn"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Création
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="ligneBtnCreer" id="btnCreerBranche" data-toggle="modal" data-target="#fenetreBranche"><a>Créer une Branche</a></li>
+                                <li class="ligneBtnCreer" id="btnCreerFichier" data-toggle="modal" data-target="#fenetreFichier"><a>Créer un Fichier</a></li>
+                                <li class="ligneBtnCreer" id="btnCreerDossier"><a>Créer un Dossier</a></li>
+                            </ul>
+                        </div>
+                        <input  type="button" class="btn btn-default" id="btnCommit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
                         <button type="button" class="btn btn-default" id="btnCompiler">Compiler</button>
                     </div>
                 </div>
@@ -153,8 +162,6 @@ return member;
 
             <section id="panelDroite">
                 <div id="arborescence"></div>
-                <p> BLABLABLA </p>
-                <p> BLABLABLA </p>
             </section>
 
             <a id="ancrePanelGauche" aria-label="Panel deroulant">
@@ -168,7 +175,7 @@ return member;
             </section>
         </main>
 
-        <!-- Modal -->
+        <!-- Modal Commit -->
         <div id="fenetreCommit" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -214,7 +221,29 @@ return member;
                 <!-- Fin Modal Content -->
             </div>
         </div>
-        <!-- Fin Modal -->
+        <!-- Fin Modal Commit -->
+        <div id="fenetreFichier" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer un nouveau fichier</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createFile-modal">
+                            <input type="text" placeholder="nom de la branche" name="newBranch" id="nomFichier"/>
+                            <input  class="btn btn-success" id="createFile-button" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+            </div>
+        </div>
         <script src="../ressources/JS/edit.js"></script>
     </body>
 </html>
