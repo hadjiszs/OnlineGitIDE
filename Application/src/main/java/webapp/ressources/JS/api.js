@@ -63,8 +63,6 @@ function ApiRequest(method,url,dataIn,callback) {
             async: false,
             timeout: 5000,
             success: function(data, textStatus ){
-                //alert('request successful');
-                alert("hello");
                 callback(data);
             },
             error: function(xhr, textStatus, errorThrown){

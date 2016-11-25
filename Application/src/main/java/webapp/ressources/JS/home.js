@@ -117,41 +117,31 @@ $(document).ready(function() {
 /* Actualise la page */
 function refreshPage(){
     listProject();
-    listCollaborations();
-    listUser();
+    /*listCollaborations();
+    listUser();*/
 }
 
 /* Liste les projets d'un utilisateur */
 function listProject(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/admin";
-    ApiRequest('GET',url,"",function (json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Projets',
-                message: 'Impossible de récupérer la liste des projets',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
-            console.log("Liste projets: " + JSON.stringify(json));
-            $("#listeProjets").empty();
+    ApiRequest('GET',url,"",function (json){a
+        console.log("Liste projets: " + JSON.stringify(json));
+        $("#listeProjets").empty();
 
-            $.each(json, function(index, element) {
-                $('#listeProjets').append(
-                    '<div class="btn-group col-lg-12 ligneListeProjet"> \
-                        <button type="button" class="btn btn-default nomListeProjets userProject-list"\
-                            project="' + element.idProject +'" creator="'+ element.idCreator + '">' + element.name +'</button> \
-                        <button type="button" class="btn btn-default userProject-list-open" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
-                            <span class="glyphicon glyphicon-pencil"></span>\
-                        </button> \
-                        <button type="button" class="btn btn-default userProject-list-delete" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
-                            <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
-                        </button> \
-                    </div>'
-                );
-            });
-        }
+        $.each(json, function(index, element) {
+            $('#listeProjets').append(
+                '<div class="btn-group col-lg-12 ligneListeProjet"> \
+                    <button type="button" class="btn btn-default nomListeProjets userProject-list"\
+                        project="' + element.idProject +'" creator="'+ element.idCreator + '">' + element.name +'</button> \
+                    <button type="button" class="btn btn-default userProject-list-open" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
+                        <span class="glyphicon glyphicon-pencil"></span>\
+                    </button> \
+                    <button type="button" class="btn btn-default userProject-list-delete" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
+                        <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
+                    </button> \
+                </div>'
+            );
+        });
     });
 }
 
