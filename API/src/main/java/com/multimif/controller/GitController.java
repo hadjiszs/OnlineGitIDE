@@ -53,7 +53,7 @@ public class GitController {
     /**
      * Service de gestion des autorisations
      */
-    UserGrantService userGrantService;
+    UserGrantService userGrantService = new UserGrantServiceImpl();
 
     /**
      * Methode interne pour recuperer le pseudo d'un user à partir de son id
@@ -95,27 +95,33 @@ public class GitController {
     public ResponseEntity<String> getFile(@PathVariable String idUser,
                                           @PathVariable String idRepository,
                                           @PathVariable String revision,
+                                          @PathVariable String currentUser,
                                           @RequestParam(value = "path") String path) {
         JsonObject ret;
 
-        // TODO: verifier que le fichier (path) n'existe pas deja dans TemporaryFile
-
         try {
-            String author = getUsernameById(idUser);
-            String repository = getNameRepositoryById(idRepository);
+            String raw = idUser + idRepository + path;
+            temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
+        } catch (DataException ex) {
 
-            ret = Util.getContent(author, repository, revision, path);
-            if (ret == null) {
+            try {
+                String author = getUsernameById(idUser);
+                String repository = getNameRepositoryById(idRepository);
+
+                ret = Util.getContent(author, repository, revision, path);
+                if (ret == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+            } catch (DataException e) {
+                LOGGER.log(Level.FINE, e.getMessage(), e);
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, e.getMessage(), e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (DataException e) {
-            LOGGER.log(Level.FINE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            LOGGER.log(Level.FINE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
 
     /**
@@ -255,9 +261,8 @@ public class GitController {
      * @param idUser       l'id de l'utilisateur
      * @param idRepository l'id du dépôt
      * @param branch       le nom de la branche
-     * @return une chaîne de characteres en format json
+     * @return une chaîne de charactères en format json
      */
-    // TODO: renvoyer l'id de la revision
     @RequestMapping(value = "/makeCommit/{branch}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postMakeCommit(@PathVariable String idUser,
@@ -295,25 +300,6 @@ public class GitController {
         return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 
-    /**
-     * diff entre le fichier en cours de modification et le dernier commit
-     *
-     * @param idUser       l'id de l'utilisateur
-     * @param idRepository l'id du dépôt
-     * @param branch       le nom de la branche
-     * @param path         l'addresse du fichier
-     * @return une chaîne de characteres en format json
-     */
-    @RequestMapping(value = "/diff/{branch}/{path}", method = RequestMethod.GET, produces = GitConstantes.APPLICATION_JSON_UTF8)
-    @ResponseBody
-    public ResponseEntity<String> getDiffBranch(@PathVariable String idUser,
-                                                @PathVariable String currentUser,
-                                                @PathVariable String idRepository,
-                                                @PathVariable String branch,
-                                                @PathVariable String path) {
-        //TODO
-        return null;
-    }
 
     /**
      * diff concernant un commit en particulier
@@ -429,7 +415,31 @@ public class GitController {
         return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
     }
 
-    // TODO: get nom de branche à partir d'une revision de commit
+    @RequestMapping(value = "/getbranch/{commitId}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @ResponseBody
+    public ResponseEntity<String> postGetBranch(@PathVariable String idUser,
+                                                   @PathVariable String currentUser,
+                                                   @PathVariable String idRepository,
+                                                   @PathVariable String commitId) {
+        JsonObject ret;
+        try {
+            String author = getUsernameById(idUser);
+            String repository = getNameRepositoryById(idRepository);
+
+            ret = Util.getBranch(author, repository, commitId);
+            if (ret == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+    }
 
     /**
      * Creation branche
