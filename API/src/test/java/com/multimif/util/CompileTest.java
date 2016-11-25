@@ -1,17 +1,15 @@
 package com.multimif.util;
 
 import com.multimif.compilation.Compile;
-import com.multimif.model.Project;
-import com.multimif.service.ProjectService;
-import com.multimif.service.ProjectServiceImpl;
-import com.multimif.service.UserService;
-import com.multimif.service.UserServiceImpl;
+import com.multimif.service.*;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Mahmoud Ayssami
@@ -21,59 +19,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/api-servlet.xml"})
 public class CompileTest extends TestUtil {
-
+    private TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl();
     private ProjectService projectService = new ProjectServiceImpl();
     private UserService userService = new UserServiceImpl();
 
-
     @Test
     public void executeCompilation() throws Exception {
-
-
-        Compile c = new Compile();
-        String result = c.executeCompilation((long) 1, (long) 1, "sdhjqd");
+        Compile c = new Compile((long) 1, (long) 1, "sdhjqd");
+        String result = c.execute();
         System.out.println(result);
-
-
     }
-
-
-    @Test
-    public void suppressEntityTest() {
-        boolean result = false;
-        Exception exception = null;
-
-        try {
-            result = projectService.deleteEntity(project.getIdProject(), user.getIdUser());
-        } catch (Exception e) {
-            exception = e;
-        }
-
-        assertNull(exception);
-        assertTrue(result);
-
-        Project proj = null;
-
-        try {
-            proj = projectService.getEntityById(project.getIdProject());
-        } catch (DataException e) {
-            exception = e;
-        }
-
-        assertNotNull(exception);
-        assertNull(proj);
-
-        exception = null;
-
-        try {
-            result = userService.deleteEntity(user.getIdUser());
-        } catch (DataException e) {
-            exception = e;
-        }
-
-        assertNull(exception);
-        assertTrue(result);
-    }
-
-
 }

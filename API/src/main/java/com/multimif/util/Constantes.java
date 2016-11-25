@@ -42,7 +42,7 @@ public class Constantes {
 
     public static String SCRIPT_COMPILE_JAVA = "compileJava.sh"; // script pour compiler un projet Java
     public static String SCRIPT_COMPILE_CPP = ""; // à faire
-    public static String SCRIPT_COMPILE_MAVEN = ""; // à faire
+    public static String SCRIPT_COMPILE_MAVEN = "compileMaven.sh"; // à faire
 
     public static String SCRIPT_CLONE = "clone.sh"; // script pour cloner
     public static String SCRIPT_CLEAN = "clean.sh"; // script pour un "clean" apres la compilation

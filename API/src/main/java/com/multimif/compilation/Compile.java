@@ -20,50 +20,55 @@ import static com.multimif.util.Constantes.*;
  */
 public class Compile {
 
+    TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl();
     UserGrantService userGrantService = new UserGrantServiceImpl();
     ProjectService projectService = new ProjectServiceImpl();
     UserService userService = new UserServiceImpl();
 
+    User creator;
+    User currentUser;
+    Project currentProject;
 
-    public Compile() {
-    }
-
-    public String executeCompilation(Long idProject, Long idCurrentUser, String branch) throws InterruptedException, IOException, DataException {
-
+    public Compile(Long idProject, Long idCurrentUser, String branch) throws DataException {
         /*
-        params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
-        besoin de currentProject,currentUser,
+            params {propOfProject : mahmoud , projectName : appTest , currentUser : user}
+            besoin de currentProject,currentUser,
         */
 
-
-        // On récupère le prop
-        User prop = userGrantService.getAdminByEntity(idProject);
+        // On récupère le creator
+        this.creator = userGrantService.getAdminByEntity(idProject);
         // On récupère le project
-        Project currentProject = projectService.getEntityById(idProject);
+        this.currentProject = projectService.getEntityById(idProject);
         // On récupère CurrentUser
-        User currentUser = userService.getEntityById(idCurrentUser);
+        this.currentUser = userService.getEntityById(idCurrentUser);
+    }
 
-
+    public String execute() throws InterruptedException, IOException, DataException {
         // 1 - CLONE
-        this.executeAction(CLONE_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername());
+        this.executeAction(CLONE_ACTION);
         // 2 - update Project Files (temp)
-        this.updateCloneRepo(currentProject.getIdProject(), currentUser.getIdUser());
+//        this.updateCloneRepo();
         // 3 - COMPILATION
-        this.executeAction(COMPILE_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername());
+        this.executeAction(COMPILE_ACTION);
         // 4 - GET RESULT
-        String result = this.getCompilationResult(currentUser.getUsername());
+        String result = this.getCompilationResult();
         // 5 - clean
-        this.executeAction(CLEAN_ACTION, prop.getUsername(), currentProject.getName(), currentUser.getUsername()); //CLEAN
+//        this.executeAction(CLEAN_ACTION); //CLEAN
         //Resultat de la compilation
+
+        // TODO:
+        // mvn package
+        // mv .war
         return result;
     }
 
-    public String getCompilationResult(String userName) throws FileNotFoundException, IOException {
+    public String getCompilationResult() throws FileNotFoundException, IOException {
+
         String result = new String();
         String line = new String();
         BufferedReader in;
 
-        in = new BufferedReader(new FileReader(RESULTS_PATH + "/" + userName + ".txt"));
+        in = new BufferedReader(new FileReader(RESULTS_PATH + "/" + currentUser.getUsername() + ".txt"));
         result = in.readLine();
         line = "";
         result = "";
@@ -82,110 +87,92 @@ public class Compile {
     }
 
 
-    public void executeAction(String action, String propId, String idProject, String idCurrentUser) throws IOException, InterruptedException {
-        Process p1 = null;
+    public void executeAction(String action) throws IOException, InterruptedException {
+        Process process = null;
         Runtime rt = Runtime.getRuntime();
 
-        if (action.toString().equals(COMPILE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser + " " + idProject + ".git");
-        }
-        if (action.toString().equals(CLONE_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + propId + " " + idProject + ".git" + " " + idCurrentUser);
-        }
-        if (action.toString().equals(CLEAN_ACTION)) {
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser);
-        }
-
-
-        if (action.equals(SCRIPT_MV_TEMP_FILE)) {
-
-            p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + CLONE_PATH + " " + RESULTS_PATH + " " + idCurrentUser);
-
+        String execLine = SCRIPTS_PATH + "/";
+        switch (action) {
+            case COMPILE_ACTION:
+                execLine += SCRIPT_COMPILE_MAVEN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git";
+                break;
+            case CLONE_ACTION:
+                execLine += SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + creator.getUsername() + " " + currentProject.getName() + ".git" + " " + currentUser.getUsername();
+                break;
+            case CLEAN_ACTION:
+                execLine += SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername();
+                break;
         }
 
-        p1.waitFor();
+        process = rt.exec(execLine);
+        process.waitFor();
 
-
+//        if (action.toString().equals(COMPILE_ACTION)) {
+//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_COMPILE_JAVA + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + ".git");
+//        }
+//        if (action.toString().equals(CLONE_ACTION)) {
+//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLONE + " " + CLONE_PATH + " " + REPO_PATH + " " + creator.getUsername() + " " + currentProject.getName() + ".git" + " " + currentUser.getUsername());
+//        }
+//        if (action.toString().equals(CLEAN_ACTION)) {
+//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_CLEAN + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername());
+//        }
+//        if (action.equals(SCRIPT_MV_TEMP_FILE)) {
+//            process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + CLONE_PATH + " " + RESULTS_PATH + " " + currentUser.getUsername());
+//        }
     }
 
 
-    public void updateCloneRepo(Long idCurrentProject, Long idCurrentUser) throws DataException, IOException, InterruptedException {
-
-
+    public void updateCloneRepo() throws DataException, IOException, InterruptedException {
         // 1) on récupère la liste des TempFiles
-        List<TemporaryFile> temporaryFileList = getTempFiles(idCurrentProject, idCurrentUser);
+        List<TemporaryFile> temporaryFileList = temporaryFileService.getEntityByUserProject(currentProject.getIdProject(), currentUser.getIdUser());
+
         // 2) Creation des tempFiles + remplissage + deplacement
-
-        // On récupère le project
-
-        Project currentProject = projectService.getEntityById(idCurrentProject);
-        User currentUser = userService.getEntityById(idCurrentUser);
-
-
         String filePath;
         String fileName;
         String fileExt;
 
-
-        for (int i = 0; i < temporaryFileList.size(); i++) {
-
-            filePath = temporaryFileList.get(i).getPath();
-            fileName = temporaryFileList.get(i).getName();
-            fileExt = temporaryFileList.get(i).getExtension();
+        for (TemporaryFile temporaryFile : temporaryFileList) {
+            filePath = temporaryFile.getPath();
+            fileName = temporaryFile.getName();
+            fileExt = temporaryFile.getExtension();
 
             // 1) creation du fichier
-            createFile(temporaryFileList.get(i));
+            createFile(temporaryFile);
+
             // 2) remplir le fichier - content
-            setContentFile(temporaryFileList.get(i), temporaryFileList.get(i).getContent());
+            setContentFile(temporaryFile, temporaryFile.getContent());
+
             // 3) deplacer le fichier
-            mvFilesToCloneRepo(fileName, fileExt, filePath, currentUser.getUsername(), currentProject.getName());
-
+            mvFilesToCloneRepo(fileName, fileExt, filePath);
         }
-
-
     }
-
-
-    public List getTempFiles(Long IdCurrentProject, Long idCurrentUser) throws DataException {
-        TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl();
-        return temporaryFileService.getEntityByUserProject(IdCurrentProject, IdCurrentProject);
-    }
-
 
     public void createFile(TemporaryFile tempFile) throws IOException {
-
         File file = new File(TEMPFILES_PATH + "/" + tempFile.getName() + "." + tempFile.getExtension());
 
-        if (file.createNewFile()) {
-            System.out.println("File is created!");
-        } else {
-            System.out.println("File already exists.");
-        }
+        file.createNewFile();
 
+//        if (file.createNewFile()) {
+//            System.out.println("File is created!");
+//        } else {
+//            System.out.println("File already exists.");
+//        }
     }
 
     public void setContentFile(TemporaryFile tempFile, String content) throws IOException {
-
-
         FileWriter out = new FileWriter(TEMPFILES_PATH + "/" + tempFile.getName() + "." + tempFile.getExtension());
         BufferedWriter bw = new BufferedWriter(out);
         bw.write(content);
         bw.close();
     }
 
-    public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath, String currentUserName
-            , String projectName) throws IOException, InterruptedException {
-
-        Process p1;
+    public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath) throws IOException, InterruptedException {
+        Process process;
         Runtime rt = Runtime.getRuntime();
         String pathMkdir = SplitPath.getFilePath(filePath);
 
-
-        p1 = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
-                fileExt + " " + CLONE_PATH + " " + currentUserName + " " + projectName + " " + filePath + " " + pathMkdir);
-        p1.waitFor();
-
+        process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
+                fileExt + " " + CLONE_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + " " + filePath + " " + pathMkdir);
+        process.waitFor();
     }
-
-
 }
