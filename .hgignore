@@ -10,7 +10,8 @@ API.iml
 .classpath
 .project
 .DS_Store
-nb-configuration.xml	
+.DS_store
+nb-configuration.xml
 API/repositories
 sonar-project.properties
 API/src/main/webapp/zipFiles/*.zip
