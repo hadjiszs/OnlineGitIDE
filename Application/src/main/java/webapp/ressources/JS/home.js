@@ -51,6 +51,7 @@ $(document).ready(function() {
         e.preventDefault();
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
+        infoProject(idProject);
         listBranch(idProject,idCreator,Cookies.get('idUser'));
         listCommit(idProject,idCreator,Cookies.get('idUser'),"master");
         listDeveloppers(idProject);
@@ -259,6 +260,11 @@ function openCommit(idProject, idCreator, branch, revision) {
     window.location.href = "/JSP/viewer.jsp";
 }
 
-
+function infoProject(idProject){
+    var url = "/api/project/" + idProject;
+    ApiRequest('GET',url,"",function(json){
+            console.log("Info projet: " + JSON.stringify(json));
+    });
+}
 
 

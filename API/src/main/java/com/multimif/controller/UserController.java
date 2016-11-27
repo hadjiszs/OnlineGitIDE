@@ -179,8 +179,6 @@ public class UserController {
 
 
     /**
-     *
-     * TODO cacher les passwords
      * Cette méthode retourne tous les utilisateurs
      *
      * @return Liste d'utilisateurs
