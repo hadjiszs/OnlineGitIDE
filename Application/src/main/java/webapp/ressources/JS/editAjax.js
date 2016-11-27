@@ -1,5 +1,7 @@
 $(document).ready(function() {
     refreshPage();
+
+    // Si on selectionne une branche
     $("#selectBranch").on("change",function(e){
         e.preventDefault();
         var idProject = $('#selectBranch option:selected').attr("project");
@@ -25,7 +27,8 @@ $(document).ready(function() {
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');
         var path = Cookies.get('path') + $("#nomFichier").val();
-        createFile(idProject,idCreator, idUser,path);
+        var branch = Cookies.get('branch');
+        createFile(idProject,idCreator, idUser,path,branch);
     });
 
     // Faire un commit
@@ -39,6 +42,17 @@ $(document).ready(function() {
         makeCommit(idProject,idCreator, idUser,branch,message)
     });
 
+    $("#btnSave").on("click",function (e) {
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var branch = Cookies.get('branch');
+        var path = Cookies.get('path');
+        var content = editeur.getValue();
+        edit(idProject,idUser,idCreator,branch,path,content)
+    });
+
 });
 
 /* Actualise la page */
@@ -49,7 +63,8 @@ function refreshPage(){
 
 function edit(idProject,idUser,idCreator,branch,path,content){
 
-    var url = "/api/file/{idCurrentUser}/{idUser}/{idRepository}/{branch}/edit?path=&content=";
-
-    'POST'
+    var url = "/api/file/"+idUser+"/"+idCreator+"/" + idProject + "/"+branch+ "/edit?path="+path+ "&content=" + content;
+    ApiRequest('POST',url,"",function(json){
+        console.log("Edition: " + JSON.stringify(json));
+    });
 }

@@ -98,10 +98,12 @@ public class GitController {
                                           @PathVariable String currentUser,
                                           @RequestParam(value = "path") String path) {
         JsonObject ret;
+        TemporaryFile file;
 
         try {
             String raw = idUser + idRepository + path;
-            temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
+            file = temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
+            return new ResponseEntity<>(JsonUtil.convertToJson(file),HttpStatus.OK);
         } catch (DataException ex) {
 
             try {
@@ -121,7 +123,6 @@ public class GitController {
             }
             return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
 
     /**

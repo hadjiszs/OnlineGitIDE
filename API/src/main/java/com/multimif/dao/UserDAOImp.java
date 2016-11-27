@@ -31,10 +31,10 @@ public class UserDAOImp extends DAO implements UserDAO {
         try {
             usr = getEntityByMail(user.getMail());
         } catch (DataException ex) {
-            LOGGER.log(Level.OFF, ex.toString(), ex);
+            LOGGER.log(Level.FINE, ex.toString(), ex);
             usr = null;
         }
-
+        System.out.println("jdsjdqjs");
         if (usr == null) {
 
             user.setPassword(hashGenerator(user.getPassword()));
@@ -103,7 +103,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         try{
             user = query.getSingleResult();
         }catch (NoResultException e){
-            LOGGER.log(Level.OFF, e.toString(), e);
+            LOGGER.log(Level.FINE, e.toString(), e);
         }finally {
             closeEntityManager();
         }
@@ -153,7 +153,7 @@ public class UserDAOImp extends DAO implements UserDAO {
         try{
             user = query.getSingleResult();
         }catch (NoResultException e){
-            LOGGER.log(Level.OFF, e.toString(), e);
+            LOGGER.log(Level.FINE, e.toString(), e);
             throw new DataException(Messages.USER_NOT_EXISTS);
         }finally {
             closeEntityManager();
@@ -198,13 +198,15 @@ public class UserDAOImp extends DAO implements UserDAO {
         BigInteger bigInt = new BigInteger(1, digest);
         String hashtext = bigInt.toString(16);
 
-        StringBuilder hash = new StringBuilder(bigInt.toString(16));
+        //StringBuilder hash = new StringBuilder(bigInt.toString(16));
 
         /* Maintenant on doit mis à zero jusqu'à 32 characteres */
         while(hashtext.length() < 32 ) {
-            hash.insert(0, "0");
+            //hash.insert(0, "0");
+            hashtext = "0" + hashtext;
         }
 
-        return hash.toString();
+        return hashtext;
+        //return hash.toString();
     }
 }

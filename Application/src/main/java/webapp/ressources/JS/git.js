@@ -54,51 +54,32 @@ function listCommit(idProject,idCreator, idUser,branch){
 function getFile(idProject,idCreator, idUser,revision,path){
     var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/" + revision +"?path=" + path;
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Fichier',
-                message: 'Impossible de récupérer le contenu du fichier',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
-            console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
-            setEditeur(json["content"]);
-            Cookies.set('path',path);
-        }
+        console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
+        setEditeur(json["content"]);
+        Cookies.set('path',path);
     });
 }
 
 /* Récupère l'arborescence du commit courant */
 function getArborescence(idProject,idCreator, idUser,revision){
-    var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/tree/" + revision;
+    var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/tree/" + revision+"/true";
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Arborescence',
-                message: 'Impossible de récupérer l\'arborescence du commit',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
-            console.log("Arborescence de " + revision + ": " + JSON.stringify(json));
-            $('#arborescenceFichier').tree({
-                data: json.root,
-                onCreateLi: function(node, $li) {
-                    $li.find('.jqtree-title').attr({"path":node.path.replace("root/",""),"revision":revision});
-                }
-            });
-            // Handle a click on the edit link
-            $('#arborescenceFichier').on('dblclick', function(e) {
-                    // Get the id from the 'node-id' data property
-                    alert($(e.target).attr("path"));
-                    getFile(idProject,$(e.target).attr("revision"),$(e.target).attr("path"));
+        console.log("Arborescence de " + revision + ": " + JSON.stringify(json));
+        $('#arborescenceFichier').tree({
+            data: json.root,
+            onCreateLi: function(node, $li) {
+                $li.find('.jqtree-title').attr({"path":node.path.replace("root/",""),"revision":revision});
+            }
+        });
+        // Handle a click on the edit link
+        $('#arborescenceFichier').on('dblclick', function(e) {
+                // Get the id from the 'node-id' data property
+                alert($(e.target).attr("path"),$(e.target).attr("revision"));
 
-                }
-            );
-        }
+                getFile(idProject,idCreator,idUser,$(e.target).attr("revision"),$(e.target).attr("path"))
+
+            }
+        );
     });
 
 }
@@ -106,17 +87,7 @@ function getArborescence(idProject,idCreator, idUser,revision){
 function createFile(idProject,idCreator, idUser,path,branch){
     var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/create/file/" + branch +"?path=" + path;
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Fichier',
-                message: 'Impossible de créer un fichier',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Fichier: " + JSON.stringify(json));
-        }
     });
 }
 
@@ -183,5 +154,25 @@ function changeBranch(idProject, idCreator, idUser, branch){
             Cookies.set('revision', json["commits"][0].id);
             refreshPage();
         }
+
+
+
     });
 }
+
+
+function diffCommit(idProject,idCreator,idUser,revision){
+    var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/showCommit/" + revision;
+    ApiRequest('GET',url,"",function(json){
+            console.log("Diff commit " + JSON.stringify(json));
+    });
+}
+
+function getArchive(idProject,idCreator,idUser,branch){
+    var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/archive/" + branch;
+    ApiRequest('GET',url,"",function(json){
+        console.log("Get archive " + JSON.stringify(json));
+    });
+}
+
+

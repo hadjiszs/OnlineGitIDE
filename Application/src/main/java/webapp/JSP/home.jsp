@@ -73,14 +73,6 @@
                             <button type="button" class="btn btn-default nomListeProjets">Projet 1</button>
                             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
                         </div>
-                        <div class="btn-group col-lg-12 ligneListeProjet">
-                            <button type="button" class="btn btn-default nomListeProjets">Projet 2</button>
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
-                        <div class="btn-group col-lg-12 ligneListeProjet">
-                            <button type="button" class="btn btn-default nomListeProjets">Projet 3</button>
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
                     </div>
                 </section>
                 <section class="col-lg-12" id="divCollaboration">
@@ -90,14 +82,6 @@
                     <div class="btn-group col-lg-12" id="listeCollaborations">
                         <div class="btn-group col-lg-12 ligneListeCollaborations">
                             <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 1</button>
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
-                        <div class="btn-group col-lg-12 ligneListeCollaborations">
-                            <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 2</button>
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
-                        <div class="btn-group col-lg-12 ligneListeCollaborations">
-                            <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 3</button>
                             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
                         </div>
                     </div>
@@ -117,10 +101,6 @@
                     <div class="col-lg-12" id="divAfficherCommit">
                         <ul class="list-group" id="listCommit">
                             <li class="list-group-item ligneCommit">Commit 1</li>
-                            <li class="list-group-item ligneCommit">Commit 2</li>
-                            <li class="list-group-item ligneCommit">Commit 3</li>
-                            <li class="list-group-item ligneCommit">Commit 4</li>
-                            <li class="list-group-item ligneCommit">Commit 5</li>
                         </ul>
                     </div>
                 </div>
@@ -131,10 +111,6 @@
                     <div>
                         <ul class="list-group" id="listDev">
                             <li class="list-group-item">Nom 1</li>
-                            <li class="list-group-item">Nom 2</li>
-                            <li class="list-group-item">Nom 3</li>
-                            <li class="list-group-item">Nom 4</li>
-                            <li class="list-group-item">Nom 5</li>
                         </ul>
                     </div>
                 </div>

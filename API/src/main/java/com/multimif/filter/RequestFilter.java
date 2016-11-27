@@ -60,6 +60,7 @@ public class RequestFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
+        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
 
         if(request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/user/")){
             chain.doFilter(req,res);
@@ -82,7 +83,7 @@ public class RequestFilter implements Filter{
                     unauthorized(response,"Vous n'êtes pas connecté.");
                 }else{
                     try{
-                        System.out.println("[API] [FILTER] url: " + request.getRequestURI());
+
                         System.out.println("[API] [FILTER] username: " + username + " password: " + password);
                         userService.authEntity(username,password,true);
                         chain.doFilter(req,res);

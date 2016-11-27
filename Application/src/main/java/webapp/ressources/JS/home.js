@@ -42,7 +42,8 @@ $(document).ready(function() {
     // Créer un nouveau projet
     $('#btnProjet').on("click", function (e) {
         e.preventDefault();
-        var url = "/api/project/?"+ $("#formProjet").serialize() +"&idUser="+ Cookies.get('idUser');
+        $("#creerProjet").modal('toggle');
+        var url = "/api/project?"+ $("#formProjet").serialize() +"&idUser="+ Cookies.get('idUser');
         ApiRequest('POST',url,"",addProject);
     });
 
@@ -65,6 +66,7 @@ $(document).ready(function() {
     $(".userProject-list-delete").on("click", function(e){
         e.preventDefault();
         alert("delete projet TODO");
+        //TODO
     });
 
     //SI on ouvre un projet
@@ -263,6 +265,7 @@ function openCommit(idProject, idCreator, branch, revision) {
     window.location.href = "/JSP/viewer.jsp";
 }
 
+/* Affiche les informations d'un projets */
 function infoProject(idProject){
     var url = "/api/project/" + idProject;
     ApiRequest('GET',url,"",function(json){
@@ -279,3 +282,18 @@ function addCollaborateur(idProject,idUser){
     });
 }
 
+function removeCollaborateur(idProject, idUser){
+    var url = "/api/projects/"+ idProject + "/users/" + idUser;
+    ApiRequest('DELETE',url,"",function(json){
+        console.log("Remove collaborateur au projet: " + idProject + " idUser:  " + idUser + " : " + JSON.stringify(json));
+        listDeveloppers(idProject);
+    });
+}
+
+function deleteProject(idProject,idUser){
+    var url = "/api/project/" + idProject + "/" + idUser;
+    ApiRequest('DELETE',url,"",function(json){
+        console.log("Ajout du collaborateur au projet: " + idProject + " idUser:  " + idUser + " : " + JSON.stringify(json));
+        listDeveloppers(idProject);
+    });
+}

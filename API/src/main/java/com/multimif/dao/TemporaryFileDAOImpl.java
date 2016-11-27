@@ -33,7 +33,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
         try {
             file = query.getSingleResult();
         } catch(NoResultException e) {
-            file = null;
+            throw new DataException(Messages.FILE_NOT_EXISTS);
         } finally {
             closeEntityManager();
         }

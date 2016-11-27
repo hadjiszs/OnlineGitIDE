@@ -113,6 +113,7 @@
                             </ul>
                         </div>
                         <input  type="button" class="btn btn-default" id="btnCommit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
+                        <button type="button" class="btn btn-default" id="btnSave">Sauver</button>
                         <button type="button" class="btn btn-default" id="btnCompiler">Compiler</button>
                     </div>
                 </div>

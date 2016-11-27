@@ -52,6 +52,7 @@ public class UserController {
 
         try {
             user = userService.addEntity(username, mail, password);
+            System.out.println("ojk");
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,ex.getMessage())),

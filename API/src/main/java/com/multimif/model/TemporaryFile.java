@@ -57,7 +57,7 @@ public class TemporaryFile implements Serializable {
      * @param path    dans le dépôt
      */
     public TemporaryFile(User user, String content, Project project,
-                         String path) {
+                         String path, String name, String extension) {
         String raw = user.getIdUser().toString() +
                 project.getIdProject().toString() +
                 path;
@@ -67,8 +67,8 @@ public class TemporaryFile implements Serializable {
         this.user = user;
         this.project = project;
         this.path = path;
-        this.name = "";
-        this.extension = "";
+        this.name = name;
+        this.extension = extension;
     }
 
 
