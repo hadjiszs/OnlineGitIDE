@@ -52,7 +52,7 @@ $(document).ready(function() {
 
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
-
+        infoProject(idProject);
         // On indique le projet des collaborateurs si ajouts
         $("#select-collaborateur").attr("project",idProject);
 
@@ -261,6 +261,13 @@ function openCommit(idProject, idCreator, branch, revision) {
     Cookies.set('branch', branch);
     Cookies.set('revision', revision);
     window.location.href = "/JSP/viewer.jsp";
+}
+
+function infoProject(idProject){
+    var url = "/api/project/" + idProject;
+    ApiRequest('GET',url,"",function(json){
+            console.log("Info projet: " + JSON.stringify(json));
+    });
 }
 
 /* Ajoute un collaborateur au projet */

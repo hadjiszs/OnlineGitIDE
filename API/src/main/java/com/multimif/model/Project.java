@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
 public class Project implements Serializable {
-    public enum TypeProject {JAVA, MAVEN, C, CPP}
+    public enum TypeProject {JAVA, MAVEN, CMAKE}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Project implements Serializable {
     private Date lastModification;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM('JAVA', 'MAVEN', 'C', 'CPP')")
+    @Column(columnDefinition = "ENUM('JAVA', 'MAVEN', 'CMAKE')")
     private TypeProject type;
 
     public Project(){
