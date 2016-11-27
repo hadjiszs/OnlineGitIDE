@@ -20,7 +20,6 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0 19/10/16.
  */
-
 public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
     private static final Logger LOGGER = Logger.getLogger(TemporaryFileDAOImpl.class.getName());
 
@@ -34,33 +33,9 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
         try {
             file = query.getSingleResult();
         } catch(NoResultException e) {
-            file = null;
-        } finally {
-            closeEntityManager();
-        }
-
-        return file;
-    }
-
-    @Override
-    public TemporaryFile getEntityByHashKeyAndUser(User user, String hashKey) throws DataException {
-        TemporaryFile file = null;
-        TypedQuery<TemporaryFile> query = getEntityManager().createNamedQuery("TemporaryFile.findByIdAndUser",
-                TemporaryFile.class);
-        query.setParameter("user", user);
-        query.setParameter("hashKey", hashKey);
-
-        try {
-            file = query.getSingleResult();
-        } catch (NoResultException e) {
-            LOGGER.log(Level.OFF, e.toString(), e);
             throw new DataException(Messages.FILE_NOT_EXISTS);
         } finally {
             closeEntityManager();
-        }
-
-        if (file == null){
-            throw new DataException(Messages.FILE_NOT_EXISTS);
         }
 
         return file;

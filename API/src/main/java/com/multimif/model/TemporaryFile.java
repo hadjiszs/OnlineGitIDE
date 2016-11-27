@@ -3,6 +3,9 @@ package com.multimif.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static com.multimif.util.SplitPath.getFileExtension;
+import static com.multimif.util.SplitPath.getFileName;
+
 
 /**
  * Cette classe c'est pour tous les fichiers d'un utilisateur par rapport un project
@@ -15,8 +18,6 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "TemporaryFile.findByHashkey", query = "SELECT f from TemporaryFile f WHERE f.hashKey = :hashKey"),
-        // FIXME: named query correct ? à supprimer ?
-        @NamedQuery(name = "TemporaryFile.findByIdAndUser", query = "SELECT f from TemporaryFile f WHERE f.user = :user AND f.hashKey = :hashKey"),
         @NamedQuery(name = "TemporaryFile.findByUserAndProject", query = "SELECT t FROM TemporaryFile t WHERE t.user = :user AND t.project = :project")
 })
 public class TemporaryFile implements Serializable {
@@ -56,7 +57,7 @@ public class TemporaryFile implements Serializable {
      * @param path    dans le dépôt
      */
     public TemporaryFile(User user, String content, Project project,
-                         String path) {
+                         String path, String name, String extension) {
         String raw = user.getIdUser().toString() +
                 project.getIdProject().toString() +
                 path;
@@ -66,8 +67,8 @@ public class TemporaryFile implements Serializable {
         this.user = user;
         this.project = project;
         this.path = path;
-        this.name = "";
-        this.extension = "";
+        this.name = name;
+        this.extension = extension;
     }
 
 
@@ -131,6 +132,10 @@ public class TemporaryFile implements Serializable {
     }
 
     public String getName() {
+
+        if (name == null) {
+            this.name = getFileName(this.path);
+        }
         return name;
     }
 
@@ -139,6 +144,13 @@ public class TemporaryFile implements Serializable {
     }
 
     public String getExtension() {
+
+        if (this.extension == null) {
+
+            this.extension = getFileExtension(this.path);
+        }
+
+
         return extension;
     }
 
@@ -146,11 +158,11 @@ public class TemporaryFile implements Serializable {
         this.extension = extension;
     }
 
-    public ExtensionType getExtensionType(){
+    public ExtensionType getExtensionType() {
         return ExtensionType.valueOf(getExtension());
     }
 
-    public void setExtensionType(ExtensionType extensionType){
+    public void setExtensionType(ExtensionType extensionType) {
         setExtension(extensionType.getExtension().toUpperCase());
     }
 }

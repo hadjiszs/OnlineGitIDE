@@ -2,6 +2,7 @@ package com.multimif.git;
 
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
+import com.multimif.service.TemporaryFileService;
 import com.multimif.util.*;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
@@ -9,10 +10,7 @@ import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.merge.ResolveMerger;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -59,7 +57,8 @@ public class Util {
      */
     public static JsonObject getArborescence(String creator,
                                              String repository,
-                                             String revision) {
+                                             String revision, List<TemporaryFile> list,
+                                             boolean usetemporaryFiles) {
 
         try {
             //En local, les repo sont stockés dans REPOPATH/[createur]/[id_du_repo]
@@ -76,13 +75,20 @@ public class Util {
             treeWalk.addTree(tree);
             treeWalk.setRecursive(true);
 
-                    //On créé un objet ArboTree contenant l'arborescence voulue
-                    ArboTree arborescence = new ArboTree(new ArboNode("root", "root"));
-                    while (treeWalk.next()) {
-                        arborescence.addElement(treeWalk.getPathString());
+            //On créé un objet ArboTree contenant l'arborescence voulue
+            ArboTree arborescence = new ArboTree(new ArboNode("root", "root"));
+            while (treeWalk.next()) {
+                arborescence.addElement(treeWalk.getPathString());
+            }
+            if (usetemporaryFiles && list != null) {
+                for (TemporaryFile file : list) {
+                    if (!arborescence.existElement("root/" + file.getPath())) {
+                        arborescence.addElement(file.getPath());
                     }
-                    //On convertit cet objet en Json
-                    return arborescence.toJson();
+                }
+            }
+            //On convertit cet objet en Json
+            return arborescence.toJson();
 
         } catch (Exception e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
@@ -603,6 +609,7 @@ public class Util {
         String pathRepo = GitConstantes.REPO_FULLPATH + author + "/" + repository + ".git";
         Git git = Git.open(new File(pathRepo));
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonObjectBuilder builder = factory.createObjectBuilder();
         try {
             git.checkout()
                     .setCreateBranch(false)
@@ -617,23 +624,41 @@ public class Util {
                 //System.out.println(file.getPath());
                 output = new PrintStream(new FileOutputStream(file.getPath()));
                 output.print(file.getContent());
-
-                //TODO : Remplacer le "src/testfile" par file.getRelativePath (en cours de dev)
                 git.add()
-                        .addFilepattern("src/testfile" + i)
+                        .addFilepattern(file.getPath())
                         .call();
                 i++;
             }
-            git.commit()
+            RevCommit newCommit = git.commit()
                     .setAuthor(commiter.getUsername(), commiter.getMail())
                     .setMessage(message)
                     .call();
             //System.out.println(CommitUtils.getHead(git.getRepository()).getFullMessage());
             //System.out.println(getArborescence(author, repository, CommitUtils.getHead(git.getRepository()).getName()));
-
-            return factory.createObjectBuilder().add("result", GitStatus.COMMIT_DONE.toString()).build();
+            builder.add("result", GitStatus.COMMIT_DONE.toString());
+            builder.add("new_commit_id", newCommit.getName());
+            return builder.build();
         } catch (Exception e) {
-            return factory.createObjectBuilder().add("result", GitStatus.COMMIT_FAILED.toString()).build();
+            return builder.add("result", GitStatus.COMMIT_FAILED.toString()).build();
         }
+    }
+
+    public static JsonObject getBranch(String author, String repository, String commitId) throws Exception {
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonObjectBuilder builder = factory.createObjectBuilder();
+
+        String pathRepo = GitConstantes.REPO_FULLPATH + author + "/" + repository + ".git";
+        Git git = Git.open(new File(pathRepo));
+        RevWalk walk = new RevWalk(git.getRepository());
+        RevCommit commit = walk.parseCommit(git.getRepository().resolve(commitId + "^0"));
+        JsonArrayBuilder array = factory.createArrayBuilder();
+        for (Map.Entry<String, Ref> e : git.getRepository().getAllRefs().entrySet()) {
+            if (e.getKey().startsWith(Constants.R_HEADS)) {
+                if (walk.isMergedInto(commit, walk.parseCommit(e.getValue().getObjectId()))) {
+                    array.add(factory.createObjectBuilder().add("branch", e.getValue().getName()));
+                }
+            }
+        }
+        return builder.add("branches", array).build();
     }
 }

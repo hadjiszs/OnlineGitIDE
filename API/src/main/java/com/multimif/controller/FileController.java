@@ -45,13 +45,14 @@ public class FileController {
     public @ResponseBody
     ResponseEntity<String> edit(@PathVariable String idRepository,
                                 @PathVariable String idCurrentUser,
-                                @RequestParam String content,
+                                @RequestParam(value="content") String content,
                                 @RequestParam(value="path") String path) {
         try {
             temporaryFileService.updateEntity(Long.valueOf(idCurrentUser), content, path, Long.valueOf(idRepository));
         } catch (DataException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,e.getMessage())),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,

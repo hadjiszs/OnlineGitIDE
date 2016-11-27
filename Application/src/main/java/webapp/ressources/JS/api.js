@@ -41,35 +41,20 @@ function deconnexion(){
 /* Execute une requête vers l'API */
 function ApiRequest(method,url,dataIn,callback) {
 
-    if(method === "GET"){
-        $.ajax({
-            type: 'GET',
-            dataType: 'json',
-            url: url,
-            async: false,
-            timeout: 5000,
-            success: function(data, textStatus ){
-                callback(data);
-            },
-            error: function(xhr, textStatus, errorThrown){
-                handleError(errorThrown,xhr.responseJSON.message);
-            }
-        });
-    }else if(method === "POST"){
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: url,
-            async: false,
-            timeout: 5000,
-            success: function(data, textStatus ){
-                callback(data);
-            },
-            error: function(xhr, textStatus, errorThrown){
-                handleError(errorThrown,xhr.responseJSON.message);
-            }
-        });
-    }
+    $.ajax({
+        type: method,
+        dataType: 'json',
+        url: url,
+        async: false,
+        timeout: 5000,
+        success: function(data, textStatus ){
+            callback(data);
+        },
+        error: function(xhr, textStatus, errorThrown){
+            handleError(errorThrown,xhr.responseJSON.message);
+        }
+    });
+
 }
 
 function handleError(title,message){
