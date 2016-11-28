@@ -15,3 +15,5 @@ API/repositories
 sonar-project.properties
 API/src/main/webapp/zipFiles/*.zip
 API/clone
+API/src/main/resources/META-INF/*
+

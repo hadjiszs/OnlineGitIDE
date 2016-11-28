@@ -52,11 +52,11 @@ public class Compile {
         // 1 - CLONE
         this.executeAction(CLONE_ACTION);
         // 2 - update Project Files (temp)
-//        this.updateCloneRepo();
+        this.updateCloneRepo();
         // 3 - COMPILATION
         this.executeAction(COMPILE_ACTION);
         // 5 - clean
-        this.executeAction(CLEAN_ACTION); //CLEAN
+//        this.executeAction(CLEAN_ACTION); //CLEAN
         //Resultat de la compilation
 
         return jsonObject;
@@ -139,7 +139,7 @@ public class Compile {
             setContentFile(temporaryFile, temporaryFile.getContent());
 
             // 3) deplacer le fichier
-            mvFilesToCloneRepo(fileName, fileExt, filePath);
+            //mvFilesToCloneRepo(fileName, fileExt, filePath);
         }
     }
 

@@ -75,9 +75,11 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
         // si le fichier n'existe pas encore dans la table TemporaryFile
         // on l'ajoute avec le contenu temporaire
         if(oldTempFile == null)
-            temporaryFileDAO.addEntity(newTempFile);
-        else
-            temporaryFileDAO.updateEntity(newTempFile);
+            newTempFile = temporaryFileDAO.addEntity(newTempFile);
+        else {
+            oldTempFile.setContent(content);
+            newTempFile = temporaryFileDAO.updateEntity(oldTempFile);
+        }
 
         return newTempFile;
     }

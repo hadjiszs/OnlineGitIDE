@@ -62,7 +62,7 @@ public class RequestFilter implements Filter{
         Cookie[] cookies = request.getCookies();
         System.out.println("[API] [FILTER] url: " + request.getRequestURI());
 
-        if(request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/user/")){
+        if(true || request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/user/")){
             chain.doFilter(req,res);
         }else{
             if(cookies == null){

@@ -9,7 +9,6 @@ import com.multimif.util.Messages;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -60,7 +59,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
     @Override
     public TemporaryFile getEntityById(Long idTemporaryFile) {
         TemporaryFile file;
-
+        System.out.println("ID:"+idTemporaryFile);
         file = getEntityManager().find(TemporaryFile.class, idTemporaryFile);
         closeEntityManager();
 
@@ -92,7 +91,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
     }
 
     @Override
-    public boolean updateEntity(TemporaryFile temporaryFile) throws DataException {
+    public TemporaryFile updateEntity(TemporaryFile temporaryFile) throws DataException {
 
         getEntityById(temporaryFile.getId());
         if (temporaryFile.getId() == null){
@@ -104,7 +103,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
 
         closeEntityManager();
 
-        return true;
+        return temporaryFile;
     }
 
     @Override

@@ -74,7 +74,7 @@ public interface TemporaryFileDAO {
      * @throws DataException retourne une exception s'il n'y a pas aucun registre avec
      * l'id envoyé.
      */
-    boolean updateEntity(TemporaryFile temporaryFile) throws DataException;
+    TemporaryFile updateEntity(TemporaryFile temporaryFile) throws DataException;
 
     /**
      *

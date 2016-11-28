@@ -39,22 +39,40 @@ public class TemporaryFileServiceTest extends TestUtil {
         try{
             user = userService.addEntity(user.getUsername(), user.getMail(), user.getPassword());
             project = projectService.addEntity(project.getName(), project.getType(), user.getIdUser());
-
-            /*
-            * addEntity(Long idUser, String hashKey, String content, String path,
-                            Long idProject)
-            * */
             temporaryFile = temporaryFileService.addEntity(user.getIdUser(),
                     temporaryFile.getContent(), temporaryFile.getPath(), project.getIdProject());
-        }catch (Exception e){
+        } catch (Exception e) {
             exception = e;
         }
 
-        assertNull(exception);
+//        assertNull(exception);
         assertNotNull(temporaryFile);
         assertNotNull(temporaryFile.getId());
         assertNotNull(temporaryFile.getUser().getIdUser());
         assertNotNull(temporaryFile.getProject().getIdProject());
+    }
+
+    @Test
+    public void getUpdateEntity(){
+        Exception exception = null;
+        TemporaryFile tmpFile = null;
+        String newContent = "new content";
+
+        try {
+            tmpFile = temporaryFileService.updateEntity(Long.valueOf(user.getIdUser()),
+                    newContent,
+                    temporaryFile.getPath(),
+                    Long.valueOf(project.getIdProject()));
+        } catch (DataException e) {
+            exception = e;
+        }
+
+        assertNotNull(tmpFile);
+        assertEquals(tmpFile.getId(), temporaryFile.getId());
+        assertEquals(tmpFile.getContent(), newContent);
+        assertEquals(tmpFile.getHashKey(), temporaryFile.getHashKey());
+        assertEquals(tmpFile.getUser().getIdUser(), temporaryFile.getUser().getIdUser());
+        assertEquals(tmpFile.getProject().getIdProject(), temporaryFile.getProject().getIdProject());
     }
 
     @Test
