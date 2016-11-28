@@ -100,18 +100,31 @@ public class Compile {
             String out = "";
             String err = "";
 
-            // STDOUT
+//            // VERSION QUI RENVOIE STDOUT ET STDERR DU PROCESS
+//            // STDOUT
+//            reader = new BufferedReader(new InputStreamReader(stdout));
+//            while ((line = reader.readLine ()) != null)
+//                out += line + "\n";
+//
+//            // STDERR
+//            reader = new BufferedReader(new InputStreamReader(stderr));
+//            while ((line = reader.readLine ()) != null)
+//                err += line + "\n";
+//
+//            jsonObject = jsonBuilder.add("stdout", out)
+//                    .add("stderr", err)
+//                    .build();
+
+            // recuperation du lien asciinema
             reader = new BufferedReader(new InputStreamReader(stdout));
+            String lastLine = "";
             while ((line = reader.readLine ()) != null)
-                out += line + "\n";
+                lastLine = line;
 
-            // STDERR
-            reader = new BufferedReader(new InputStreamReader(stderr));
-            while ((line = reader.readLine ()) != null)
-                err += line + "\n";
-
-            jsonObject = jsonBuilder.add("stdout", out)
-                    .add("stderr", err)
+            String id = lastLine.substring(lastLine.lastIndexOf("/")+1);
+            String srcUrl = "https://asciinema.org/a/";
+            jsonObject = jsonBuilder.add("src", srcUrl + id + ".js")
+                    .add("id", "asciicast-"+id)
                     .build();
         }
 

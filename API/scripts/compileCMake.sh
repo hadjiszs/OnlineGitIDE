@@ -4,4 +4,4 @@
 cd $1/$3/$4/
 mkdir build
 cd build
-cmake .. && make
+asciinema rec -y -c "cmake .. && make -j5"
