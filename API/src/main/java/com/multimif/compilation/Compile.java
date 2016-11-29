@@ -152,19 +152,19 @@ public class Compile {
             setContentFile(temporaryFile, temporaryFile.getContent());
 
             // 3) deplacer le fichier
-            mvFilesToCloneRepo(fileName, fileExt, filePath);
+           // mvFilesToCloneRepo(fileName, fileExt, filePath);
         }
     }
 
     public void createFile(TemporaryFile tempFile) throws IOException {
-        File file = new File(TEMPFILES_PATH + "/" + tempFile.getName() + "." + tempFile.getExtension());
+        File file = new File(CLONE_PATH +"/"+currentUser.getUsername()+"/"+currentProject.getName()+"/"+tempFile.getPath());
 
         file.createNewFile();
         System.out.println("File is created!");
     }
 
     public void setContentFile(TemporaryFile tempFile, String content) throws IOException {
-        FileWriter out = new FileWriter(TEMPFILES_PATH + "/" + tempFile.getName() + "." + tempFile.getExtension());
+        FileWriter out = new FileWriter(CLONE_PATH +"/"+currentUser.getUsername()+"/"+currentProject.getName()+"/"+tempFile.getPath());
         BufferedWriter bw = new BufferedWriter(out);
         bw.write(content);
         bw.close();
