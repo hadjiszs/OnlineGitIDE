@@ -55,7 +55,7 @@ public abstract class TestUtil {
         temporaryFile = new TemporaryFile();
         temporaryFile.setId(null);
         temporaryFile.setHashKey("fd0-edkhgad-734ghf4-900p");
-        temporaryFile.setPath("/src/package1/test.java");
+        temporaryFile.setPath("src/package1/test.java");
         temporaryFile.setContent("class Test { privte a;}");
         temporaryFile.setProject(null);
         temporaryFile.setUser(null);

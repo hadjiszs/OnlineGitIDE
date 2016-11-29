@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.List;
 
 import static com.multimif.util.Constantes.*;
+import static com.multimif.util.SplitPath.getFilePath;
 
 
 /**
@@ -52,11 +53,11 @@ public class Compile {
         // 1 - CLONE
         this.executeAction(CLONE_ACTION);
         // 2 - update Project Files (temp)
-//        this.updateCloneRepo();
+       this.updateCloneRepo();
         // 3 - COMPILATION
         this.executeAction(COMPILE_ACTION);
         // 5 - clean
-        this.executeAction(CLEAN_ACTION); //CLEAN
+       this.executeAction(CLEAN_ACTION); //CLEAN
         //Resultat de la compilation
 
         return jsonObject;
@@ -152,19 +153,19 @@ public class Compile {
             setContentFile(temporaryFile, temporaryFile.getContent());
 
             // 3) deplacer le fichier
-           // mvFilesToCloneRepo(fileName, fileExt, filePath);
+            mvFilesToCloneRepo(fileName, fileExt, filePath);
         }
     }
 
     public void createFile(TemporaryFile tempFile) throws IOException {
-        File file = new File(CLONE_PATH +"/"+currentUser.getUsername()+"/"+currentProject.getName()+"/"+tempFile.getPath());
+        File file = new File(TEMPFILES_PATH + "/"  +tempFile.getName() + "." + tempFile.getExtension());
 
         file.createNewFile();
         System.out.println("File is created!");
     }
 
     public void setContentFile(TemporaryFile tempFile, String content) throws IOException {
-        FileWriter out = new FileWriter(CLONE_PATH +"/"+currentUser.getUsername()+"/"+currentProject.getName()+"/"+tempFile.getPath());
+        FileWriter out = new FileWriter(TEMPFILES_PATH + "/" +tempFile.getName() + "." + tempFile.getExtension());
         BufferedWriter bw = new BufferedWriter(out);
         bw.write(content);
         bw.close();
@@ -173,7 +174,7 @@ public class Compile {
     public void mvFilesToCloneRepo(String fileName, String fileExt, String filePath) throws IOException, InterruptedException {
         Process process;
         Runtime rt = Runtime.getRuntime();
-        String pathMkdir = SplitPath.getFilePath(filePath);
+        String pathMkdir = getFilePath(filePath);
 
         process = rt.exec(SCRIPTS_PATH + "/" + SCRIPT_MV_TEMP_FILE + " " + TEMPFILES_PATH + " " + fileName + " " +
                 fileExt + " " + CLONE_PATH + " " + currentUser.getUsername() + " " + currentProject.getName() + " " + filePath + " " + pathMkdir);
