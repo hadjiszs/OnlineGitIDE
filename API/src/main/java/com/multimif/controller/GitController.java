@@ -103,6 +103,7 @@ public class GitController {
         try {
             String raw = idUser + idRepository + path;
             file = temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
+            System.out.println(file.getName()); //
             return new ResponseEntity<>(JsonUtil.convertToJson(file),HttpStatus.OK);
         } catch (DataException ex) {
 
@@ -111,6 +112,7 @@ public class GitController {
                 String repository = getNameRepositoryById(idRepository);
 
                 ret = Util.getContent(author, repository, revision, path);
+                System.out.println(ret.toString());
                 if (ret == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
@@ -119,6 +121,7 @@ public class GitController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } catch (Exception e) {
                 LOGGER.log(Level.FINE, e.getMessage(), e);
+                System.out.println(e.getMessage());
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
@@ -288,6 +291,7 @@ public class GitController {
 
             User commiter = userService.getEntityById(Long.parseLong(currentUser));
             files = temporaryFileService.getEntityByUserProject(Long.parseLong(currentUser), Long.parseLong(idRepository));
+            System.out.println("giles: " + files);
             ret = Util.makeCommit(author, repository, branch, commiter, files, message);
             if (ret == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

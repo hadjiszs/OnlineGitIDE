@@ -29,6 +29,7 @@ public class JsonUtil<T> {
         try {
             json = mapper.writeValueAsString(object);
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             LOGGER.log(Level.FINE, ex.getMessage(), ex);
             json = "";
         }

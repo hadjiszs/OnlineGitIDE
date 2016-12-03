@@ -66,11 +66,16 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
-
+        TemporaryFile oldTempFile;
         TemporaryFile newTempFile = new TemporaryFile(user, content, project, path);
 
         // recuperation du TemporaryFile éventuellement déjà présent dans la table
-        TemporaryFile oldTempFile = getEntityByHash(newTempFile.getHashKey());
+        try{
+            oldTempFile = getEntityByHash(newTempFile.getHashKey());
+        }catch (DataException e){
+            oldTempFile = null;
+        }
+
 
         // si le fichier n'existe pas encore dans la table TemporaryFile
         // on l'ajoute avec le contenu temporaire

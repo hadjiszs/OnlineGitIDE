@@ -67,8 +67,21 @@ public class TemporaryFile implements Serializable {
         this.user = user;
         this.project = project;
         this.path = path;
-        this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
-        this.extension = path.substring(path.lastIndexOf(".")+1);
+        // Pas de path a la racine
+        if(path.lastIndexOf("/") == -1){
+            // pas d'extension
+            if(path.lastIndexOf(".") == -1){
+                this.name = path;
+                this.extension = "";
+            }else{
+                this.name = path.substring(0, path.lastIndexOf(".")-1);
+                this.extension = path.substring(path.lastIndexOf(".")+1);
+            }
+        }else{
+            this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
+            this.extension = path.substring(path.lastIndexOf(".")+1);
+        }
+
     }
 
 
@@ -158,11 +171,9 @@ public class TemporaryFile implements Serializable {
         this.extension = extension;
     }
 
-    public ExtensionType getExtensionType() {
-        return ExtensionType.valueOf(getExtension());
-    }
-
     public void setExtensionType(ExtensionType extensionType) {
         setExtension(extensionType.getExtension().toUpperCase());
     }
+
+
 }

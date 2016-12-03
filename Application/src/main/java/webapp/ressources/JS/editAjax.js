@@ -50,7 +50,8 @@ $(document).ready(function() {
         var branch = Cookies.get('branch');
         var path = Cookies.get('path');
         var content = editeur.getValue();
-        edit(idProject,idUser,idCreator,branch,path,content)
+        var temporary = Cookies.get('temporary');
+        edit(idProject,idUser,idCreator,branch,path,content,temporary)
     });
 
 });
@@ -61,9 +62,13 @@ function refreshPage(){
     listBranch(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'));
 }
 
-function edit(idProject,idUser,idCreator,branch,path,content){
+function edit(idProject,idUser,idCreator,branch,path,content,temporary){
+    if(temporary == "true"){
+        var url = "/api/file/"+idUser+"/"+idCreator+"/" + idProject + "/"+branch+ "/edit?path=/"+path+ "&content=" + content;
+    }else{
+        var url = "/api/file/"+idUser+"/"+idCreator+"/" + idProject + "/"+branch+ "/edit?path="+path+ "&content=" + content;
+    }
 
-    var url = "/api/file/"+idUser+"/"+idCreator+"/" + idProject + "/"+branch+ "/edit?path="+path+ "&content=" + content;
     ApiRequest('POST',url,"",function(json){
         console.log("Edition: " + JSON.stringify(json));
     });

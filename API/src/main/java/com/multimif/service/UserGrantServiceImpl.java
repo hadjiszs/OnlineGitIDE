@@ -29,7 +29,7 @@ public class UserGrantServiceImpl implements UserGrantService{
 
         try {
             grant = getEntityById(idUser, idProject);
-        }catch (Exception e ){
+        }catch (DataException e ){
             LOGGER.log( Level.OFF, e.toString(), e);
             grant = null;
         }

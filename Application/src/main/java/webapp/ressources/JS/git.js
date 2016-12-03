@@ -51,8 +51,15 @@ function listCommit(idProject,idCreator, idUser,branch){
 }
 
 /* Récupère le contenu d'un fichier */
-function getFile(idProject,idCreator, idUser,revision,path){
+function getFile(idProject,idCreator, idUser,revision,path, temporary){
+    if(temporary == "true"){
+        Cookies.set('temporary', "true");
+    }else{
+        Cookies.set('temporary', "false");
+    }
+
     var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/" + revision +"?path=" + path;
+
     ApiRequest('GET',url,"",function(json){
         console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
         setEditeur(json["content"]);
@@ -68,7 +75,7 @@ function getArborescence(idProject,idCreator, idUser,revision){
         $('#arborescenceFichier').tree({
             data: json.root,
             onCreateLi: function(node, $li) {
-                $li.find('.jqtree-title').attr({"path":node.path.replace("root/",""),"revision":revision});
+                $li.find('.jqtree-title').attr({"path":node.path.replace("root/",""),"revision":revision, "temporary":node.temporary});
             }
         });
         // Handle a click on the edit link
@@ -76,7 +83,7 @@ function getArborescence(idProject,idCreator, idUser,revision){
                 // Get the id from the 'node-id' data property
                 alert($(e.target).attr("path"),$(e.target).attr("revision"));
 
-                getFile(idProject,idCreator,idUser,$(e.target).attr("revision"),$(e.target).attr("path"))
+                getFile(idProject,idCreator,idUser,$(e.target).attr("revision"),$(e.target).attr("path"),$(e.target).attr("temporary"))
 
             }
         );

@@ -106,10 +106,21 @@ public class ArboNode {
                             .add("children", children)
             );
         } else {
-            jb.add(factory.createObjectBuilder()
-                    .add("name", this.data)
-                    .add("path", this.incrementalPath)
-                    .add("type", "file"));
+            // On sait que c'est un fichier temporaire
+            if(this.incrementalPath.endsWith("#")){
+                jb.add(factory.createObjectBuilder()
+                        .add("name", this.data.substring(0,this.data.length()-1))
+                        .add("path", this.incrementalPath.substring(0,this.incrementalPath.length()-1))
+                        .add("type", "file")
+                        .add("temporary","true"));
+            }else {
+                jb.add(factory.createObjectBuilder()
+                        .add("name", this.data)
+                        .add("path", this.incrementalPath)
+                        .add("type", "file")
+                        .add("temporary","false"));
+            }
+
 
         }
 
