@@ -118,14 +118,37 @@ $(document).ready(function() {
     });
 
     // SI on click sur un commit
-    $("#divAfficherCommit").on("click",function(e){
+    /*$("#divAfficherCommit").on("click",function(e){
         e.preventDefault();
         var idProject = $(this).attr("project");
         var branch = $(this).attr("branch");
         var revision = $(this).attr("revision");
         var idCreator = $(this).attr("creator");
         openCommit(idProject, idCreator, branch, revision);
+    });*/
+
+    // SI on click le bouton diff d'un commit
+    $("#divAfficherCommit").on("click", "#diffButton", function (e) {
+        e.preventDefault();
+        var idProject = $(this).attr("project");
+        var idUser = Cookies.get('idUser');
+        var revision = $(this).attr("revision");
+        var idCreator = $(this).attr("creator");
+        diffCommit(idProject,idCreator,idUser,revision);
     });
+
+    // Si on veut récupérer l'archive
+    $("#getArchive").on("click", function (e) {
+        e.preventDefault();
+        //getArchive(idProject,idCreator,idUser,branch)
+        // TODO
+    });
+
+    // Si on clone un projet distant
+    $("#btnCloneProjet").on("click", function (e) {
+        e.preventDefault();
+        // TODO
+    })
 
 });
 

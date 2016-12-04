@@ -109,7 +109,7 @@
                             <ul class="dropdown-menu">
                                 <li class="ligneBtnCreer" id="btnCreerBranche" data-toggle="modal" data-target="#fenetreBranche"><a>Créer une Branche</a></li>
                                 <li class="ligneBtnCreer" id="btnCreerFichier" data-toggle="modal" data-target="#fenetreFichier"><a>Créer un Fichier</a></li>
-                                <li class="ligneBtnCreer" id="btnCreerDossier"><a>Créer un Dossier</a></li>
+                                <li class="ligneBtnCreer" id="btnCreerDossier" data-toggle="modal" data-target="#fenetreDossier"><a>Créer un Dossier</a></li>
                             </ul>
                         </div>
                         <input  type="button" class="btn btn-default" id="btnCommit"  value="Commit" data-toggle="modal" data-target="#fenetreCommit"/>
@@ -236,6 +236,28 @@ return member;
                         <form id="createFile-modal">
                             <input type="text" placeholder="nom de la branche" name="newBranch" id="nomFichier"/>
                             <input  class="btn btn-success" id="createFile-button" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+            </div>
+        </div>
+        <div id="fenetreDossier" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Créer un nouveau dossier</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createDossier-modal">
+                            <input type="text" placeholder="nom de la branche" name="newBranch" id="nomDossier"/>
+                            <input  class="btn btn-success" id="createDossier-button" type="submit" value="Envoyer" />
                         </form>
                     </div>
                     <div class="modal-footer">

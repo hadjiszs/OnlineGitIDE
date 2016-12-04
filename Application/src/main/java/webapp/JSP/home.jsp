@@ -20,6 +20,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
+
+        <!-- Diff 2 html -->
+        <script src="../diff2html/dist/diff2html.js"></script>
+        <link rel="stylesheet" href="../diff2html/dist/diff2html.css">
+
         <!-- Script perso -->
         <script src="../ressources/JS/api.js"></script>
         <script src="../ressources/JS/git.js"></script>
@@ -67,6 +72,7 @@
                     <header class="titreSection">
                         <h2 class="h2DivProjet"> Mes Projets </h2>
                         <button data-toggle="modal" data-target="#creerProjet" class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
+                        <button data-toggle="modal" data-target="#clonerModalProjet" class="btn btn-success" id="clonerProjet"> Cloner un Projet</button>
                     </header>
                     <div class="col-lg-12" id="listeProjets">
                         <div class="btn-group col-lg-12 ligneListeProjet">
@@ -91,7 +97,11 @@
                 <header class="col-lg-12 titreSection">
                     <h2 id="h2DivCommit"> Nom du Projet </h2>
                     <button data-toggle="modal" data-target="#ajoutCollaborateur" class="btn btn-success" id="btnAjouterCollaborateur"> Ajouter un Collaborateur</button>
+                    <button type="button" class="btn btn-info" id="getArchive">ARCHIVE</button>
+                    <button>MERGE</button>
                 </header>
+                <div class="col-lg-8" id="divDiff">
+                </div>
                 <div class="col-lg-8" id="divCommit">
                     <div class="col-lg-12" id="divSelectCommit">
                         <select class="form-group form-control" id="selectBranch">
@@ -142,7 +152,39 @@
                                 <option value="C++"> C++ </option>
                                 <option value="python"> Python </option>
                             </select>
-                            <input  class="btn btn-success" id="btnProjet" type="submit" value="Envoyer" />
+                            <input  class="btn btn-success" id="btnProjet" type="submit" value="Créer" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    </div>
+                </div>
+                <!-- Fin Modal Content -->
+
+            </div>
+        </div>
+        <div id="clonerModalProjet" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Parametre du projet </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formCloneProjet">
+                            <label class="labelProjet"> Nom du projet </label>
+                            <input type="text" placeholder="Nom du projet" name="name" id="nomCloneProjet" required />
+                            <label class="labelProjet"> url du projet </label>
+                            <input type="text" placeholder="url du projet" name="name" id="urlCloneProjet" required />
+                            <label class="labelProjet"> Langage </label>
+                            <select name="type" class="form-group form-control" id="selectCloneProjet">
+                                <option value="JAVA"> JAVA </option>
+                                <option value="C++"> C++ </option>
+                                <option value="python"> Python </option>
+                            </select>
+                            <input  class="btn btn-success" id="btnCloneProjet" type="submit" value="Cloner" />
                         </form>
                     </div>
                     <div class="modal-footer">

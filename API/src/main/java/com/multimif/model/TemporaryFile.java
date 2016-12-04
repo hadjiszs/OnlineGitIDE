@@ -78,10 +78,15 @@ public class TemporaryFile implements Serializable {
                 this.extension = path.substring(path.lastIndexOf(".")+1);
             }
         }else{
-            this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
-            this.extension = path.substring(path.lastIndexOf(".")+1);
+            // pas d'extension
+            if(path.lastIndexOf(".") == -1){
+                this.name = path;
+                this.extension = "";
+            }else{
+                this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
+                this.extension = path.substring(path.lastIndexOf(".")+1);
+            }
         }
-
     }
 
 

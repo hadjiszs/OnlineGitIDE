@@ -31,6 +31,17 @@ $(document).ready(function() {
         createFile(idProject,idCreator, idUser,path,branch);
     });
 
+    // Créer un dossier
+    $("#createDossier-button").on("click", function (e) {
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idUser = Cookies.get('idUser');
+        var idProject = Cookies.get('project');
+        var path = $("#nomDossier").val() + "/.ds_store";
+        var branch = Cookies.get('branch');
+        createFile(idProject,idCreator, idUser,path,branch);
+    });
+
     // Faire un commit
     $("#envoyerCommit").on("click", function(e){
         e.preventDefault();
@@ -54,6 +65,13 @@ $(document).ready(function() {
         edit(idProject,idUser,idCreator,branch,path,content,temporary)
     });
 
+    $("#btnCompiler").on("click", function(e){
+        e.preventDefault();
+        var idCreator = Cookies.get('creator');
+        var idProject = Cookies.get('project');
+        var branch = Cookies.get('branch');
+        compiler(idCreator,idProject,branch);
+    });
 });
 
 /* Actualise la page */
@@ -72,5 +90,13 @@ function edit(idProject,idUser,idCreator,branch,path,content,temporary){
 
     ApiRequest('POST',url,"",function(json){
         console.log("Edition: " + JSON.stringify(json));
+    });
+}
+
+function compiler(idCreator,idProject,branch){
+    var url = "/api/compile/" + idCreator + "/" + idProject + "/" + branch;
+    ApiRequest("GET",url, "",function (json) {
+        console.log("Compile: " + JSON.stringify(json));
+        $("#contenuCompilation").empty().append(json);
     });
 }

@@ -617,19 +617,15 @@ public class Util {
                     .call();
 
             PrintStream output;
-        int i =0;
             for (TemporaryFile file : files) {
                 //File newFile = new File(file.getPath());
                 //newFile.createNewFile();
                 //System.out.println(file.getPath());
                 String path = getGitRepo(author, repository) +"/"+ file.getPath();
-                System.out.println();
                 output = new PrintStream(new FileOutputStream(path));
 
                 output.print(file.getContent());
 
-
-                i++;
             }
             git.add()
                     .addFilepattern(".")

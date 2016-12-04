@@ -44,6 +44,7 @@ function listCommit(idProject,idCreator, idUser,branch){
                         <span> ' + element.message + '</span> \
                         <span> ' + element.user + '</span> \
                         <span> ' + element.email + '</span> \
+                        <button type="button" id="diffButton" class="btn btn-primary btn-sm" creator="'+ idCreator + '" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '">DIFF</button>\
                       </li>');
             });
         }
@@ -111,6 +112,7 @@ function makeCommit(idProject,idCreator, idUser,branch,message){
             });
         }else{
             console.log("Commit: " + JSON.stringify(json));
+            Cookies.set('revision', json["new_commit_id"]);
         }
     });
 
@@ -123,10 +125,6 @@ function makeCommit(idProject,idCreator, idUser,branch,message){
      :
      "7200"
      */
-}
-
-function createDir(){
-
 }
 
 function createBranch(branch, idProject, idCreator, idUser){
@@ -153,6 +151,10 @@ function createBranch(branch, idProject, idCreator, idUser){
     });
 }
 function changeBranch(idProject, idCreator, idUser, branch){
+
+    // TODO test s'il y a des temporary file en cours
+
+
     var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/listCommit/" + branch;
     ApiRequest('GET',url,"",function(json){
         if(json == null){
@@ -181,6 +183,19 @@ function diffCommit(idProject,idCreator,idUser,revision){
     var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/showCommit/" + revision;
     ApiRequest('GET',url,"",function(json){
             console.log("Diff commit " + JSON.stringify(json));
+        var test = Diff2Html.getPrettyHtml(json.result, {
+
+            // the format of the input data: 'diff' or 'json', default is 'diff'
+            inputFormat: 'diff',
+
+            // the format of the output data: 'line-by-line' or 'side-by-side'
+            outputFormat: 'line-by-line',
+
+            // show a file list before the diff: true or false,
+            showFiles: false
+
+        });
+        $("#divDiff").empty().append(test);
     });
 }
 
