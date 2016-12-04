@@ -26,7 +26,6 @@
                 <version>2.2</version>
                 <configuration>
 
-                    <path>/</path>
                     <port>8080</port>
                     <!-- <addContextWarDependencies>true</addContextWarDependencies>
                     <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
@@ -46,7 +45,7 @@
                             <artifactId>Application</artifactId>
                             <version>${project.version}</version>
                             <type>war</type>
-                            <contextPath>/app</contextPath>
+                            <contextPath>/</contextPath>
                             <asWebapp>true</asWebapp>
                         </webapp>
                     </webapps>
