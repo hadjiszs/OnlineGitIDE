@@ -617,14 +617,12 @@ public class Util {
                     .call();
 
             PrintStream output;
-            System.out.println("bite");
         int i =0;
             for (TemporaryFile file : files) {
-                System.out.println("hello");
                 //File newFile = new File(file.getPath());
                 //newFile.createNewFile();
                 //System.out.println(file.getPath());
-                String path = getGitRepo(author, repository) + file.getPath();
+                String path = getGitRepo(author, repository) +"/"+ file.getPath();
                 System.out.println();
                 output = new PrintStream(new FileOutputStream(path));
 

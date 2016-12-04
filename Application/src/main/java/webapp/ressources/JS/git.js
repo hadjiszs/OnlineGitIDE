@@ -114,6 +114,15 @@ function makeCommit(idProject,idCreator, idUser,branch,message){
         }
     });
 
+    /*
+     {result: "7200", new_commit_id: "02679c341374fca83a6331a11e43390da09ac39f"}
+     new_commit_id
+     :
+     "02679c341374fca83a6331a11e43390da09ac39f"
+     result
+     :
+     "7200"
+     */
 }
 
 function createDir(){

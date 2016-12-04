@@ -250,7 +250,7 @@ function openProject(idProject, idCreator){
             Cookies.set('creator', idCreator);
             Cookies.set('branch', "master");
             Cookies.set('revision', json["commits"][0].id);
-            Cookies.set('path', '/');
+            Cookies.set('path', '');
             window.location.href = "/JSP/edit.jsp";
         }
     });

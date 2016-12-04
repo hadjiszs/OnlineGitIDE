@@ -69,23 +69,36 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
         TemporaryFile oldTempFile;
         TemporaryFile newTempFile = new TemporaryFile(user, content, project, path);
 
+
+
+
+        oldTempFile = getEntityByHash(newTempFile.getHashKey());
+        if(oldTempFile == null){
+            newTempFile = temporaryFileDAO.addEntity(newTempFile);
+        }else{
+            oldTempFile.setContent(content);
+            newTempFile = temporaryFileDAO.updateEntity(oldTempFile);
+        }
         // recuperation du TemporaryFile éventuellement déjà présent dans la table
-        try{
-            oldTempFile = getEntityByHash(newTempFile.getHashKey());
+        /*try{
+
+            temporaryFileDAO.deleteEntity(oldTempFile.getId());
         }catch (DataException e){
             oldTempFile = null;
         }
 
 
+
+
         // si le fichier n'existe pas encore dans la table TemporaryFile
         // on l'ajoute avec le contenu temporaire
-        if(oldTempFile == null)
-            newTempFile = temporaryFileDAO.addEntity(newTempFile);
+        /*if(oldTempFile == null)
+
         else {
             oldTempFile.setContent(content);
             newTempFile = temporaryFileDAO.updateEntity(oldTempFile);
         }
-
+*/
         return newTempFile;
     }
 
