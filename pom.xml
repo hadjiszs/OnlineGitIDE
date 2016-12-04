@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>MultiMif</groupId>
+    <artifactId>MultiMif</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>MultiMif</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>Application</module>
+        <module>API</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+
+                    <path>/</path>
+                    <port>8080</port>
+                    <!-- <addContextWarDependencies>true</addContextWarDependencies>
+                    <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
+                    <warDirectory>${project.build.directory}/war/</warDirectory>
+                    <warSourceDirectory>${project.build.directory}/war/</warSourceDirectory> -->
+                    <webapps>
+                        <webapp>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>API</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                            <contextPath>/api</contextPath>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                        <webapp>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>Application</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                            <contextPath>/app</contextPath>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                    </webapps>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>API</artifactId>
+                        <version>${project.version}</version>
+                        <type>war</type>
+                    </dependency>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>Application</artifactId>
+                        <version>${project.version}</version>
+                        <type>war</type>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+        <!--
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <path>/</path>
+                        <port>8080</port>
+                        <addContextWarDependencies>true</addContextWarDependencies>
+                        <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
+                        <warSourceDirectory>${project.build.directory}/${project.build.finalName}/</warSourceDirectory>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>API</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                        </dependency>
+                        <dependency>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>Application</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins> -->
+    </build>
+
+</project>

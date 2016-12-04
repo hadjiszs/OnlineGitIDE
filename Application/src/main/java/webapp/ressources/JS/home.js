@@ -140,8 +140,11 @@ $(document).ready(function() {
     // Si on veut récupérer l'archive
     $("#getArchive").on("click", function (e) {
         e.preventDefault();
-        //getArchive(idProject,idCreator,idUser,branch)
-        // TODO
+        var idProject = $('#selectBranch option:selected').attr("project");
+        var idCreator = $('#selectBranch option:selected').attr("creator");
+        var idUser = Cookies.get('idUser');
+        var branch = $('#selectBranch option:selected').text();
+        getArchive(idProject,idCreator,idUser,branch);
     });
 
     // Si on clone un projet distant
