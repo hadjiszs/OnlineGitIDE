@@ -98,7 +98,13 @@ function compiler(idCreator,idProject,branch){
     ApiRequest("GET",url, "",function (json) {
         console.log("Compile: " + JSON.stringify(json));
 
-        $( "#contenuCompilation" ).load( json["src"]);
+        //$( "#contenuCompilation" ).load( json["src"]);
+        $("#contenuCompilation").empty().append('<div id="'+ json["id"] + '"></div>');
+        $.getScript( json["src"] )
+            .done(function( script, textStatus ) {
+                console.log( textStatus );
+            });
+
         //$("#contenuCompilation").empty().append(json);
 /*
         $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
