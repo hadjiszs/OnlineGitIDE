@@ -97,6 +97,9 @@ function compiler(idCreator,idProject,branch){
     var url = "/api/compile/" + idCreator + "/" + idProject + "/" + branch;
     ApiRequest("GET",url, "",function (json) {
         console.log("Compile: " + JSON.stringify(json));
+
         $("#contenuCompilation").empty().append(json);
+/*
+        $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
     });
 }

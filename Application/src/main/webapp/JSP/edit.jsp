@@ -19,6 +19,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
+        <!-- Asciinema -->
+        <link rel="stylesheet" href="../asciinema/asciinema-player.css" type="text/css">
+        <script src="../asciinema/asciinema-player.js"></script>
+
         <link rel="stylesheet" href="https://mbraak.github.io/jqTree/jqtree.css" type="text/css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

@@ -148,8 +148,8 @@
                             <input type="text" placeholder="Nom du projet" name="name" id="nomProjet" required />
                             <label class="labelProjet"> Langage </label>
                             <select name="type" class="form-group form-control" id="selectProjet">
-                                <option value="JAVA"> JAVA </option>
                                 <option value="MAVEN"> MAVEN </option>
+                                <option value="JAVA"> JAVA </option>
                                 <option value="CMAKE"> CMAKE </option>
                                 <option value="python"> Python </option>
                             </select>
