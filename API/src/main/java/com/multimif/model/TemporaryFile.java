@@ -67,6 +67,8 @@ public class TemporaryFile implements Serializable {
         this.user = user;
         this.project = project;
         this.path = path;
+
+        /*
         // Pas de path a la racine
         if(path.lastIndexOf("/") == -1){
             // pas d'extension
@@ -86,7 +88,9 @@ public class TemporaryFile implements Serializable {
                 this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
                 this.extension = path.substring(path.lastIndexOf(".")+1);
             }
-        }
+        }*/
+        this.path = "";
+        this.name = "";
     }
 
 

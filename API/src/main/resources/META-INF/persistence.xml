@@ -9,7 +9,7 @@
         <class>com.multimif.model.TemporaryFile</class>
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://37.59.39.220:3306/multimif?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/multimif?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="4882zTh3" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />

@@ -26,14 +26,12 @@ public class ZipFilesController {
 
     @RequestMapping(value = "/{file}", method = RequestMethod.GET, produces="application/zip")
     public void zipFiles(@PathVariable(value = "file") String file, HttpServletResponse response) throws IOException{
-        //setting headers
-        //response.setStatus(HttpServletResponse.SC_OK);
-        //
 
         File zip = new File(GitConstantes.ZIP_DIRECTORY + file + ".zip");
         FileInputStream inputStream = new FileInputStream(zip);
         response.setContentLength((int) zip.length());
-        response.addHeader("Content-Disposition", "attachment; filename=\"file.zip\"");
+
+        response.addHeader("Content-Disposition", "attachment; filename=\""+file + ".zip\"");
 
         OutputStream outStream = response.getOutputStream();
 
