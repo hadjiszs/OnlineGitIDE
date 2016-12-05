@@ -99,12 +99,21 @@ function compiler(idCreator,idProject,branch){
         console.log("Compile: " + JSON.stringify(json));
 
         //$( "#contenuCompilation" ).load( json["src"]);
-        $("#contenuCompilation").empty().append('<div id="'+ json["id"] + '"></div>');
-        $.getScript( json["src"] )
+        /*$("#contenuCompilation").empty().append('<div id="'+ json["id"] + '"></div>');
+        /*$.getScript( json["src"] )
             .done(function( script, textStatus ) {
                 console.log( textStatus );
             });
+        document.getElementById("#contenuCompilation").*/
 
+
+            var js = document.createElement("script");
+        // set the type attribute
+        js.type = "application/javascript";
+        // make the script element load file
+        js.src = json["src"];
+        // finally insert the element to the body element in order to load the script
+        document.getElementById("#contenuCompilation").appendChild(js);
         //$("#contenuCompilation").empty().append(json);
 /*
         $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
