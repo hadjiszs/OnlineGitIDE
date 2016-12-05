@@ -97,25 +97,10 @@ function compiler(idCreator,idProject,branch){
     var url = "/api/compile/" + idCreator + "/" + idProject + "/" + branch;
     ApiRequest("GET",url, "",function (json) {
         console.log("Compile: " + JSON.stringify(json));
-
-        //$( "#contenuCompilation" ).load( json["src"]);
-        /*$("#contenuCompilation").empty().append('<div id="'+ json["id"] + '"></div>');
-        /*$.getScript( json["src"] )
-            .done(function( script, textStatus ) {
-                console.log( textStatus );
-            });
-        document.getElementById("#contenuCompilation").*/
-
-
-            var js = document.createElement("script");
-        // set the type attribute
-        js.type = "application/javascript";
-        // make the script element load file
+        var js = document.createElement("script");
+        js.type = "text/javascript";
         js.src = json["src"];
-        // finally insert the element to the body element in order to load the script
+        js.setAttribute("data-autoplay","true");
         document.getElementById("contenuCompilation").appendChild(js);
-        //$("#contenuCompilation").empty().append(json);
-/*
-        $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
     });
 }
