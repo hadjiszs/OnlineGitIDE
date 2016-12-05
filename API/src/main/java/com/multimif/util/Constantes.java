@@ -33,11 +33,11 @@ public class Constantes {
     public static final String MV_TEMP_FILES_ACTION = "getTempFile";
 
 
-    public static final String REPO_PATH = System.getProperty("user.dir") + "/repositories"; // depot des projets
-    public static final String CLONE_PATH = System.getProperty("user.dir") + "/clone"; // depot des projets pour la compilation
-    public static final String SCRIPTS_PATH = System.getProperty("user.dir") + "/scripts"; // scripts
-    public static final String RESULTS_PATH = System.getProperty("user.dir") + "/results"; // resultat de la compilation
-    public static String TEMPFILES_PATH = System.getProperty("user.dir") + "/tempFiles"; // les fichiers temp
+    public static final String REPO_PATH = System.getProperty("user.dir") + "/API/repositories"; // depot des projets
+    public static final String CLONE_PATH = System.getProperty("user.dir") + "/API/clone"; // depot des projets pour la compilation
+    public static final String SCRIPTS_PATH = System.getProperty("user.dir") + "/API/scripts"; // scripts
+    public static final String RESULTS_PATH = System.getProperty("user.dir") + "/API/results"; // resultat de la compilation
+    public static String TEMPFILES_PATH = System.getProperty("user.dir") + "/API/tempFiles"; // les fichiers temp
 
 
     public static String SCRIPT_COMPILE_JAVA = "compileJava.sh"; // script pour compiler un projet Java
