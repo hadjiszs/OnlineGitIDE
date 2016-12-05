@@ -9,6 +9,7 @@ import com.multimif.util.Messages;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +33,7 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
         try {
             file = query.getSingleResult();
         } catch(NoResultException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
             throw new DataException(Messages.FILE_NOT_EXISTS);
         } finally {
             closeEntityManager();

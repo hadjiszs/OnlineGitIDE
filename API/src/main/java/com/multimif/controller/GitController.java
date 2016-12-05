@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.json.JsonObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +52,7 @@ public class GitController {
     /**
      * Service de gestion des autorisations
      */
-    UserGrantService userGrantService = new UserGrantServiceImpl();
+    private UserGrantService userGrantService = new UserGrantServiceImpl();
 
     /**
      * Methode interne pour recuperer le pseudo d'un user à partir de son id
@@ -103,7 +102,7 @@ public class GitController {
         try {
             String raw = idUser + idRepository + path;
             file = temporaryFileService.getEntityByHash(String.valueOf(raw.hashCode()));
-            System.out.println(file.getName()); //
+
             return new ResponseEntity<>(JsonUtil.convertToJson(file),HttpStatus.OK);
         } catch (DataException ex) {
 
@@ -112,7 +111,6 @@ public class GitController {
                 String repository = getNameRepositoryById(idRepository);
 
                 ret = Util.getContent(author, repository, revision, path);
-                System.out.println(ret.toString());
                 if (ret == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
@@ -121,7 +119,6 @@ public class GitController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } catch (Exception e) {
                 LOGGER.log(Level.FINE, e.getMessage(), e);
-                System.out.println(e.getMessage());
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>(ret.toString(), HttpStatus.OK);

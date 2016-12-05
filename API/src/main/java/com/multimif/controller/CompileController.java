@@ -31,7 +31,6 @@ public class CompileController {
         Long idProject = Long.valueOf(idProjectStr);
         Long idCurrentUser = Long.valueOf(idCurrentUserStr);
 
-        System.out.println("compile");
         Compile compile = null;
 
         // Instanciation compilation
@@ -48,10 +47,11 @@ public class CompileController {
         try {
             ret = compile.execute();
         } catch (Exception ex) {
-            return new ResponseEntity<String>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+            LOGGER.log(Level.FINE, ex.toString(), ex);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
                     ex.getMessage())), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<String>(ret.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
     }
 }
