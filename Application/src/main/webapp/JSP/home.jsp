@@ -75,10 +75,10 @@
                         <button data-toggle="modal" data-target="#clonerModalProjet" class="btn btn-success" id="clonerProjet"> Cloner un Projet</button>
                     </header>
                     <div class="col-lg-12" id="listeProjets">
-                        <div class="btn-group col-lg-12 ligneListeProjet">
+                        <!-- <div class="btn-group col-lg-12 ligneListeProjet">
                             <button type="button" class="btn btn-default nomListeProjets">Projet 1</button>
                             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
+                        </div> -->
                     </div>
                 </section>
                 <section class="col-lg-12" id="divCollaboration">
