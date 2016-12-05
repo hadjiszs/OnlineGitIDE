@@ -113,7 +113,7 @@ function compiler(idCreator,idProject,branch){
         // make the script element load file
         js.src = json["src"];
         // finally insert the element to the body element in order to load the script
-        document.getElementById("#contenuCompilation").appendChild(js);
+        document.getElementById("contenuCompilation").appendChild(js);
         //$("#contenuCompilation").empty().append(json);
 /*
         $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
