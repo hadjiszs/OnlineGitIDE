@@ -118,8 +118,13 @@ public class Compile {
             // recuperation du lien asciinema
             reader = new BufferedReader(new InputStreamReader(stdout));
             String lastLine = "";
-            while ((line = reader.readLine ()) != null)
+            while ((line = reader.readLine ()) != null){
+                System.out.println("line: " + line);
                 lastLine = line;
+            }
+
+
+            //System.out.printf("lasline: " + lastLine);
 
             String id = lastLine.substring(lastLine.lastIndexOf("/")+1);
             String srcUrl = "https://asciinema.org/a/";
