@@ -1,8 +1,5 @@
 package com.multimif.controller;
 
-import com.multimif.model.Project;
-import com.multimif.model.TemporaryFile;
-import com.multimif.model.User;
 import com.multimif.service.*;
 import com.multimif.util.Constantes;
 import com.multimif.util.DataException;
@@ -18,7 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by hadjiszs on 21/10/16.
+ * @author hadjiszs
+ * @version 1.0
+ * @since 1.0 21/10/16.
  */
 @RestController
 @RequestMapping("/file/{idCurrentUser}/{idUser}/{idRepository}/{branch}")
@@ -27,23 +26,13 @@ public class FileController {
     /**
      * Service de fichier temporaire
      */
-    TemporaryFileService temporaryFileService;
-
-    /*
-     * Service de gestion de droit
-     */
-    UserService userService;
-
-    /**
-     * Service de gestion de droit
-     */
-    ProjectService projectService;
+    private TemporaryFileService temporaryFileService;
 
     private static final Logger LOGGER = Logger.getLogger(FileController.class.getName());
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    ResponseEntity<String> edit(@PathVariable String idRepository,
+    @ResponseBody
+    public ResponseEntity<String> edit(@PathVariable String idRepository,
                                 @PathVariable String idCurrentUser,
                                 @RequestParam(value="content") String content,
                                 @RequestParam(value="path") String path) {
@@ -62,6 +51,5 @@ public class FileController {
     @PostConstruct
     public void init() {
         temporaryFileService = new TemporaryFileServiceImpl();
-        userService = new UserServiceImpl();
     }
 }

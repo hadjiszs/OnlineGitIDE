@@ -19,17 +19,14 @@ public class ArboNode {
     String incrementalPath;
 
     public ArboNode(String nodeValue, String incrementalPath) {
-        childs = new ArrayList<ArboNode>();
-        leafs = new ArrayList<ArboNode>();
+        childs = new ArrayList<>();
+        leafs = new ArrayList<>();
         data = nodeValue;
         this. incrementalPath = incrementalPath;
     }
 
     public boolean existElement(String[] list, int depth) {
-        //System.out.println(data + " != " + list[depth]);
-        //System.out.println((depth + 1) + " > " + list.length);
         if (depth + 1 > list.length || !data.equals(list[depth])) {
-            //System.out.println("nope");
             return false;
         }
         if (depth + 1 == list.length && data.equals(list[depth])) {

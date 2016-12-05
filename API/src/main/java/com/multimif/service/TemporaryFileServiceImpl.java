@@ -5,14 +5,11 @@ import com.multimif.dao.TemporaryFileDAOImpl;
 import com.multimif.model.Project;
 import com.multimif.model.TemporaryFile;
 import com.multimif.model.User;
-import com.multimif.util.Constantes;
 import com.multimif.util.DataException;
-import com.multimif.util.JsonUtil;
-import com.multimif.util.Status;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Amaia Nazábal
@@ -20,6 +17,8 @@ import java.util.List;
  * @since 1.0 11/18/16.
  */
 public class TemporaryFileServiceImpl implements TemporaryFileService {
+    private static final Logger LOGGER = Logger.getLogger( TemporaryFileServiceImpl.class.getName() );
+
     private UserService userService = new UserServiceImpl();
     private ProjectService projectService = new ProjectServiceImpl();
     private TemporaryFileDAO temporaryFileDAO = new TemporaryFileDAOImpl();
@@ -66,39 +65,23 @@ public class TemporaryFileServiceImpl implements TemporaryFileService {
     {
         User user = userService.getEntityById(idUser);
         Project project = projectService.getEntityById(idProject);
-        TemporaryFile oldTempFile;
+        TemporaryFile oldTempFile = null;
         TemporaryFile newTempFile = new TemporaryFile(user, content, project, path);
 
+        try {
+            oldTempFile = getEntityByHash(newTempFile.getHashKey());
+        }catch (DataException e){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
 
 
-
-        oldTempFile = getEntityByHash(newTempFile.getHashKey());
         if(oldTempFile == null){
             newTempFile = temporaryFileDAO.addEntity(newTempFile);
         }else{
             oldTempFile.setContent(content);
             newTempFile = temporaryFileDAO.updateEntity(oldTempFile);
         }
-        // recuperation du TemporaryFile éventuellement déjà présent dans la table
-        /*try{
 
-            temporaryFileDAO.deleteEntity(oldTempFile.getId());
-        }catch (DataException e){
-            oldTempFile = null;
-        }
-
-
-
-
-        // si le fichier n'existe pas encore dans la table TemporaryFile
-        // on l'ajoute avec le contenu temporaire
-        /*if(oldTempFile == null)
-
-        else {
-            oldTempFile.setContent(content);
-            newTempFile = temporaryFileDAO.updateEntity(oldTempFile);
-        }
-*/
         return newTempFile;
     }
 

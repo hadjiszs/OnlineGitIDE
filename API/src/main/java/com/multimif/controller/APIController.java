@@ -22,7 +22,8 @@ public class APIController {
      * @return Un json contenant le statut de l'API
      */
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<String> get(){
+    @ResponseBody
+    public ResponseEntity<String> get(){
         return new ResponseEntity<>(JsonUtil.convertStringToJson("API","OK"), HttpStatus.OK);
     }
 
