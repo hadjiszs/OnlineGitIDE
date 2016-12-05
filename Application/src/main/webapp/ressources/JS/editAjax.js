@@ -98,7 +98,8 @@ function compiler(idCreator,idProject,branch){
     ApiRequest("GET",url, "",function (json) {
         console.log("Compile: " + JSON.stringify(json));
 
-        $("#contenuCompilation").empty().append(json);
+        $( "#contenuCompilation" ).load( json["src"]);
+        //$("#contenuCompilation").empty().append(json);
 /*
         $("#contenuCompilation").append(<asciinema-player src="/demo.json"></asciinema-player>)*/
     });

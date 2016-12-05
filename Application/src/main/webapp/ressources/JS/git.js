@@ -203,6 +203,8 @@ function getArchive(idProject,idCreator,idUser,branch){
     var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/archive/" + branch;
     ApiRequest('GET',url,"",function(json){
         console.log("Get archive " + JSON.stringify(json));
+        var fileUrl = "/api/zipFiles/" + json["file"];
+        window.open(fileUrl, '_blank');
     });
 }
 
