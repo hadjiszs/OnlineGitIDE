@@ -149,7 +149,8 @@
                             <label class="labelProjet"> Langage </label>
                             <select name="type" class="form-group form-control" id="selectProjet">
                                 <option value="JAVA"> JAVA </option>
-                                <option value="C++"> C++ </option>
+                                <option value="MAVEN"> MAVEN </option>
+                                <option value="CMAKE"> CMAKE </option>
                                 <option value="python"> Python </option>
                             </select>
                             <input  class="btn btn-success" id="btnProjet" type="submit" value="Créer" />
