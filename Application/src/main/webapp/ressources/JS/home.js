@@ -48,7 +48,7 @@ $(document).ready(function() {
     });
 
     // Si on click sur un projet, on récupère ses informations
-    $("#listeProjets").on("click", ".userProject-list", function (e) {
+    $("#listeProjets").on("click", ".userProject-list > span", function (e) {
         e.preventDefault();
 
         var idProject = $(this).attr("project");
