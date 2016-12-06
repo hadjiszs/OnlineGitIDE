@@ -349,7 +349,7 @@ function cloneProject(idUser,urlProject,name,type){
 
 /** Ren voi la date d'un timsestamp */
 function getDate(timestamp){
-    var d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
+    var d = new Date(timestamp),	// Convert the passed timestamp to milliseconds
         yyyy = d.getYear(),
         mm = d.getMonth(),	// Months are zero based. Add leading 0.
         dd = d.getDate(),			// Add leading 0.
