@@ -37,7 +37,7 @@ $(document).ready(function() {
         var idCreator = Cookies.get('creator');
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');
-        var path = $("#nomDossier").val() + "/.ds_store";
+        var path = $("#nomDossier").val() + "/.DS_STORE";
         var branch = Cookies.get('branch');
         createFile(idProject,idCreator, idUser,path,branch);
     });

@@ -68,29 +68,30 @@ public class TemporaryFile implements Serializable {
         this.project = project;
         this.path = path;
 
-        /*
-        // Pas de path a la racine
-        if(path.lastIndexOf("/") == -1){
-            // pas d'extension
-            if(path.lastIndexOf(".") == -1){
+        // On verifie si c'est un .DS_STORE
+        if(path.contains(".DS_STORE")){
+            this.name = ".DS_STORE";
+            this.extension = "";
+        }else if(path.lastIndexOf(".") == -1){ // pas d'extension
+            this.extension = "";
+            // On verifie si il y a un path avant le nom du fichier
+            if(path.lastIndexOf("/") == -1){
+                // pas de path
                 this.name = path;
-                this.extension = "";
             }else{
-                this.name = path.substring(0, path.lastIndexOf(".")-1);
-                this.extension = path.substring(path.lastIndexOf(".")+1);
+                this.name = path.substring(path.lastIndexOf("/")+1);
             }
-        }else{
-            // pas d'extension
-            if(path.lastIndexOf(".") == -1){
-                this.name = path;
-                this.extension = "";
+        }else{ // On a un extension
+            // On verifie si il y a un path avant le nom du fichier
+            this.extension = path.substring(path.lastIndexOf(".")+1);
+            if(path.lastIndexOf("/") == -1){
+                // pas de path
+                this.name = path.substring(0, path.lastIndexOf(".")-1);
             }else{
                 this.name = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf(".")-1);
-                this.extension = path.substring(path.lastIndexOf(".")+1);
             }
-        }*/
-        this.path = "";
-        this.name = "";
+        }
+
     }
 
 
