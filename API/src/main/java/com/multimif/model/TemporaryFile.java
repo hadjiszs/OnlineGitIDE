@@ -187,12 +187,15 @@ public class TemporaryFile implements Serializable {
     }
 
     public void mkdirs(String path){
+        System.out.println("mkdirs en cours: " + path);
         try{
             File file = new File(path);
             file.mkdirs();
+            System.out.println("exist: " + file.exists());
         }catch (Exception ex){
             System.out.println("MKDIRS: " + ex.getMessage());
         }
+
 
     }
 
