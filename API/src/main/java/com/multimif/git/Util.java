@@ -339,8 +339,10 @@ public class Util {
             AbstractTreeIterator newTreeParser = prepareTreeParser(repository, parent);
 
             List<DiffEntry> diff = git.diff()
-                    .setOldTree(oldTreeParser)
-                    .setNewTree(newTreeParser)
+                    .setOldTree(newTreeParser)
+                    .setNewTree(oldTreeParser)
+                    /*.setOldTree(oldTreeParser)
+                    .setNewTree(newTreeParser)*/
                     .call();
 
             formatter.setRepository(repository);
