@@ -350,11 +350,20 @@ function cloneProject(idUser,urlProject,name,type){
 /** Ren voi la date d'un timsestamp */
 function getDate(timestamp){
     var d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
-        yyyy = d.getFullYear(),
-        mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
-        dd = ('0' + d.getDate()).slice(-2),			// Add leading 0.
+        yyyy = d.getYear(),
+        mm = d.getMonth(),	// Months are zero based. Add leading 0.
+        dd = d.getDate(),			// Add leading 0.
         hh = d.getHours(),
-        min = ('0' + d.getMinutes()).slice(-2);
+        min = d.getMinutes();
 
     return mm + '-' + dd + '-' + yyyy + ', ' + hh + ':' + min;
+/*
+    var date = new Date(timestamp);
+    var date2 = new Date(timestamp * 1000);
+    var jour =
+    console.log(date.getHours());
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+   return hours + ':' + minutes + ':' + seconds;*/
 }
