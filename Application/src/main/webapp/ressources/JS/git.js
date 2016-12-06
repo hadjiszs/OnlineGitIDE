@@ -2,22 +2,12 @@
 function listBranch(idProject,idCreator, idUser){
     var url = "/api/git/"+  idUser + "/" + idCreator + "/" + idProject + "/branches";
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Branches',
-                message: 'Impossible de récupérer la liste des branches du projets',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Liste des branch de " + idProject + ": " + JSON.stringify(json));
             $('#selectBranch').empty();
 
             $.each(json["branches"], function(index, element) {
                 $('#selectBranch').append('<option project="'+ idProject+'" creator="'+ idCreator +'">' + element.name.substr(element.name.lastIndexOf('/') + 1) + '</option>');
             });
-        }
     });
 }
 
@@ -55,6 +45,7 @@ function getFile(idProject,idCreator, idUser,revision,path, temporary){
         console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
         setEditeur(json["content"]);
         Cookies.set('path',path);
+        $("#file-breadcrumb").text(path);
 
     });
 }
@@ -64,7 +55,7 @@ function getArborescence(idProject,idCreator, idUser,revision){
     var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/tree/" + revision+"/true";
     ApiRequest('GET',url,"",function(json){
         console.log("Arborescence de " + revision + ": " + JSON.stringify(json));
-        $("#arborescenceFichier").empty();
+        //$("#arborescenceFichier").empty();
         $('#arborescenceFichier').tree({
             data: json.root,
             onCreateLi: function(node, $li) {

@@ -132,11 +132,12 @@
                     </div>
                 </div>
             </section>
+            <!--
             <a id="ancrePanel" aria-label="Panel deroulant"><span class="glyphicon glyphicon-chevron-left" id="chevronAncre" aria-hidden="true"></span></a>
             <section id="panelDeroulant">
                 <p> BLABLABLA </p>
                 <p> BLABLABLA </p>
-            </section>
+            </section> -->
         </main>
 
         <!-- Modal Creation de projet -->

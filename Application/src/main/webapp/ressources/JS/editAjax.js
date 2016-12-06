@@ -83,6 +83,11 @@ function refreshPage(){
     getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
     listBranch(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'));
     Cookies.set("path",'');
+
+    $("#branche-breadcrumb").text(Cookies.get('branch'));
+    $("#revision-breadcrumb").text(Cookies.get('revision'));
+
+
 }
 
 function edit(idProject,idUser,idCreator,branch,path,content,temporary){
@@ -94,6 +99,13 @@ function edit(idProject,idUser,idCreator,branch,path,content,temporary){
 
     ApiRequest('POST',url,"",function(json){
         console.log("Edition: " + JSON.stringify(json));
+        BootstrapDialog.show({
+            title: 'Fichier',
+            message: 'Le fichier a été sauvegardé',
+            type: BootstrapDialog.TYPE_SUCCESS,
+            closable: true,
+            draggable: true
+        });
     });
 }
 

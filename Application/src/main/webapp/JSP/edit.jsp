@@ -77,6 +77,14 @@
             </nav>
         </header>
         <main class="container-fluid">
+            <div class="col-lg-10 col-lg-offset-1">
+                <ol class="breadcrumb">
+                    <li>Branche: <span id="branche-breadcrumb"></span></li>
+                    <li>Revision: <span id="revision-breadcrumb"></span></li>
+                    <li>Fichier: <span id="file-breadcrumb"></span></li>
+                </ol>
+            </div>
+
             <aside class="row">
                 <div class="col-lg-10 col-lg-offset-1" id="barreBtn">
                     <div class="btn-group">
@@ -160,14 +168,14 @@ return member;
                 </div>
             </section>
             <!-- Fin compilation -->
-
+            <!--
             <a id="ancrePanelDroite" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-left" id="chevronAncreDroite" aria-hidden="true"></span>
             </a>
 
             <section id="panelDroite">
                 <div id="arborescence"></div>
-            </section>
+            </section> -->
 
             <a id="ancrePanelGauche" aria-label="Panel deroulant">
                 <span class="glyphicon glyphicon-chevron-right" id="chevronAncreGauche" aria-hidden="true"></span>
