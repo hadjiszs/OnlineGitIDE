@@ -625,9 +625,12 @@ public class Util {
                 System.out.println("path: " + path);
                 file.mkdirs(path);
                 System.out.println("passer");
-                output = new PrintStream(new FileOutputStream(path));
+                FileOutputStream fos = new FileOutputStream(path);
+                System.out.println("hello");
+                output = new PrintStream(fos);
                 System.out.println("shit");
                 output.print(file.getContent());
+                output.close();
 
             }
             System.out.println("ici");
