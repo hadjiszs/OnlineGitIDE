@@ -622,14 +622,17 @@ public class Util {
                 //newFile.createNewFile();
                 //System.out.println(file.getPath());
                 String path = getGitRepo(author, repository) +"/"+ file.getPath();
+                System.out.println("path: path");
                 output = new PrintStream(new FileOutputStream(path));
 
                 output.print(file.getContent());
 
             }
+            System.out.println("ici");
             git.add()
                     .addFilepattern(".")
                     .call();
+            System.out.println("bonjour");
             RevCommit newCommit = git.commit()
                     .setAuthor(commiter.getUsername(), commiter.getMail())
                     .setMessage(message)
