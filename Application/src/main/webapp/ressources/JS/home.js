@@ -349,8 +349,10 @@ function cloneProject(idUser,urlProject,name,type){
 
 /** Ren voi la date d'un timsestamp */
 function getDate(timestamp){
-    var date = new Date(timestamp/1000);
-    console.log(timestamp/1000);
+    var date = new Date(timestamp);
+    var date2 = new Date(timestamp * 1000);
+    console.log(date.getHours());
+    console.log(date2.getHours());
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var seconds = date.getSeconds();
