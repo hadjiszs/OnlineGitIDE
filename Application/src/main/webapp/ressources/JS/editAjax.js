@@ -86,6 +86,8 @@ function refreshPage(){
 
     $("#branche-breadcrumb").text(Cookies.get('branch'));
     $("#revision-breadcrumb").text(Cookies.get('revision'));
+    $('#selectBranch').val(Cookies.get('branch'));
+
 
 
 }

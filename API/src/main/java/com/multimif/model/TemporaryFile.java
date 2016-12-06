@@ -69,6 +69,7 @@ public class TemporaryFile implements Serializable {
         this.project = project;
         this.path = path;
 
+        System.out.println(path);
         // On verifie si c'est un .DS_STORE
         if(path.contains(".DS_STORE")){
             this.name = ".DS_STORE";
