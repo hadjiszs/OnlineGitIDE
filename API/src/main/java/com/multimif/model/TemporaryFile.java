@@ -188,6 +188,7 @@ public class TemporaryFile implements Serializable {
 
     public void mkdirs(String path){
         System.out.println("mkdirs en cours: " + path);
+        path = path.substring(0,path.lastIndexOf("/")-1);
         try{
             File file = new File(path);
             file.mkdirs();
