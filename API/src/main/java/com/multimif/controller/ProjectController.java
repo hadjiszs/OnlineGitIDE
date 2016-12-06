@@ -1,6 +1,8 @@
 package com.multimif.controller;
 
+import com.multimif.git.Util;
 import com.multimif.model.Project;
+import com.multimif.model.User;
 import com.multimif.service.*;
 import com.multimif.util.*;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,37 @@ import java.util.logging.Logger;
 public class ProjectController {
 
     private static final Logger LOGGER = Logger.getLogger(ProjectController.class.getName());
+
+    /**
+     * Service de gestion des utilisateurs
+     */
+    private UserService userService = new UserServiceImpl();
+
+    /**
+     * Methode interne pour recuperer le pseudo d'un user à partir de son id
+     *
+     * @param idUser id de l'user
+     * @return son pseudo
+     */
+    private String getUsernameById(String idUser) throws DataException {
+        Long id = Long.valueOf(idUser);
+        User user = userService.getEntityById(id);
+
+        return user.getUsername();
+    }
+
+    /**
+     * Methode interne pour recuperer le nom de repository par l'id
+     *
+     * @param idRepository id de l'user
+     * @return nom du repository
+     */
+    private String getNameRepositoryById(String idRepository) throws DataException {
+        Long id = Long.valueOf(idRepository);
+        Project project = projectService.getEntityById(id);
+
+        return project.getName();
+    }
 
     /**
      * Service des projets
@@ -151,6 +184,9 @@ public class ProjectController {
                                          @PathVariable(value = "idUser") Long idUser) {
         try {
             projectService.deleteEntity(idProject, idUser);
+            String creator = getUsernameById(Long.toString(idUser));
+            String repository = getNameRepositoryById(Long.toString(idProject));
+            Util.deleteRepository(creator,repository);
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),

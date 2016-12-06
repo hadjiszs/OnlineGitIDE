@@ -74,6 +74,7 @@ function getArborescence(idProject,idCreator, idUser,revision){
     var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/tree/" + revision+"/true";
     ApiRequest('GET',url,"",function(json){
         console.log("Arborescence de " + revision + ": " + JSON.stringify(json));
+        $("#arborescenceFichier").empty();
         $('#arborescenceFichier').tree({
             data: json.root,
             onCreateLi: function(node, $li) {

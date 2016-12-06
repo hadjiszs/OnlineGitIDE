@@ -103,11 +103,22 @@ $(document).ready(function() {
     ////////// Collaboration /////////////
 
     //Si on click sur une collaboration
-    $(".userCollaboration-list").on("click", function (e) {
+
+
+    $("#listeCollaborations").on("click", ".userCollaborations-list-open",function (e) {
         e.preventDefault();
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
         openProject(idProject, idCreator);
+    });
+
+    $("#listeCollaborations").on("click", ".userCollaboration-list",function (e) {
+        var idProject = $(this).attr("project");
+        var idCreator = $(this).attr("creator");
+        infoProject(idProject);
+        listBranch(idProject,idCreator,Cookies.get('idUser'));
+        listCommit(idProject,idCreator,Cookies.get('idUser'),"master");
+        listDeveloppers(idProject);
     });
 
     // Si on supprime une collaboration
@@ -203,15 +214,6 @@ function listProject(){
 function listCollaborations(){
     url = "/api/permissions/projects/users/" +  Cookies.get('idUser') + "/developers";
     ApiRequest('GET',url,"",function (json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Collaboration',
-                message: 'Impossible de récupérer la liste de collaborations',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Liste collaboration: " + JSON.stringify(json));
             $("#listeCollaborations").empty();
 
@@ -219,6 +221,9 @@ function listCollaborations(){
                 $('#listeCollaborations').append(
                 '<div class="btn-group col-lg-12 ligneListeCollaborations"> \
                     <button type="button" class="btn btn-default nomListeCollaborations userCollaboration-list" project="'+ element.idProject +'" creator="'+ element.idCreator + '">' + element.name +'</button> \
+                    <button type="button" class="btn btn-default userCollaborations-list-open" project="' + element.idProject +'" creator="'+ element.idCreator + '">\
+                        <span class="glyphicon glyphicon-pencil"></span>\
+                    </button> \
                     <button type="button" class="btn btn-default userCollaboration-list-delete" project="'+ element.idProject +'" creator="'+ element.idCreator + '">\
                         <span class="glyphicon glyphicon-remove spanSupprimerProjet"></span>\
                     </button> \

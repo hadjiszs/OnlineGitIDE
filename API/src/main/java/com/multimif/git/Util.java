@@ -624,11 +624,8 @@ public class Util {
                 String path = getGitRepo(author, repository) +"/"+ file.getPath();
                 System.out.println("path: " + path);
                 file.mkdirs(path);
-                System.out.println("passer");
                 FileOutputStream fos = new FileOutputStream(path);
-                System.out.println("hello");
                 output = new PrintStream(fos);
-                System.out.println("shit");
                 output.print(file.getContent());
                 output.close();
 
