@@ -351,12 +351,12 @@ function cloneProject(idUser,urlProject,name,type){
 function getDate(timestamp){
     var d = new Date(timestamp),	// Convert the passed timestamp to milliseconds
         yyyy = d.getYear(),
-        mm = d.getMonth(),	// Months are zero based. Add leading 0.
+        mm = d.getMonth() +1,	// Months are zero based. Add leading 0.
         dd = d.getDate(),			// Add leading 0.
         hh = d.getHours(),
         min = d.getMinutes();
 
-    return mm + '-' + dd + '-' + yyyy + ', ' + hh + ':' + min;
+    return  dd + '-' + mm + '-' + yyyy + ', ' + hh + ':' + min;
 /*
     var date = new Date(timestamp);
     var date2 = new Date(timestamp * 1000);
