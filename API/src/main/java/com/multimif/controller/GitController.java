@@ -381,11 +381,11 @@ public class GitController {
      */
     //ATENTION : pour cette requête : idUser = L'utilisateur en cours. En effet, on créé un nouveau dépot. C'est le current user qui est donc creator
     //La variable idRepository est inutile
-    @RequestMapping(value = "/clone/{url}/{newname}/{type}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/clone/{newname}/{type}", method = RequestMethod.POST, produces = GitConstantes.APPLICATION_JSON_UTF8)
     @ResponseBody
     public ResponseEntity<String> postClone(@PathVariable String idUser,
+                                            @RequestParam(value="url") String url,
                                      @PathVariable String idRepository,
-                                     @PathVariable String url,
                                      @PathVariable String newname,
                                      @PathVariable String type) {
         JsonObject ret = null;

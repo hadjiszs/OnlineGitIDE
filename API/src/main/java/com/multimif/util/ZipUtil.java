@@ -5,6 +5,7 @@ import com.multimif.git.GitConstantes;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,28 +44,35 @@ public class ZipUtil {
      * @throws IOException retourne une exception si on ne trouve pas le dossier
      */
     public static void compress(String sourceDirPath, String zipFilePath) throws IOException {
-        Path p = Files.createFile(Paths.get(zipFilePath));
 
-        ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p));
-        try {
-            Path pp = Paths.get(sourceDirPath);
-            Files.walk(pp)
-                    .filter(path -> !path.toFile().isDirectory())
-                    .forEach(path -> {
-                        String sp = path.toAbsolutePath().toString().replace(pp.toAbsolutePath().toString(), "")
-                                .replace(path.getFileName().toString(), "");
-                        ZipEntry zipEntry = new ZipEntry(sp + "/" + path.getFileName().toString());
-                        try {
-                            zs.putNextEntry(zipEntry);
-                            zs.write(Files.readAllBytes(path));
-                            zs.closeEntry();
-                        } catch (Exception e) {
-                            LOGGER.log(Level.FINE, e.getMessage(), e);
-                        }
-                    });
-        } finally {
-            zs.close();
+        try{
+            Path p = Files.createFile(Paths.get(zipFilePath));
+            ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p));
+            try {
+                Path pp = Paths.get(sourceDirPath);
+                Files.walk(pp)
+                        .filter(path -> !path.toFile().isDirectory())
+                        .forEach(path -> {
+                            String sp = path.toAbsolutePath().toString().replace(pp.toAbsolutePath().toString(), "")
+                                    .replace(path.getFileName().toString(), "");
+                            ZipEntry zipEntry = new ZipEntry(sp + "/" + path.getFileName().toString());
+                            try {
+                                zs.putNextEntry(zipEntry);
+                                zs.write(Files.readAllBytes(path));
+                                zs.closeEntry();
+                            } catch (Exception e) {
+                                LOGGER.log(Level.FINE, e.getMessage(), e);
+                            }
+                        });
+            } finally {
+                zs.close();
+            }
+        }catch(FileAlreadyExistsException ex){
+            System.out.println("Le zip existe déjà");
         }
+
+
+
     }
 
     /**

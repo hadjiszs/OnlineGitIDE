@@ -95,10 +95,17 @@
             </div>
             <section class="col-lg-7 col-md-12" id="homeDroite">
                 <header class="col-lg-12 titreSection">
-                    <h2 id="h2DivCommit"> Nom du Projet </h2>
-                    <button data-toggle="modal" data-target="#ajoutCollaborateur" class="btn btn-success" id="btnAjouterCollaborateur"> Ajouter un Collaborateur</button>
-                    <button type="button" class="btn btn-info" id="getArchive">ARCHIVE</button>
-                    <button>MERGE</button>
+                    <h2 id="h2DivCommit" id="projectName"> Nom du Projet </h2>
+                    <div class="col-lg-12">
+                        <button data-toggle="modal" data-target="#ajoutCollaborateur" class="btn btn-success" id="btnAjouterCollaborateur"> Ajouter un Collaborateur</button>
+                        <button>MERGE</button>
+                    </div>
+                    <div class="col-lg-12">
+                        <p>Date de création: <span id="project-creation-date"></span></p>
+                        <p>Dernière modification: <span id="project-last-modfif"></span></p>
+                        <p>Type: <span id="project-type"></span></p>
+                    </div>
+
                 </header>
                 <div class="col-lg-8" id="divDiff">
                 </div>
@@ -107,6 +114,7 @@
                         <select class="form-group form-control" id="selectBranch">
                             <option></option>
                         </select>
+                        <button type="button" class="btn btn-info" id="getArchive">archive de la branche</button>
                     </div>
                     <div class="col-lg-12" id="divAfficherCommit">
                         <ul class="list-group" id="listCommit">
@@ -149,9 +157,7 @@
                             <label class="labelProjet"> Langage </label>
                             <select name="type" class="form-group form-control" id="selectProjet">
                                 <option value="MAVEN"> MAVEN </option>
-                                <option value="JAVA"> JAVA </option>
                                 <option value="CMAKE"> CMAKE </option>
-                                <option value="python"> Python </option>
                             </select>
                             <input  class="btn btn-success" id="btnProjet" type="submit" value="Créer" />
                         </form>
@@ -181,9 +187,8 @@
                             <input type="text" placeholder="url du projet" name="name" id="urlCloneProjet" required />
                             <label class="labelProjet"> Langage </label>
                             <select name="type" class="form-group form-control" id="selectCloneProjet">
-                                <option value="JAVA"> JAVA </option>
-                                <option value="C++"> C++ </option>
-                                <option value="python"> Python </option>
+                                <option value="MAVEN">MAVEN</option>
+                                <option value="CMAKE">CMAKE</option>
                             </select>
                             <input  class="btn btn-success" id="btnCloneProjet" type="submit" value="Cloner" />
                         </form>

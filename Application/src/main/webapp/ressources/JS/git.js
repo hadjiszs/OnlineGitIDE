@@ -39,11 +39,11 @@ function listCommit(idProject,idCreator, idUser,branch){
             $.each(json["commits"], function(index, element) {
                 $('#listCommit').append(
                     '<li class="list-group-item ligneCommit" creator="'+ idCreator + '" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '"> \
-                        <span > ' + element.id + '</span> \
-                        <span> ' + element.date + '</span> \
-                        <span> ' + element.message + '</span> \
-                        <span> ' + element.user + '</span> \
-                        <span> ' + element.email + '</span> \
+                        <span class="open-revision"> Révision: ' + element.id + '</span> \
+                        <span> Date: ' + element.date + '</span> \
+                        <span> Message: ' + element.message + '</span> \
+                        <span> Utilisateur: ' + element.user + '</span> \
+                        <span> Email: ' + element.email + '</span> \
                         <button type="button" id="diffButton" class="btn btn-primary btn-sm" creator="'+ idCreator + '" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '">DIFF</button>\
                       </li>');
             });

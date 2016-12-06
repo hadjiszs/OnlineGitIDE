@@ -47,8 +47,21 @@ $(document).ready(function() {
         ApiRequest('POST',url,"",addProject);
     });
 
+
+    // Si on clone un projet distant
+    $("#btnCloneProjet").on("click", function (e) {
+        e.preventDefault();
+        $("#clonerModalProjet").modal('toggle');
+
+        var idUser = Cookies.get('idUser');
+        var urlProject = $("#urlCloneProjet").val();
+        var name = $("#nomCloneProjet").val();
+        var type = $("#selectCloneProjet option:selected").val();
+        cloneProject(idUser,urlProject,name,type);
+    })
+
     // Si on click sur un projet, on récupère ses informations
-    $("#listeProjets").on("click", ".userProject-list > span", function (e) {
+    $("#listeProjets").on("click", ".userProject-list", function (e) {
         e.preventDefault();
 
         var idProject = $(this).attr("project");
@@ -63,14 +76,16 @@ $(document).ready(function() {
     });
 
     // Si on supprime un projet
-    $(".userProject-list-delete").on("click", function(e){
+    $("#listeProjets").on("click", ".userProject-list-delete", function(e){
         e.preventDefault();
-        alert("delete projet TODO");
-        //TODO
+        var idProject = $(this).attr("project");
+        var idCreator = $(this).attr("creator");
+        deleteProject(idProject,idCreator);
     });
 
+
     //SI on ouvre un projet
-    $(".userProject-list-open").on("click", function(e){
+    $("#listeProjets").on("click", ".userProject-list-open", function(e){
         e.preventDefault();
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
@@ -90,15 +105,17 @@ $(document).ready(function() {
     //Si on click sur une collaboration
     $(".userCollaboration-list").on("click", function (e) {
         e.preventDefault();
-        alert("collaboration TODO");
-        // TODO
+        var idProject = $(this).attr("project");
+        var idCreator = $(this).attr("creator");
+        openProject(idProject, idCreator);
     });
 
     // Si on supprime une collaboration
     $('.userCollaboration-list-delete').on('click', function(e){
         e.preventDefault();
-        alert("delete collabab TODO");
-        // TODO
+        var idProject = $(this).attr("project");
+        var idUser = Cookies.get('idUser');
+        removeCollaborateur(idProject, idUser);
     });
 
 
@@ -118,14 +135,14 @@ $(document).ready(function() {
     });
 
     // SI on click sur un commit
-    /*$("#divAfficherCommit").on("click",function(e){
+    $("#divAfficherCommit").on("click", ".open-revision", function(e){
         e.preventDefault();
-        var idProject = $(this).attr("project");
-        var branch = $(this).attr("branch");
-        var revision = $(this).attr("revision");
-        var idCreator = $(this).attr("creator");
+        var idProject = $(this).parent().attr("project");
+        var branch = $(this).parent().attr("branch");
+        var revision = $(this).parent().attr("revision");
+        var idCreator = $(this).parent().attr("creator");
         openCommit(idProject, idCreator, branch, revision);
-    });*/
+    });
 
     // SI on click le bouton diff d'un commit
     $("#divAfficherCommit").on("click", "#diffButton", function (e) {
@@ -147,11 +164,7 @@ $(document).ready(function() {
         getArchive(idProject,idCreator,idUser,branch);
     });
 
-    // Si on clone un projet distant
-    $("#btnCloneProjet").on("click", function (e) {
-        e.preventDefault();
-        // TODO
-    })
+
 
 });
 
@@ -296,6 +309,10 @@ function infoProject(idProject){
     var url = "/api/project/" + idProject;
     ApiRequest('GET',url,"",function(json){
             console.log("Info projet: " + JSON.stringify(json));
+            $("#projectName").text(json["name"]);
+            $("#project-creation-date").text(getDate(json["creationDate"]));
+            $("#project-last-modfif").text(getDate(json["lastModification"]));
+            $("#project-type").text(json["type"]);
     });
 }
 
@@ -312,14 +329,34 @@ function removeCollaborateur(idProject, idUser){
     var url = "/api/projects/"+ idProject + "/users/" + idUser;
     ApiRequest('DELETE',url,"",function(json){
         console.log("Remove collaborateur au projet: " + idProject + " idUser:  " + idUser + " : " + JSON.stringify(json));
-        listDeveloppers(idProject);
+        refreshPage();
     });
 }
 
+/** Supprime un projet de l'utilisateur */
 function deleteProject(idProject,idUser){
     var url = "/api/project/" + idProject + "/" + idUser;
     ApiRequest('DELETE',url,"",function(json){
         console.log("Ajout du collaborateur au projet: " + idProject + " idUser:  " + idUser + " : " + JSON.stringify(json));
-        listDeveloppers(idProject);
+        refreshPage();
     });
+}
+
+/* On clone un projet */
+function cloneProject(idUser,urlProject,name,type){
+    var url = "/api/git/" + idUser +"/" + idUser + "/" + Math.floor(Math.random() * 100) + 5000  + "/clone/" + name + "/" + type + "?url=" +urlProject ;
+    console.log(url);
+    ApiRequest('POST',url,"",function(json){
+        console.log("cloner projet: " + name + " " + JSON.stringify(json));
+        refreshPage();
+    });
+}
+
+/** Ren voi la date d'un timsestamp */
+function getDate(timestamp){
+    var date = new Date(timestamp*1000);
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
