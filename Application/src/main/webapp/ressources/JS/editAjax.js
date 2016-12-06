@@ -14,6 +14,7 @@ $(document).ready(function() {
     //Créer un nouvelle branche
     $("#createBranch-button").on("click", function(e){
         e.preventDefault();
+        $("#fenetreBranche").modal('toggle');
         var idCreator = Cookies.get('creator');
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');
@@ -23,6 +24,7 @@ $(document).ready(function() {
     // Créer un fichier
     $("#createFile-button").on("click", function(e){
         e.preventDefault();
+        $("#fenetreFichier").modal('toggle');
         var idCreator = Cookies.get('creator');
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');
@@ -34,6 +36,7 @@ $(document).ready(function() {
     // Créer un dossier
     $("#createDossier-button").on("click", function (e) {
         e.preventDefault();
+        $("#fenetreDossier").modal('toggle');
         var idCreator = Cookies.get('creator');
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');
@@ -45,6 +48,7 @@ $(document).ready(function() {
     // Faire un commit
     $("#envoyerCommit").on("click", function(e){
         e.preventDefault();
+        $("#fenetreCommit").modal('toggle');
         var idCreator = Cookies.get('creator');
         var idUser = Cookies.get('idUser');
         var idProject = Cookies.get('project');

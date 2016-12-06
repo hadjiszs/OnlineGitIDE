@@ -25,15 +25,6 @@ function listBranch(idProject,idCreator, idUser){
 function listCommit(idProject,idCreator, idUser,branch){
     var url = "/api/git/" +  idUser + "/" + idCreator + "/" + idProject + "/listCommit/" + branch;
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commits',
-                message: 'Impossible de récupérer la liste des commits de la branche',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Liste des commits de " + branch + ": " + JSON.stringify(json));
             $('#listCommit').empty();
             $.each(json["commits"], function(index, element) {
@@ -47,7 +38,6 @@ function listCommit(idProject,idCreator, idUser,branch){
                         <button type="button" id="diffButton" class="btn btn-primary btn-sm" creator="'+ idCreator + '" project="'+ idProject+'" revision="' + element.id + '" branch="' + branch + '">DIFF</button>\
                       </li>');
             });
-        }
     });
 }
 
@@ -102,56 +92,29 @@ function createFile(idProject,idCreator, idUser,path,branch){
     });
 }
 
+/** Créer un commit */
 function makeCommit(idProject,idCreator, idUser,branch,message){
     var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/makeCommit/" + branch +"?message=" + message;
     ApiRequest('POST',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commit',
-                message: 'Impossible de faire le commit',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Commit: " + JSON.stringify(json));
             Cookies.set('revision', json["new_commit_id"]);
-            getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
-        }
+            refreshPage();
     });
-
-    /*
-     {result: "7200", new_commit_id: "02679c341374fca83a6331a11e43390da09ac39f"}
-     new_commit_id
-     :
-     "02679c341374fca83a6331a11e43390da09ac39f"
-     result
-     :
-     "7200"
-     */
 }
 
+/** Créer une branche */
 function createBranch(branch, idProject, idCreator, idUser){
     var url = "/api/git/"+  idUser +"/"+ idCreator + "/" + idProject + "/create/branch/" + branch;
     ApiRequest('POST',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Branches',
-                message: 'Impossible de créer la branche',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Branche crée:  " + JSON.stringify(json));
             BootstrapDialog.show({
                 title: 'Branches',
-                message: 'La branche ' + branch + 'a été créee.',
+                message: 'La branche ' + branch + ' a été créee.',
                 type: BootstrapDialog.TYPE_SUCCESS,
                 closable: true,
                 draggable: true
             });
-        }
+            refreshPage();
     });
 }
 function changeBranch(idProject, idCreator, idUser, branch){
@@ -161,24 +124,11 @@ function changeBranch(idProject, idCreator, idUser, branch){
 
     var url = "/api/git/"+ idUser +"/" + idCreator + "/" + idProject + "/listCommit/" + branch;
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commits',
-                message: 'Impossible de récupérer le dernier commit de ' + branch,
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Dernier commit de "+branch+ ": " + json["commits"][0].id);
             Cookies.set('project', idProject);
             Cookies.set('branch', branch);
             Cookies.set('revision', json["commits"][0].id);
             refreshPage();
-        }
-
-
-
     });
 }
 

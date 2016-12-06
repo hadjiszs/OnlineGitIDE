@@ -95,10 +95,9 @@
             </div>
             <section class="col-lg-7 col-md-12 hide" id="homeDroite">
                 <header class="col-lg-12 titreSection">
-                    <h2 id="h2DivCommit" id="projectName"> Nom du Projet </h2>
+                    <h2 id="projectName"> Nom du Projet </h2>
                     <div class="col-lg-12">
                         <button data-toggle="modal" data-target="#ajoutCollaborateur" class="btn btn-success" id="btnAjouterCollaborateur"> Ajouter un Collaborateur</button>
-                        <button>MERGE</button>
                     </div>
                     <div class="col-lg-12">
                         <p>Date de création: <span id="project-creation-date"></span></p>

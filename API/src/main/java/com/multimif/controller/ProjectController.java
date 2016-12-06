@@ -183,10 +183,11 @@ public class ProjectController {
     public ResponseEntity<String> remove(@PathVariable(value = "idProject") Long idProject,
                                          @PathVariable(value = "idUser") Long idUser) {
         try {
-            projectService.deleteEntity(idProject, idUser);
             String creator = getUsernameById(Long.toString(idUser));
             String repository = getNameRepositoryById(Long.toString(idProject));
             Util.deleteRepository(creator,repository);
+            projectService.deleteEntity(idProject, idUser);
+
         } catch (DataException ex) {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(-1, ex.getMessage())),

@@ -63,7 +63,7 @@ $(document).ready(function() {
     // Si on click sur un projet, on récupère ses informations
     $("#listeProjets").on("click", ".userProject-list", function (e) {
         e.preventDefault();
-        $("#homeDroite").removeClass("hide");
+
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
         infoProject(idProject);
@@ -303,6 +303,7 @@ function infoProject(idProject){
     var url = "/api/project/" + idProject;
     ApiRequest('GET',url,"",function(json){
             console.log("Info projet: " + JSON.stringify(json));
+            $("#homeDroite").removeClass("hide");
             $("#projectName").text(json["name"]);
             $("#project-creation-date").text(getDate(json["creationDate"]));
             $("#project-last-modfif").text(getDate(json["lastModification"]));
