@@ -1,6 +1,7 @@
 package com.multimif.model;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 import static com.multimif.util.SplitPath.getFileExtension;
@@ -183,6 +184,16 @@ public class TemporaryFile implements Serializable {
 
     public void setExtensionType(ExtensionType extensionType) {
         setExtension(extensionType.getExtension().toUpperCase());
+    }
+
+    public void mkdirs(String path){
+        try{
+            File file = new File(path);
+            file.mkdirs();
+        }catch (Exception ex){
+            System.out.println("MKDIRS: " + ex.getMessage());
+        }
+
     }
 
 

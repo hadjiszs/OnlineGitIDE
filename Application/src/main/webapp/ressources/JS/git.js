@@ -65,6 +65,7 @@ function getFile(idProject,idCreator, idUser,revision,path, temporary){
         console.log("Contenu du fichier " + revision + ": " + JSON.stringify(json));
         setEditeur(json["content"]);
         Cookies.set('path',path);
+
     });
 }
 
@@ -96,6 +97,7 @@ function createFile(idProject,idCreator, idUser,path,branch){
     var url = "/api/git/"+  idUser+ "/"+ idCreator + "/" + idProject + "/create/file/" + branch +"?path=" + path;
     ApiRequest('GET',url,"",function(json){
             console.log("Fichier: " + JSON.stringify(json));
+            getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
     });
 }
 
@@ -113,6 +115,7 @@ function makeCommit(idProject,idCreator, idUser,branch,message){
         }else{
             console.log("Commit: " + JSON.stringify(json));
             Cookies.set('revision', json["new_commit_id"]);
+            getArborescence(Cookies.get('project'),Cookies.get('creator'),Cookies.get('idUser'),Cookies.get('revision'));
         }
     });
 
