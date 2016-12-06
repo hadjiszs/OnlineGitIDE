@@ -63,7 +63,7 @@ $(document).ready(function() {
     // Si on click sur un projet, on récupère ses informations
     $("#listeProjets").on("click", ".userProject-list", function (e) {
         e.preventDefault();
-
+        $("#homeDroite").removeClass("hide");
         var idProject = $(this).attr("project");
         var idCreator = $(this).attr("creator");
         infoProject(idProject);
@@ -230,7 +230,6 @@ function listCollaborations(){
                 </div>'
                 );
             });
-        }
     });
 }
 
@@ -280,15 +279,6 @@ function openProject(idProject, idCreator){
     // On récupère le dernier commit de la branche master
     var url = "/api/git/" + Cookies.get('idUser') + "/" + idCreator + "/" + idProject + "/listCommit/master";
     ApiRequest('GET',url,"",function(json){
-        if(json == null){
-            BootstrapDialog.show({
-                title: 'Commits',
-                message: 'Impossible de récupérer le dernier commit de master',
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true
-            });
-        }else{
             console.log("Dernier commit de master: " + json["commits"][0].id);
             Cookies.set('project', idProject);
             Cookies.set('creator', idCreator);
@@ -296,7 +286,6 @@ function openProject(idProject, idCreator){
             Cookies.set('revision', json["commits"][0].id);
             Cookies.set('path', '');
             window.location.href = "/JSP/edit.jsp";
-        }
     });
 }
 

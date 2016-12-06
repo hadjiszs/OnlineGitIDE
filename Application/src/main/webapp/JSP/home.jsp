@@ -86,14 +86,14 @@
                         <h2 id="h2DivCollaboration"> Mes Collaborations </h2>
                     </header>
                     <div class="btn-group col-lg-12" id="listeCollaborations">
-                        <div class="btn-group col-lg-12 ligneListeCollaborations">
+                        <!-- <div class="btn-group col-lg-12 ligneListeCollaborations">
                             <button type="button" class="btn btn-default nomListeCollaborations">Collaboration 1</button>
                             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove spanSupprimerProjet"></span></button>
-                        </div>
+                        </div> -->
                     </div>
                 </section>
             </div>
-            <section class="col-lg-7 col-md-12" id="homeDroite">
+            <section class="col-lg-7 col-md-12 hide" id="homeDroite">
                 <header class="col-lg-12 titreSection">
                     <h2 id="h2DivCommit" id="projectName"> Nom du Projet </h2>
                     <div class="col-lg-12">
