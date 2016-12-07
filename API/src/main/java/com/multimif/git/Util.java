@@ -161,6 +161,7 @@ public class Util {
         String path = getGitRepo(creator, repository);
         System.out.println("path: " + path);
         File localPath = new File(path);
+        System.out.println("sqdsq");
         // then clone
         try {
             Git.cloneRepository().setURI(remoteURL)
@@ -168,6 +169,7 @@ public class Util {
                     .call();
         } catch (GitAPIException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
+            System.out.println(e.getMessage());
             throw new DataException(Messages.GIT_CANT_CLONE_REPOSITORY);
         }
         return factory.createObjectBuilder().add("result", GitStatus.CLONE_SUCCESS.toString()).build();
