@@ -160,7 +160,7 @@ public class Util {
         // prepare a new folder for the cloned repository
         String path = getGitRepo(creator, repository);
         System.out.println("path: " + path);
-        //path = "/root/inf1096m-2016-grp01/repositories/test/";
+        path = "/root/inf1096m-2016-grp01/repositories/test/Interpolation.git";
         File localPath = new File(path);
         System.out.println("sqdsq");
         remoteURL = "https://github.com/hadjiszs/Interpolation.git";
