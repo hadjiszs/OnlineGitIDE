@@ -119,6 +119,7 @@ function compiler(idCreator,idProject,branch){
         js.type = "text/javascript";
         js.src = json["src"];
         js.setAttribute("data-autoplay","true");
+        js.setAttribute("data-theme","solarized-dark");
         js.id = json["id"];
         document.getElementById("contenuCompilation").appendChild(js);
     });

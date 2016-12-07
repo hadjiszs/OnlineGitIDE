@@ -408,8 +408,8 @@ public class GitController {
             Project project = projectService.addEntity(newname, newType, Long.parseLong(idUser));
             userGrantService.addEntity(Long.parseLong(idUser), project.getIdProject(), UserGrant.PermissionType.ADMIN);
             String author = getUsernameById(idUser);
-            String repository = getNameRepositoryById(idRepository);
-            ret = Util.cloneRemoteRepo(author, repository, url);
+            //String repository = getNameRepositoryById(idRepository);
+            ret = Util.cloneRemoteRepo(author, newname, url);
             if (ret == null) {
                 return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
             }
