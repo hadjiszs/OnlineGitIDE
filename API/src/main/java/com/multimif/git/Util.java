@@ -159,6 +159,7 @@ public class Util {
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         // prepare a new folder for the cloned repository
         String path = getGitRepo(creator, repository);
+        System.out.println("path: " + path);
         File localPath = new File(path);
         // then clone
         try {
