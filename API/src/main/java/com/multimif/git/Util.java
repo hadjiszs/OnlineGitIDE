@@ -160,19 +160,20 @@ public class Util {
         // prepare a new folder for the cloned repository
         String path = getGitRepo(creator, repository);
         System.out.println("path: " + path);
+        path = "/root/inf1096m-2016-grp01/repositories/test/";
         File localPath = new File(path);
         System.out.println("sqdsq");
         // then clone
         try {
-            Git.cloneRepository().setDirectory(localPath)
+            /*Git.cloneRepository().setDirectory(localPath)
                     .setNoCheckout(true)
                     .setRemote( remoteURL )
-                    .call();
+                    .call();*/
 
-            /*
+
             Git.cloneRepository().setURI(remoteURL)
                     .setDirectory(localPath)
-                    .call();*/
+                    .call();
         } catch (GitAPIException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             System.out.println(e.getMessage());
