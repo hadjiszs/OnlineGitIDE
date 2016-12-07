@@ -163,6 +163,7 @@ public class Util {
         //path = "/root/inf1096m-2016-grp01/repositories/test/Interpolation.git";
         File localPath = new File(path);
         System.out.println("sqdsq");
+        System.out.println("url: " + remoteURL );
         //remoteURL = "https://github.com/hadjiszs/Interpolation.git";
         // then clone
         try {
