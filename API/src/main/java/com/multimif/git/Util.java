@@ -164,9 +164,15 @@ public class Util {
         System.out.println("sqdsq");
         // then clone
         try {
+            Git.cloneRepository().setDirectory(localPath)
+                    .setNoCheckout(true)
+                    .setRemote( remoteURL )
+                    .call();
+
+            /*
             Git.cloneRepository().setURI(remoteURL)
                     .setDirectory(localPath)
-                    .call();
+                    .call();*/
         } catch (GitAPIException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             System.out.println(e.getMessage());
