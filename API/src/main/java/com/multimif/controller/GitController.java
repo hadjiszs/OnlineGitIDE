@@ -404,7 +404,7 @@ public class GitController {
         }
 
         try {
-            String newname = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
+            String newname = url.substring(url.lastIndexOf("/")+1, url.lastIndexOf("."));
             System.out.println(newname);
             Project project = projectService.addEntity(newname, newType, Long.parseLong(idUser));
             System.out.println(project.getName());
