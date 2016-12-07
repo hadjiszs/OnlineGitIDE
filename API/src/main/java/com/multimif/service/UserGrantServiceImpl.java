@@ -6,6 +6,7 @@ import com.multimif.model.Project;
 import com.multimif.model.User;
 import com.multimif.model.UserGrant;
 import com.multimif.util.DataException;
+import com.multimif.util.Messages;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ public class UserGrantServiceImpl implements UserGrantService{
         try {
             grant = getEntityById(idUser, idProject);
         }catch (DataException e ){
+            // Doit retourner une exception étant donné que le permis ne doit pas être dans la BD
             LOGGER.log( Level.OFF, e.toString(), e);
             grant = null;
         }
@@ -46,6 +48,9 @@ public class UserGrantServiceImpl implements UserGrantService{
             grant.setPermissionType(type);
 
             userGrantDAO.addEntity(grant);
+        } else {
+
+            throw new DataException(Messages.PERMISSION_ALREADY_EXISTS);
         }
 
         return true;
@@ -71,6 +76,20 @@ public class UserGrantServiceImpl implements UserGrantService{
 
         userGrantList.forEach(userGrant -> projectList.add(userGrant.getProject()));
         return projectList;
+    }
+
+    @Override
+    public boolean existsProjectName(Long idUser, String nameProject) {
+        List<Project> projectList;
+        try {
+            projectList = getAllProjectsByEntity(idUser);
+        } catch (DataException e) {
+            LOGGER.log(Level.OFF, e.getMessage(), e);
+            projectList = new ArrayList<>();
+        }
+        return projectList.stream().filter(p -> p.getName()
+                .equals(nameProject)).findFirst().isPresent();
+
     }
 
     @Override

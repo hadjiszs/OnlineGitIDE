@@ -78,16 +78,29 @@ public class TemporaryFileDAOImpl extends DAO implements TemporaryFileDAO {
 
     @Override
     public TemporaryFile addEntity(TemporaryFile temporaryFile) throws DataException {
-
+        TemporaryFile tmp;
         if (temporaryFile.getId() != null) {
             throw new DataException(Messages.FILE_ALREADY_EXISTS);
         }
 
-        getEntityManager().getTransaction().begin();
-        getEntityManager().persist(temporaryFile);
-        getEntityManager().getTransaction().commit();
+        try {
+            tmp = getEntityByHashKey(temporaryFile.getHashKey());
+        }catch (DataException e) {
+            LOGGER.log(Level.OFF, e.getMessage(), e);
+            tmp = null;
+        }
 
-        closeEntityManager();
+        if (tmp == null) {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(temporaryFile);
+            getEntityManager().getTransaction().commit();
+
+            closeEntityManager();
+        } else {
+            throw new DataException(Messages.FILE_ALREADY_EXISTS);
+        }
+
+
 
         return temporaryFile;
     }

@@ -1,6 +1,8 @@
 package com.multimif.dao;
 
 import javax.persistence.EntityManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author p1317074
@@ -8,7 +10,7 @@ import javax.persistence.EntityManager;
  * @since 1.0 19/10/16.
  */
 class DAO {
-
+    private static final Logger LOGGER = Logger.getLogger(DAO.class.getName());
     private EntityManager em;
 
     /**
@@ -30,8 +32,12 @@ class DAO {
      * Pour convention on ouvre et ferme l'entity manager dans méthode du DAO.
      */
     void closeEntityManager(){
-        if (em.isOpen()){
-            em.close();
+        try {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }catch (Exception e){
+            LOGGER.log(Level.OFF, e.getMessage(), e);
         }
     }
 }

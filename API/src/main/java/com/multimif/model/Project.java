@@ -12,7 +12,10 @@ import java.util.Date;
  * @since 1.0 10/21/16.
  */
 @Entity
-@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p ")
+@NamedQueries({
+        @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p "),
+        @NamedQuery(name = "Project.byNameByUser", query = "SELECT p FROM Project p WHERE p.name = :name")
+})
 public class Project implements Serializable {
     public enum TypeProject {JAVA, MAVEN, CMAKE}
 

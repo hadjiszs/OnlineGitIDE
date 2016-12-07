@@ -34,7 +34,7 @@ public class UserDAOImp extends DAO implements UserDAO {
             LOGGER.log(Level.FINE, ex.toString(), ex);
             usr = null;
         }
-        System.out.println("jdsjdqjs");
+
         if (usr == null) {
 
             user.setPassword(hashGenerator(user.getPassword()));
@@ -198,15 +198,11 @@ public class UserDAOImp extends DAO implements UserDAO {
         BigInteger bigInt = new BigInteger(1, digest);
         String hashtext = bigInt.toString(16);
 
-        //StringBuilder hash = new StringBuilder(bigInt.toString(16));
-
         /* Maintenant on doit mis à zero jusqu'à 32 characteres */
         while(hashtext.length() < 32 ) {
-            //hash.insert(0, "0");
             hashtext = "0" + hashtext;
         }
 
         return hashtext;
-        //return hash.toString();
     }
 }

@@ -109,4 +109,14 @@ public interface UserGrantService {
      * @throws DataException une exception si le projet ou l'utilisateur n'existent pas
      */
     boolean hasPermission(Long idUser, Long idProject) throws DataException;
+
+    /**
+     *
+     * Cette méthode retourne s'il existe déjà un projet du même utilisateur avec le même nom
+     *
+     * @param idUser l'id de l'utilisateur
+     * @param nameProject le nom du projet
+     * @return true s'il existe un projet avec le même nom avec le même utilisateur
+     */
+    boolean existsProjectName(Long idUser, String nameProject);
 }

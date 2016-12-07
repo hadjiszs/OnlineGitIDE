@@ -532,11 +532,15 @@ public class GitController {
             newFile = temporaryFileService.addEntity(Long.valueOf(currentUser), "", path, idrepo);
             if(newFile == null)
                 return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                        Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
+                        Constantes.OPERATION_MSG_RATE)), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (DataException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
             return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
-                    Constantes.OPERATION_MSG_RATE)), HttpStatus.ACCEPTED);
+                    e.getMessage())), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+            return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_RATE,
+                    Constantes.OPERATION_MSG_RATE)), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(JsonUtil.convertToJson(new Status(Constantes.OPERATION_CODE_REUSSI,

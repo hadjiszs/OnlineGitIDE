@@ -17,6 +17,8 @@ public class Messages {
 
     public static final String PERMISSION_NOT_EXISTS = "Permission doesn't exists";
 
+    public static final String PERMISSION_ALREADY_EXISTS = "Permission already exists";
+
     public static final String PROJECT_WITHOUT_OWNER = "This project doesn't have owner";
 
     public static final String USER_AUTHENTICATION_FAILED = "Incorrect password";
@@ -28,6 +30,8 @@ public class Messages {
     public static final String PROJECT_NOT_EXISTS = "Project doesn't exists";
 
     public static final String PROJECT_ALREADY_EXISTS = "Project already exists";
+
+    public static final String PROJECT_NAME_ALREADY_EXISTS = "You already have an project with the same name";
 
     public static final String PROJECT_DELETE_CONTROL = "Only the admin has permissions for remove the project";
 
@@ -41,9 +45,11 @@ public class Messages {
 
     public static final String GIT_CANT_CLONE_REPOSITORY = "The repository could not be cloned";
 
+    public static final String GIT_REPOSITORY_NAME_ERROR = "The name of repository isn't the correct name";
+
     public static final String GIT_LOG_ERROR = "Failed to get log repository";
 
-    public static final String ZIP_MOVE_ERROR = "Le dossier n'existe pas";
+    static final String ZIP_MOVE_ERROR = "Le dossier n'existe pas";
 
 
     private Messages(){

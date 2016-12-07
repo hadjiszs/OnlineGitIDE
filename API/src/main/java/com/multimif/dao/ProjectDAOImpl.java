@@ -28,7 +28,8 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
         } catch (DataException ex) {
             LOGGER.log(Level.OFF, ex.toString(), ex);
             proj = null;
-
+        } finally {
+            closeEntityManager();
         }
 
         if (proj == null) {
@@ -70,6 +71,17 @@ public class ProjectDAOImpl extends DAO implements ProjectDAO {
 
         return true;
     }
+
+    /*
+    public List<Project> getEntityByName(String name) throws DataException{
+        List<Project> projectList;
+        TypedQuery<Project> query = getEntityManager().createNamedQuery("Project.byNameByUser", Project.class);
+        query.setParameter("name", name);
+        projectList = query.getResultList();
+
+        closeEntityManager();
+        return projectList;
+    }*/
 
     @Override
     public Project getEntityById(Long id) throws DataException {

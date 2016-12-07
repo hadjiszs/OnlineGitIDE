@@ -3,11 +3,11 @@ package com.multimif.service;
 import com.multimif.dao.ProjectDAO;
 import com.multimif.dao.ProjectDAOImpl;
 import com.multimif.git.GitStatus;
+import com.multimif.git.Util;
 import com.multimif.model.Project;
 import com.multimif.model.User;
 import com.multimif.model.UserGrant;
 import com.multimif.util.DataException;
-import com.multimif.git.Util;
 import com.multimif.util.Messages;
 
 import javax.json.JsonObject;
@@ -34,23 +34,32 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project addEntity(String name, Project.TypeProject type, Long idUser) throws Exception {
         boolean ok;
-        Project project = new Project(name, type, idUser);
-        // Creation dans la bdd
-        try {
-            ok = projectDAO.addEntity(project);
 
-            /* On cree le rapport du projet avec l'admin */
-            userGrantService.addEntity(idUser, project.getIdProject(), UserGrant.PermissionType.ADMIN);
+        Project project = new Project(name, type, idUser);
+
+        try {
+            if (!userGrantService.existsProjectName(idUser, project.getName())) {
+                /* Creation dans la BD */
+                ok = projectDAO.addEntity(project);
+
+                /* On cree le rapport du projet avec l'admin */
+                userGrantService.addEntity(idUser, project.getIdProject(), UserGrant.PermissionType.ADMIN);
+            } else {
+                throw new DataException(Messages.PROJECT_NAME_ALREADY_EXISTS);
+            }
         } catch (DataException e) {
             LOGGER.log(Level.FINE, e.toString(), e);
             throw new DataException(e.getMessage());
         }
 
-        // Creation physique du depot
+        /* Creation physique du depot */
         if (ok) {
             User admin = userGrantService.getAdminByEntity(project.getIdProject());
             JsonObject content = Util.createRepository(admin.getUsername(), project.getName());
-            content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString());
+
+            if (!content.get("code").toString().equals(GitStatus.REPOSITORY_CREATED.toString())) {
+                throw new DataException(Messages.GIT_REPOSITORY_NAME_ERROR);
+            }
         }
 
         return project;
