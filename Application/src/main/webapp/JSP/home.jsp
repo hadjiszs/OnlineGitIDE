@@ -72,7 +72,7 @@
                     <header class="titreSection">
                         <h2 class="h2DivProjet"> Mes Projets </h2>
                         <button data-toggle="modal" data-target="#creerProjet" class="btn btn-success" id="ajouterProjet"> Créer un Projet</button>
-                        <button data-toggle="modal" data-target="#clonerModalProjet" class="btn btn-success" id="clonerProjet"> Cloner un Projet</button>
+                        <button data-toggle="modal" data-target="#clonerModalProjet" class="btn btn-success" id="clonerProjet"> Cloner un Projet Github</button>
                     </header>
                     <div class="col-lg-12" id="listeProjets">
                         <!-- <div class="btn-group col-lg-12 ligneListeProjet">
@@ -177,13 +177,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Parametre du projet </h4>
+                        <h4 class="modal-title">Parametre du projet GIT </h4>
                     </div>
                     <div class="modal-body">
                         <form id="formCloneProjet">
-                            <label class="labelProjet"> Nom du projet </label>
-                            <input type="text" placeholder="Nom du projet" name="name" id="nomCloneProjet" required />
-                            <label class="labelProjet"> url du projet </label>
+                            <label class="labelProjet"> url du projet GIT </label>
                             <input type="text" placeholder="url du projet" name="name" id="urlCloneProjet" required />
                             <label class="labelProjet"> Langage </label>
                             <select name="type" class="form-group form-control" id="selectCloneProjet">

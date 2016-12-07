@@ -55,9 +55,8 @@ $(document).ready(function() {
 
         var idUser = Cookies.get('idUser');
         var urlProject = $("#urlCloneProjet").val();
-        var name = $("#nomCloneProjet").val();
         var type = $("#selectCloneProjet option:selected").val();
-        cloneProject(idUser,urlProject,name,type);
+        cloneProject(idUser,urlProject,type);
     })
 
     // Si on click sur un projet, on récupère ses informations
@@ -338,8 +337,8 @@ function deleteProject(idProject,idUser){
 }
 
 /* On clone un projet */
-function cloneProject(idUser,urlProject,name,type){
-    var url = "/api/git/" + idUser +"/" + idUser + "/" + Math.floor(Math.random() * 100) + 5000  + "/clone/" + name + "/" + type + "?url=" +urlProject ;
+function cloneProject(idUser,urlProject,type){
+    var url = "/api/git/" + idUser +"/" + idUser + "/" + Math.floor(Math.random() * 100) + 5000  + "/clone/" + type + "?url=" +urlProject ;
     console.log(url);
     ApiRequest('POST',url,"",function(json){
         console.log("cloner projet: " + name + " " + JSON.stringify(json));
