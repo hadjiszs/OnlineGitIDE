@@ -158,10 +158,15 @@ public class Util {
 
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         // prepare a new folder for the cloned repository
+
+
         String path = getGitRepo(creator, repository);
+        deleteDirectory(new File(path));
+
         System.out.println("path: " + path);
         //path = "/root/inf1096m-2016-grp01/repositories/test/Interpolation.git";
         File localPath = new File(path);
+
         System.out.println("sqdsq");
         System.out.println("url: " + remoteURL );
         //remoteURL = "https://github.com/hadjiszs/Interpolation.git";
